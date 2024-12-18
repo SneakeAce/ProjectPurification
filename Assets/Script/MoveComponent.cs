@@ -15,11 +15,18 @@ public class MoveComponent : MonoBehaviour
     
     private void Move()
     {
-        float moveX = Input.GetAxisRaw("Horizontal");
-        float moveZ = Input.GetAxisRaw("Vertical");
+        float moveX = Input.GetAxis("Horizontal");
+        float moveZ = Input.GetAxis("Vertical");
 
-        Vector3 movement = new Vector3(moveX, 0.0f, moveZ);
+        Vector3 moveDirection = new Vector3(moveX, 0.0f, moveZ);
 
-        _character.Rigidbody.AddForce(movement * _speed);
+        moveDirection.y = 0;
+
+        Vector3 moveVelocity = moveDirection.normalized * _speed;
+
+        _character.Rigidbody.velocity = new Vector3(moveVelocity.x, moveVelocity.y, moveVelocity.z);
+        _character.Animator.SetFloat("MoveSpeed", moveDirection.magnitude);
+        _character.Animator.SetFloat("MoveX", moveX);
+        _character.Animator.SetFloat("MoveZ", moveZ);
     }
 }
