@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class Character : MonoBehaviour
@@ -12,7 +11,6 @@ public class Character : MonoBehaviour
     public Rigidbody Rigidbody { get => _rigidbody; }
     public Collider Collider { get => _collider; }
     public Animator Animator { get => _animator; }
-
 
     private void Update()
     {
