@@ -7,9 +7,9 @@ public abstract class Bullet : MonoBehaviour
 
     public Rigidbody Rigidbody { get => _rigidbody; }
 
-    public void InitializeBullet(Transform spawnPointTransform, Vector3 directionToMousePosition)
+    public void InitializeBullet(Vector3 startPoint, float distanceFlying)
     {
-        //_moveBullet.Initialize(spawnPointTransform, directionToMousePosition, this);
+        _moveBullet.Initialize(this, startPoint, distanceFlying);
     }
 
     // Код, который отвечает за столкновение с препятствиями.
