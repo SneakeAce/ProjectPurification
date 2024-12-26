@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterRotate : MonoBehaviour
@@ -11,12 +9,9 @@ public class CharacterRotate : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hitInfo))
         {
             Vector3 targetPoint = hitInfo.point;
-            Vector3 direction = targetPoint - character.transform.position;
-            direction.y = 0;
+            targetPoint.y = 0;
 
-            Quaternion targetRotation = Quaternion.LookRotation(direction);
-
-            transform.rotation = targetRotation;
+            character.transform.LookAt(targetPoint);
         }
 
     }

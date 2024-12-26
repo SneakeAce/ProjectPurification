@@ -1,10 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
 
 public class MoveComponent : MonoBehaviour
 {
+    private const float MinSpeed = 0.0f;
+    private const float MaxSpeed = 1.0f;
+
     [SerializeField] private Character _character;
     [SerializeField] private CharacterRotate _charaterRotate;
     [SerializeField] private float _speed;
@@ -12,10 +12,7 @@ public class MoveComponent : MonoBehaviour
     private void Update()
     {
         _charaterRotate.RotateCharacter(_character);
-    }
 
-    private void FixedUpdate()
-    {
         Move();
     }
     
@@ -27,7 +24,7 @@ public class MoveComponent : MonoBehaviour
         Vector3 moveDirection = new Vector3(moveHorizontal, 0.0f, moveVecrtical);
         moveDirection.y = 0;
 
-        float moveSpeed = Mathf.Clamp(moveDirection.magnitude, 0.0f, 1.0f);
+        float moveSpeed = Mathf.Clamp(moveDirection.magnitude, MinSpeed, MaxSpeed);
         
         _character.transform.Translate(moveDirection * _speed * Time.deltaTime);
 

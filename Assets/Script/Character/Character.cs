@@ -6,7 +6,7 @@ public class Character : MonoBehaviour
     [SerializeField] private Collider _collider;
     [SerializeField] private Animator _animator;
 
-    private float _time = 30f;
+    private float _timeForSecondIdleAnimation = 30f;
 
     public Rigidbody Rigidbody { get => _rigidbody; }
     public Collider Collider { get => _collider; }
@@ -14,9 +14,9 @@ public class Character : MonoBehaviour
 
     private void Update()
     {
-        if (_time > 0)
+        if (_timeForSecondIdleAnimation > 0)
         {
-            _time -= Time.deltaTime;
+            _timeForSecondIdleAnimation -= Time.deltaTime;
         }
         else
         {
@@ -26,8 +26,9 @@ public class Character : MonoBehaviour
 
     private void ActiveSecondIdleAnimation()
     {
-        _time = 35f;
+        _timeForSecondIdleAnimation = 30f;
 
         _animator.SetTrigger("UseSecondIdleAnimation");
-    }
+    }    
+
 }
