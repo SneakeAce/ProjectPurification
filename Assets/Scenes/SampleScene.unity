@@ -2565,6 +2565,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 786958736049785060, guid: 20e76ff1f821854429a67e46c458769b, type: 3}
+      propertyPath: _bulletPrefab
+      value: 
+      objectReference: {fileID: 8585542772986347399, guid: 18e95df3b7ac9154991a68b1a2bd7723, type: 3}
+    - target: {fileID: 786958736049785060, guid: 20e76ff1f821854429a67e46c458769b, type: 3}
       propertyPath: _maxMagazineCapacity
       value: 30
       objectReference: {fileID: 0}
