@@ -46,7 +46,7 @@ public class Rifle : Weapon
         if (bullet == null)
             return;
 
-        bullet.InitializeBullet(_spawnPoint.transform.position, WeaponConfig.WeaponStatsConfig.RangeShooting);
+        bullet.InitializeBullet(_spawnPoint.transform.position, WeaponConfig.WeaponStatsConfig.RangeShooting, WeaponConfig.WeaponStatsConfig.Damage);
 
         Debug.Log("Shooting and delayBeforeFiring = " + _delayBeforeFiring + " / current magazine capacity = " + _currentMagazineCapacity);
     }
