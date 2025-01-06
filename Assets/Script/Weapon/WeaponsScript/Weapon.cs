@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public abstract class Weapon : MonoBehaviour
 {
@@ -15,13 +16,16 @@ public abstract class Weapon : MonoBehaviour
     [SerializeField] protected float _startDelayBeforeFiring;
 
     protected bool _isReloading;
+    protected Character _character;
 
     protected Coroutine _reloadingWeaponCoroutine;
 
     public WeaponConfig WeaponConfig => _weaponConfig;
 
-    public void Initialize()
+    public void Initialize(Character character)
     {
+        _character = character;
+
         _currentMagazineCapacity = _maxMagazineCapacity;
 
         _startDelayBeforeFiring = MinDelayBeforeFiring;
@@ -35,6 +39,8 @@ public abstract class Weapon : MonoBehaviour
 
         if ((Input.GetMouseButtonDown(0) || Input.GetMouseButton(0)) && _delayBeforeFiring <= 0 && _currentMagazineCapacity > 0)
         {
+            _character.Animator.SetTrigger("Firing");
+
             Shooting();
         }
         else if (_currentMagazineCapacity == 0 && _isReloading == false)
