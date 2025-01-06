@@ -16,13 +16,13 @@ public abstract class Weapon : MonoBehaviour
     [SerializeField] protected float _startDelayBeforeFiring;
 
     protected bool _isReloading;
-    protected Character _character;
+    protected Unit _character;
 
     protected Coroutine _reloadingWeaponCoroutine;
 
     public WeaponConfig WeaponConfig => _weaponConfig;
 
-    public void Initialize(Character character)
+    public void Initialize(Unit character)
     {
         _character = character;
 
