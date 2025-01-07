@@ -7,21 +7,21 @@ public class MoveComponent : MonoBehaviour
 
     [SerializeField] private float _speed;
 
-    private Unit _thisUnit;
+    private Character _character;
 
-    public void Initialize(Unit unit)
+    public void Initialize(Character character)
     {
-        _thisUnit = unit;
+        _character = character;
     }
 
     private void Update()
     {
-        Move(_thisUnit);
+        Move(_character);
 
-        RotateToTarget(_thisUnit);
+        RotateToTarget(_character);
     }
 
-    public void RotateToTarget(Unit character)
+    public void RotateToTarget(Character character)
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -34,7 +34,7 @@ public class MoveComponent : MonoBehaviour
         }
     }
 
-    public void Move(Unit character)
+    public void Move(Character character)
     {
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVecrtical = Input.GetAxis("Vertical");

@@ -3,7 +3,7 @@ using UnityEngine;
 public class Bootstrap : MonoBehaviour
 {
     [Header("Character Components")]
-    [SerializeField] private Unit _character;
+    [SerializeField] private Character _character;
     [SerializeField] private MoveComponent _moveComponent;
     [SerializeField] private Health _health;
 
@@ -12,6 +12,7 @@ public class Bootstrap : MonoBehaviour
 
     [Header("Interface and UI")]
     [SerializeField] private HealthBar _healthBar;
+
 
     private void Awake()
     {

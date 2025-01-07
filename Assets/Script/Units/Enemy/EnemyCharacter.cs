@@ -12,6 +12,8 @@ public class EnemyCharacter : Unit, IMovable
 
     public float MoveSpeed => _moveSpeed;
 
+    public Animator EnemyAnimator => Animator;
+
     private void Update()
     {
         if (_behavioralPattern != null)
