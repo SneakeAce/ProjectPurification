@@ -1837,13 +1837,13 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8164196713827416722, guid: ec4498dddbd2d274d956b33f68f079e6, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3029359416192556342}
+      addedObject: {fileID: 8108048037754924167}
     - targetCorrespondingSourceObject: {fileID: 8164196713827416722, guid: ec4498dddbd2d274d956b33f68f079e6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 561087336588736983}
     - targetCorrespondingSourceObject: {fileID: 8164196713827416722, guid: ec4498dddbd2d274d956b33f68f079e6, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4662972091272924324}
+      addedObject: {fileID: 2155489955733282472}
   m_SourcePrefab: {fileID: 100100000, guid: ec4498dddbd2d274d956b33f68f079e6, type: 3}
 --- !u!136 &2045133730564862913 stripped
 CapsuleCollider:
@@ -1865,7 +1865,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8164196713827416722, guid: ec4498dddbd2d274d956b33f68f079e6, type: 3}
   m_PrefabInstance: {fileID: 451590587851017308}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3029359416192556342
+--- !u!114 &8108048037754924167
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1874,13 +1874,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 8577477782133356238}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 981bc1fa97252b047b808f441b1c057b, type: 3}
+  m_Script: {fileID: 11500000, guid: a47b759684c3ce54eb3d594d27b0af1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 7741575363675187559}
   _collider: {fileID: 2045133730564862913}
   _animator: {fileID: 9125243571654262299}
-  _health: {fileID: 0}
+  _health: {fileID: 2155489955733282472}
+  _moveComponent: {fileID: 561087336588736983}
 --- !u!114 &561087336588736983
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1893,10 +1894,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40def84c98e147a41999b572249c6cfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _character: {fileID: 3029359416192556342}
-  _charaterRotate: {fileID: 4662972091272924324}
-  _speed: 5
---- !u!114 &4662972091272924324
+  _speed: 10
+--- !u!114 &2155489955733282472
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1905,9 +1904,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8577477782133356238}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b59590e8b194dc45a3814af65705055, type: 3}
+  m_Script: {fileID: 11500000, guid: 62ac591efb66b6c48bf810c40a12d701, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _maxValue: 0
 --- !u!95 &9125243571654262299 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 8712001898147443271, guid: ec4498dddbd2d274d956b33f68f079e6, type: 3}

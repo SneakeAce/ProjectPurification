@@ -9,11 +9,9 @@ public abstract class Unit : MonoBehaviour
 
     [Header("Self-made Components")]
     [SerializeField] private Health _health;
-    [SerializeField] private MoveComponent _moveComponent;
 
     public Rigidbody Rigidbody { get => _rigidbody; }
     public Collider Collider { get => _collider; }
     public Animator Animator { get => _animator; }
     public Health Health { get => _health; }
-    public MoveComponent MoveComponent { get => _moveComponent; }
 }
