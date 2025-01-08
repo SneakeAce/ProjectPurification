@@ -1771,6 +1771,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1884080750752038813, guid: ec4498dddbd2d274d956b33f68f079e6, type: 3}
+      propertyPath: m_Height
+      value: 4.1079245
+      objectReference: {fileID: 0}
+    - target: {fileID: 1884080750752038813, guid: ec4498dddbd2d274d956b33f68f079e6, type: 3}
+      propertyPath: m_Radius
+      value: 0.7365341
+      objectReference: {fileID: 0}
+    - target: {fileID: 1884080750752038813, guid: ec4498dddbd2d274d956b33f68f079e6, type: 3}
+      propertyPath: m_Center.x
+      value: -0.06906605
+      objectReference: {fileID: 0}
+    - target: {fileID: 1884080750752038813, guid: ec4498dddbd2d274d956b33f68f079e6, type: 3}
+      propertyPath: m_Center.y
+      value: 2.0718937
+      objectReference: {fileID: 0}
+    - target: {fileID: 1884080750752038813, guid: ec4498dddbd2d274d956b33f68f079e6, type: 3}
+      propertyPath: m_Center.z
+      value: 0.035728753
+      objectReference: {fileID: 0}
     - target: {fileID: 5956527185849206599, guid: ec4498dddbd2d274d956b33f68f079e6, type: 3}
       propertyPath: m_LocalPosition.x
       value: -5.37
@@ -1894,7 +1914,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40def84c98e147a41999b572249c6cfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 10
+  _speed: 6
 --- !u!114 &2155489955733282472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1907,7 +1927,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62ac591efb66b6c48bf810c40a12d701, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxValue: 0
+  _maxValue: 100
 --- !u!95 &9125243571654262299 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 8712001898147443271, guid: ec4498dddbd2d274d956b33f68f079e6, type: 3}

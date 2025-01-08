@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public interface IMovable
 {
-    Transform Transform { get; }
-
     float MoveSpeed { get; }
-
+    Transform Transform { get; }
+    NavMeshAgent NavMeshAgent { get; }
     Animator Animator { get; }
 }

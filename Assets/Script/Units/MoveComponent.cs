@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class MoveComponent : MonoBehaviour
@@ -30,7 +31,13 @@ public class MoveComponent : MonoBehaviour
             Vector3 targetPoint = hitInfo.point;
             targetPoint.y = 0;
 
-            character.transform.LookAt(targetPoint);
+            Vector3 direction = this.transform.position - targetPoint;
+
+            if (direction.sqrMagnitude > 0.1f)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(-direction);
+                _character.transform.rotation = targetRotation;
+            }
         }
     }
 
@@ -44,7 +51,9 @@ public class MoveComponent : MonoBehaviour
 
         float moveSpeed = Mathf.Clamp(moveDirection.magnitude, MinSpeed, MaxSpeed);
 
-        character.transform.Translate(moveDirection * _speed * Time.deltaTime);
+        Vector3 velocity = moveDirection * _speed;
+        velocity.y = 0;
+        _character.Rigidbody.velocity = velocity;
 
         character.Animator.SetFloat("MoveSpeed", moveSpeed);
         character.Animator.SetFloat("MoveX", moveHorizontal);
