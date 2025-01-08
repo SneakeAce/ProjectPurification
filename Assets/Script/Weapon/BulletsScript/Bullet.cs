@@ -15,11 +15,27 @@ public abstract class Bullet : MonoBehaviour
         _moveBullet.Initialize(this, startPoint, distanceFlying);
     }
 
-    public virtual void DamageDeal()
+    public abstract void DamageDeal(Unit unit);
+
+    private void OnTriggerEnter(Collider collision)
     {
-        //—делать метод, который наносит урон, с интерфейсами и прочим.
+        Debug.Log("Collision == " + collision);
+
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        {
+            Debug.Log("Bullet enter collision");
+            Unit target = collision.gameObject.GetComponent<Unit>();
+
+            DamageDeal(target);
+
+            DestroyBullet();
+        }
     }
 
+    private void DestroyBullet()
+    {
+        Destroy(gameObject);
+    }
     //  од, который отвечает за столкновение с преп€тстви€ми.
 
 }

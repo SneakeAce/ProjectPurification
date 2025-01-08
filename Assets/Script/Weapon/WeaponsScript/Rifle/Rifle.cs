@@ -25,8 +25,6 @@ public class Rifle : Weapon
         _currentMagazineCapacity = _maxMagazineCapacity;
         _isReloading = false;
 
-        Debug.Log("ReloadingJob Done");
-
         StopCoroutine(_reloadingWeaponCoroutine);
         _reloadingWeaponCoroutine = null;
     }
@@ -47,8 +45,6 @@ public class Rifle : Weapon
             return;
 
         bullet.InitializeBullet(_spawnPoint.transform.position, WeaponConfig.WeaponStatsConfig.RangeShooting, WeaponConfig.WeaponStatsConfig.Damage);
-
-        Debug.Log("Shooting and delayBeforeFiring = " + _delayBeforeFiring + " / current magazine capacity = " + _currentMagazineCapacity);
     }
 
     private Quaternion GetDirection()

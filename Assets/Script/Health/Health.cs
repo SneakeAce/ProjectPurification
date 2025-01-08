@@ -1,54 +1,23 @@
-using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class Health : MonoBehaviour
+public abstract class Health : MonoBehaviour
 {
-    [SerializeField] private float _maxValue;
-    private float _currentValue;
+    [SerializeField] protected float _maxValue;
+    protected float _currentValue;
 
     public float MaxValue { get => _maxValue; set => _maxValue = value; }
     public float CurrentValue { get => _currentValue; set => _currentValue = value; }
-
-    public event Action<float> MaxValueChanged;
-    public event Action<float> CurrentValueChanged;
 
     public void Initialize()
     {
         _currentValue = _maxValue;
     }
 
-    // Для тестов!
-    //private void Update()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.R))
-    //    {
-    //        AddHealth(10f);
-    //    }        
+    public abstract void DamageTaken(float damage);
 
-    //    if (Input.GetKeyDown(KeyCode.Q))
-    //    {
-    //        DamageTaken(10f);
-    //    }
-    //}
+    public abstract void AddHealth(float value);
 
-    public void DamageTaken(float damage)
-    {
-        _currentValue -= damage;
-
-        CurrentValueChanged?.Invoke(_currentValue);
-    }
-
-    public void AddHealth(float value)
-    {
-        _currentValue += value;
-
-        if (_currentValue > _maxValue)
-            _currentValue = _maxValue;
-
-        CurrentValueChanged?.Invoke(_currentValue);
-    }
-
-    // Метод для получения урона. 
-    // В нем будет вызываться событие.
-
+    public abstract void DestroyUnit();
 }

@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Rifle
   <WeaponStatsConfig>k__BackingField:
-    <Damage>k__BackingField: 2
+    <Damage>k__BackingField: 20
     <RangeShooting>k__BackingField: 100
     <ReloadingTime>k__BackingField: 1.5

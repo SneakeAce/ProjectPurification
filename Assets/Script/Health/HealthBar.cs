@@ -10,7 +10,7 @@ public class HealthBar : MonoBehaviour
 {
     [SerializeField] private Slider _bar;
     [SerializeField] private TMP_Text _textMeshPro;
-    [SerializeField] private Health _health;
+    [SerializeField] private CharacterHealth _health;
 
     private float _currentValue;
     private float _maxValue;

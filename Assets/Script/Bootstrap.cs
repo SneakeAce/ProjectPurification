@@ -5,7 +5,7 @@ public class Bootstrap : MonoBehaviour
     [Header("Character Components")]
     [SerializeField] private Character _character;
     [SerializeField] private MoveComponent _moveComponent;
-    [SerializeField] private Health _health;
+    [SerializeField] private CharacterHealth _health;
 
     [Header("Weapon")]
     [SerializeField] private Weapon _weapon;
