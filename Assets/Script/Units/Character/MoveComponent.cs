@@ -11,6 +11,7 @@ public class MoveComponent : MonoBehaviour
     private Character _character;
     private Vector3 _moveDirection;
     private Vector3 _targetPoint;
+
     public void Initialize(Character character)
     {
         _character = character;
@@ -32,7 +33,7 @@ public class MoveComponent : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hitInfo, Mathf.Infinity, _includeLayer))
         {
-            Vector3 _targetPoint = hitInfo.point;
+            _targetPoint = hitInfo.point;
             _targetPoint.y = 0;
 
             Vector3 direction = _targetPoint - _character.transform.position;
@@ -49,23 +50,17 @@ public class MoveComponent : MonoBehaviour
     private void Move()
     {
         float moveHorizontal = Input.GetAxis("Horizontal");
-        float moveVertical = Input.GetAxis("Vertical"); 
+        float moveVertical = Input.GetAxis("Vertical");
 
         _moveDirection = new Vector3(moveHorizontal, 0.0f, moveVertical);
         _moveDirection.y = 0;
-
-        _moveDirection = new Vector3(moveHorizontal, 0.0f, moveVertical);
 
         if (_moveDirection.sqrMagnitude > 0.1f)
         {
             _moveDirection = _character.transform.TransformDirection(_moveDirection.normalized);
             _moveDirection *= _speed;
 
-            _character.Rigidbody.velocity = new Vector3(
-                _moveDirection.x,
-                _character.Rigidbody.velocity.y,
-                _moveDirection.z
-            );
+            _character.Rigidbody.velocity = new Vector3(_moveDirection.x, _character.Rigidbody.velocity.y, _moveDirection.z);
         }
         else
         {

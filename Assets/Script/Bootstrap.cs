@@ -13,7 +13,6 @@ public class Bootstrap : MonoBehaviour
     [Header("Interface and UI")]
     [SerializeField] private HealthBar _healthBar;
 
-
     private void Awake()
     {
         _moveComponent.Initialize(_character);

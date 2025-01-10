@@ -9,6 +9,7 @@ public class EnemyCharacter : Unit, IMovable
     
     [SerializeField] private float _moveSpeed;
     [SerializeField] private NavMeshAgent _agent;
+    [SerializeField] private GameObject _holderAttackLogic;
 
     public float MoveSpeed => _moveSpeed;
     public Animator EnemyAnimator => Animator;
@@ -20,6 +21,13 @@ public class EnemyCharacter : Unit, IMovable
     {
         if (_behavioralPattern != null)
             _behavioralPattern.Update();
+    }
+
+    public void TriggerAttack()
+    {
+        BaseZombieAttack attack = _holderAttackLogic.GetComponent<BaseZombieAttack>();
+
+        attack.AnimationAttack();
     }
 
     public void SetBehavioralPattern(IBehavioralPattern behavioralPattern)
