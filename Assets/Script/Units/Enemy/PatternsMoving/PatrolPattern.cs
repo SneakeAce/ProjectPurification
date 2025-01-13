@@ -6,7 +6,7 @@ public class PatrolPattern : IBehavioralPattern
 {
     public PatrolPattern()
     {
-
+        Debug.Log("Choose PAtrol Pattern");
     }
 
     public void StartMove()
