@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -16,6 +14,12 @@ public class EnemyCharacter : Unit, IMovable
     public Rigidbody EnemyRigidbody => Rigidbody;
     public Transform Transform => transform;
     public NavMeshAgent NavMeshAgent => _agent;
+
+    private void Start()
+    {
+        Health.Initialize();
+        Debug.Log("Health Init on Enemy");
+    }
 
     private void Update()
     {

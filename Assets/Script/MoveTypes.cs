@@ -1,4 +1,4 @@
-public enum AllMoveTypes
+public enum MoveTypes
 {
     NoMove = 0,
     MoveToTarget = 1,

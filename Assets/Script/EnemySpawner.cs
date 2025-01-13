@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +9,8 @@ public class EnemySpawner : MonoBehaviour
     [Header("Spawn Point and Enemy prefab")]
     [SerializeField] private List<Transform> _spawnPoints = new List<Transform>();
     [SerializeField] private List<GameObject> _enemiesPrefabs;
+
+    [Header("Enemy parameters")]
     [SerializeField] private LayerMask _enemyLayer;
 
     [Header("Parameters")]
@@ -21,6 +22,8 @@ public class EnemySpawner : MonoBehaviour
 
     private int _currentEnemyOnScene;
 
+    private SwitchBehavioralPattern _behavioralPattern;
+
     private List<GameObject> _enemies = new List<GameObject>();
 
     private void Start()
@@ -30,11 +33,13 @@ public class EnemySpawner : MonoBehaviour
 
     private void Update()
     {
-        if (_timeBetweenSpawn > 0)
-            _timeBetweenSpawn -= Time.deltaTime;
+        _timeBetweenSpawn -= Time.deltaTime;
 
         if (_currentEnemyOnScene < _maxEnemyOnScene && _timeBetweenSpawn <= 0)
+        {
             SpawnEnemy();
+            _timeBetweenSpawn = _startTimeBetweenSpawn;
+        }
     }
 
     private void SpawnEnemy()
@@ -44,15 +49,20 @@ public class EnemySpawner : MonoBehaviour
         Vector3 newPositionEnemy = GetSpawnPoint();
 
         GameObject instanceEnemy = Instantiate(_enemiesPrefabs[Random.Range(0, _enemiesPrefabs.Count)], newPositionEnemy, Quaternion.Euler(0, directionLook, 0));
-        _currentEnemyOnScene++;
 
         EnemyCharacter enemy = instanceEnemy.GetComponent<EnemyCharacter>();
+        _behavioralPattern = enemy.GetComponentInChildren<SwitchBehavioralPattern>();
+
+        if (enemy != null)
+        {
+            _behavioralPattern.SetBehavioralPattern(enemy);
+        }
 
         // «десь будет задаватьс€ передвижени€ дл€ врага.
 
         _enemies.Add(enemy.gameObject);
 
-        _timeBetweenSpawn = _startTimeBetweenSpawn;
+        _currentEnemyOnScene++;
     }
 
     private Vector3 GetSpawnPoint()

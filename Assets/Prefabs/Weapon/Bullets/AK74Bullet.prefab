@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 1505450335631637244}
   - component: {fileID: 8327449917691083686}
   - component: {fileID: 5571939111980869504}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: AK74Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -16,20 +16,20 @@ public class SearchTarget : MonoBehaviour
     public bool TargetIsFound { get => _targetIsFound; }
     public Character Target { get => _target; }
 
-    public event Action TargetFound;
+    public event Action<EnemyCharacter> TargetFound;
 
-    public void StartSearchingTarget()
+    public void StartSearchingTarget(EnemyCharacter enemy)
     {
         if (_searchTargetCoroutine != null)
         {
-            StopCoroutine(SearchingTargetJob());
+            StopCoroutine(SearchingTargetJob(enemy));
             _searchTargetCoroutine = null;
         }
 
-        _searchTargetCoroutine = StartCoroutine(SearchingTargetJob());
+        _searchTargetCoroutine = StartCoroutine(SearchingTargetJob(enemy));
     }
 
-    private IEnumerator SearchingTargetJob()
+    private IEnumerator SearchingTargetJob(EnemyCharacter enemy)
     {
         while (_target == null)
         {
@@ -40,13 +40,13 @@ public class SearchTarget : MonoBehaviour
                 _target = target.gameObject.GetComponent<Character>();
                 _targetIsFound = true;
 
-                TargetFound?.Invoke();
+                TargetFound?.Invoke(enemy);
             }
 
             yield return null;
         }
 
-        StopCoroutine(SearchingTargetJob());
+        StopCoroutine(SearchingTargetJob(enemy));
         _searchTargetCoroutine = null;
     }
 }

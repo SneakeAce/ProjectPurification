@@ -15,7 +15,7 @@ public abstract class Bullet : MonoBehaviour
         _moveBullet.Initialize(this, startPoint, distanceFlying);
     }
 
-    public abstract void DamageDeal(Unit unit);
+    public abstract void DamageDeal(EnemyCharacter unit);
 
     private void OnTriggerEnter(Collider collision)
     {
@@ -23,8 +23,9 @@ public abstract class Bullet : MonoBehaviour
 
         if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
-            Debug.Log("Bullet enter collision");
-            Unit target = collision.gameObject.GetComponent<Unit>();
+            EnemyCharacter target = collision.gameObject.GetComponent<EnemyCharacter>();
+
+            Debug.Log("Bullet enter collision / target = " + target);
 
             DamageDeal(target);
 

@@ -433,7 +433,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5000c9a1f0463ec4ca9f6b8107e45583, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyCharacter: {fileID: 6103294326399873054}
   _searchTarget: {fileID: 8005660174000040775}
 --- !u!1 &2650959761740464206
 GameObject:
@@ -962,7 +961,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c8395dc361ed4943afe41ac80307291, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxRadiusSearching: 10000
+  _maxRadiusSearching: 10
   _targetLayerMask:
     serializedVersion: 2
     m_Bits: 64
@@ -1072,7 +1071,7 @@ GameObject:
   - component: {fileID: 6900340402661381929}
   - component: {fileID: 1759584542537061366}
   - component: {fileID: 8619412216354016985}
-  m_Layer: 8
+  m_Layer: 12
   m_Name: Attack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
