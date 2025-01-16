@@ -26,7 +26,8 @@ public class MoveBullet : MonoBehaviour
     
     private void BulletMove()
     {
-        _bullet.Rigidbody.AddForce(transform.forward * _bulletSpeed, ForceMode.Impulse);
+        //_bullet.Rigidbody.AddForce(transform.forward * _bulletSpeed, ForceMode.Impulse);
+        _bullet.Rigidbody.velocity = transform.forward * _bulletSpeed;
     }
 
     private void DestroyBullet()

@@ -31,7 +31,7 @@ public class MoveComponent : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(ray, out RaycastHit hitInfo, Mathf.Infinity))
+        if (Physics.Raycast(ray, out RaycastHit hitInfo, Mathf.Infinity, _includeLayer))
         {
             _targetPoint = hitInfo.point;
             _targetPoint.y = 0;

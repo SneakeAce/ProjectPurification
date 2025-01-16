@@ -5,16 +5,16 @@ public class MoveToTargetPattern : IBehavioralPattern
     private Character _target;
     private IMovable _movable;
 
-    private bool _isMoving;
-
     public MoveToTargetPattern(IMovable movable, Character target)
     {
         _movable = movable;
         _target = target;
     }
 
-    public void StartMove() => _movable.NavMeshAgent.isStopped = false;
-
+    public void StartMove()
+    {
+        _movable.NavMeshAgent.isStopped = false;
+    }
     public void StopMove() => _movable.NavMeshAgent.isStopped = true;
 
     public void Update()
@@ -34,7 +34,7 @@ public class MoveToTargetPattern : IBehavioralPattern
         if (_target == null || _movable.NavMeshAgent.isStopped)
             return;
 
-       _movable.NavMeshAgent.SetDestination(_target.transform.position);
+        _movable.NavMeshAgent.SetDestination(_target.transform.position);
 
         _movable.Animator.SetBool("IsRunning", true);
     }

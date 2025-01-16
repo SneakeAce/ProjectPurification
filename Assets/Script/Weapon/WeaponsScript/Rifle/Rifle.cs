@@ -1,8 +1,10 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Rifle : Weapon
 {
+    [SerializeField] private LayerMask _includeLayer;
     [SerializeField] private GameObject _bulletPrefab;
     [SerializeField] private GameObject _spawnPoint;
     private GameObject _instanceBulletPrefab;
@@ -53,7 +55,7 @@ public class Rifle : Weapon
         
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(ray, out RaycastHit hitInfo))
+        if (Physics.Raycast(ray, out RaycastHit hitInfo, Mathf.Infinity, _includeLayer))
         {
             Vector3 point = hitInfo.point;
             Vector3 direction = (point - _spawnPoint.transform.position).normalized;
@@ -61,7 +63,7 @@ public class Rifle : Weapon
 
             rotate = Quaternion.LookRotation(direction);
 
-            return rotate;
+            return rotate;            
         }
 
         return rotate;

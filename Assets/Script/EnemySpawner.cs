@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    private const float RadiusSpawnNewEnemy = 6f;
+    private const float RadiusSpawnNewEnemy = 50f;
     private const int AttemptsForSearchNewPoint = 5;
 
     [Header("Spawn Point and Enemy prefab")]
@@ -12,9 +12,11 @@ public class EnemySpawner : MonoBehaviour
 
     [Header("Enemy parameters")]
     [SerializeField] private LayerMask _enemyLayer;
+    [SerializeField] private LayerMask _obstacleLayer;
 
     [Header("Parameters")]
-    [SerializeField] private float _radiusSpawn;
+    [SerializeField] private float _radiusCheckingEnemyAround;
+    [SerializeField] private float _radiusCheckingObstacleAround;
     [SerializeField] private float _startTimeBetweenSpawn;
     [SerializeField] private int _maxEnemyOnScene;
 
@@ -48,55 +50,63 @@ public class EnemySpawner : MonoBehaviour
 
         Vector3 newPositionEnemy = GetSpawnPoint();
 
+        if (newPositionEnemy == Vector3.zero)
+            return;
+
         GameObject instanceEnemy = Instantiate(_enemiesPrefabs[Random.Range(0, _enemiesPrefabs.Count)], newPositionEnemy, Quaternion.Euler(0, directionLook, 0));
 
         EnemyCharacter enemy = instanceEnemy.GetComponent<EnemyCharacter>();
         _behavioralPattern = enemy.GetComponentInChildren<SwitchBehavioralPattern>();
 
-        if (enemy != null)
-        {
-            _behavioralPattern.SetBehavioralPattern(enemy);
-        }
-
-        // «десь будет задаватьс€ передвижени€ дл€ врага.
+        _behavioralPattern.SetBehavioralPattern(enemy);
 
         _enemies.Add(enemy.gameObject);
 
         _currentEnemyOnScene++;
+
     }
 
     private Vector3 GetSpawnPoint()
     {
-        Transform spawnPoint = _spawnPoints[Random.Range(0, _spawnPoints.Count)];
-
         for (int attempt = 0; attempt < AttemptsForSearchNewPoint; attempt++)
         {
-            Vector3 newPositionEnemy = (Random.insideUnitSphere * _radiusSpawn) + spawnPoint.transform.position;
+            Vector3 newPositionEnemy = Random.insideUnitSphere * RadiusSpawnNewEnemy;
             newPositionEnemy.y = 0;
 
-            if (CheckEnemyInSpawnRadius(newPositionEnemy))
+            Debug.Log("newPositionEnemy = " + newPositionEnemy);
+
+            if (CheckEnemyInSpawnRadius(newPositionEnemy) && CheckObstacleInSpawnRadius(newPositionEnemy))
+            {
+                Debug.Log("newPositionEnemy = " + newPositionEnemy);
                 return newPositionEnemy;
+            }
         }
+
+        Debug.Log("GetSpawnPoint / return Vector3.zero");
 
         return Vector3.zero;
     }
 
     private bool CheckEnemyInSpawnRadius(Vector3 spawnPointPosition)
     {
-        Collider[] enemyInRadius = Physics.OverlapSphere(spawnPointPosition, _radiusSpawn);
-        foreach(Collider enemy in enemyInRadius)
-        {
-            if (enemy != null && enemy.gameObject.layer == _enemyLayer && _enemies.Count > 0)
-            { 
-                for (int i = 0; i < _enemies.Count; i++)
-                {
-                    if (Vector3.Distance(enemy.transform.position, _enemies[i].transform.position) < RadiusSpawnNewEnemy)
-                    {
-                        return false;
-                    }
-                }
-            }
-        }
+        Collider[] enemyInRadius = Physics.OverlapSphere(spawnPointPosition, _radiusCheckingEnemyAround, _enemyLayer);
+
+        Debug.Log("CheckEnemyInSpawnRadius / enemyInRadius = " + enemyInRadius.Length);
+
+        if (enemyInRadius.Length > 0)
+            return false;
+
+        return true;
+    }    
+
+    private bool CheckObstacleInSpawnRadius(Vector3 spawnPointPosition)
+    {
+        Collider[] obstacleInRadius = Physics.OverlapSphere(spawnPointPosition, _radiusCheckingObstacleAround, _obstacleLayer);
+
+        Debug.Log("CheckObstacleInSpawnRadius / enemyInRadius = " + obstacleInRadius.Length);
+
+        if (obstacleInRadius.Length > 0)
+            return false;
 
         return true;
     }

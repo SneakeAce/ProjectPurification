@@ -7,8 +7,8 @@ public class SearchTarget : MonoBehaviour
 {
     [SerializeField] private float _maxRadiusSearching;
     [SerializeField] private LayerMask _targetLayerMask;
+
     private Character _target;
-    private Collider[] _targets;
     private Coroutine _searchTargetCoroutine;
 
     private bool _targetIsFound = false;
@@ -16,37 +16,39 @@ public class SearchTarget : MonoBehaviour
     public bool TargetIsFound { get => _targetIsFound; }
     public Character Target { get => _target; }
 
-    public event Action<EnemyCharacter> TargetFound;
+    public event Action TargetFound;
 
-    public void StartSearchingTarget(EnemyCharacter enemy)
+    public void StartSearchingTarget()
     {
         if (_searchTargetCoroutine != null)
         {
-            StopCoroutine(SearchingTargetJob(enemy));
+            StopCoroutine(SearchingTargetJob());
             _searchTargetCoroutine = null;
         }
 
-        _searchTargetCoroutine = StartCoroutine(SearchingTargetJob(enemy));
+        _searchTargetCoroutine = StartCoroutine(SearchingTargetJob());
     }
 
-    private IEnumerator SearchingTargetJob(EnemyCharacter enemy)
+    private IEnumerator SearchingTargetJob()
     {
         while (_target == null)
         {
-            _targets = Physics.OverlapSphere(transform.position, _maxRadiusSearching, _targetLayerMask);
+            Collider[] targets = Physics.OverlapSphere(transform.position, _maxRadiusSearching, _targetLayerMask);
 
-            foreach (Collider target in _targets)
+            foreach (Collider target in targets)
             {
                 _target = target.gameObject.GetComponent<Character>();
                 _targetIsFound = true;
 
-                TargetFound?.Invoke(enemy);
+                Debug.Log("SearchingTargetJob / TargetIsFound");
+
+                TargetFound?.Invoke();
             }
 
             yield return null;
         }
 
-        StopCoroutine(SearchingTargetJob(enemy));
+        StopCoroutine(SearchingTargetJob());
         _searchTargetCoroutine = null;
     }
 }
