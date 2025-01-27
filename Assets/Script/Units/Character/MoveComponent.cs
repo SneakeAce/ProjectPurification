@@ -57,14 +57,18 @@ public class MoveComponent : MonoBehaviour
 
         if (_moveDirection.sqrMagnitude > 0.1f)
         {
+            Debug.Log("moveDirection.sqrMagnitude > 0.1");
             _moveDirection = _character.transform.TransformDirection(_moveDirection.normalized);
             _moveDirection *= _speed;
 
-            _character.Rigidbody.velocity = new Vector3(_moveDirection.x, _character.Rigidbody.velocity.y, _moveDirection.z);
+            _character.Rigidbody.velocity = new Vector3(_moveDirection.x, 0, _moveDirection.z);
         }
         else
         {
-            _character.Rigidbody.velocity = new Vector3(0, _character.Rigidbody.velocity.y, 0);
+            Debug.Log("moveDirection.sqrMagnitude < 0.1");
+            float newSpeed = 0;
+            _moveDirection *= newSpeed;
+            _character.Rigidbody.velocity = new Vector3(_moveDirection.x, 0, _moveDirection.z);
         }
 
         float moveSpeed = Mathf.Clamp(_moveDirection.magnitude, MinSpeed, MaxSpeed);

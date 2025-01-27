@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class EnemyMovementStrategyFactory
 {
@@ -25,23 +23,18 @@ public class EnemyMovementStrategyFactory
     {
         switch (type)
         {
-            //case MoveTypes.None:
-                //return null;
-
             case MoveTypes.NoMove:
-                return new NoMovePattern();
+                return new NoMovePattern(movable);
                 
-
             case MoveTypes.MoveToTarget:
                 return new MoveToTargetPattern(movable, _target);
                 
+            case MoveTypes.Patrol:
+                return new PatrolPattern(movable, _spawnPatrolPoints);
 
             //case MoveTypes.MoveShortDistance:
                 //Debug.Log("MoveShortDistance Pattern");
                // return null;
-
-            case MoveTypes.Patrol:
-                return new PatrolPattern(movable, _spawnPatrolPoints);
 
             default:
                 throw new ArgumentException(nameof(type));

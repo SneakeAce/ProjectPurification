@@ -6,6 +6,9 @@ public class BaseZombieAttack : EnemyMeleeAttack
 {
     public override void MeleeAttack(Character character)
     {
+        if (character == null) 
+            return;
+
         Debug.Log("Zombie Attack");
         CharacterHealth characterHealth = character.GetComponent<CharacterHealth>();
 

@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SearchTarget : MonoBehaviour
@@ -10,6 +9,7 @@ public class SearchTarget : MonoBehaviour
 
     private Character _target;
     private Coroutine _searchTargetCoroutine;
+    private Coroutine _trackingTargetCoroutine;
 
     private bool _targetIsFound = false;
 
@@ -17,9 +17,11 @@ public class SearchTarget : MonoBehaviour
     public Character Target { get => _target; }
 
     public event Action TargetFound;
+    public event Action TargetDisappeared;
 
     public void StartSearchingTarget()
     {
+        Debug.Log("StartSearchingTarget");
         if (_searchTargetCoroutine != null)
         {
             StopCoroutine(SearchingTargetJob());
@@ -40,15 +42,39 @@ public class SearchTarget : MonoBehaviour
                 _target = target.gameObject.GetComponent<Character>();
                 _targetIsFound = true;
 
-                Debug.Log("SearchingTargetJob / TargetIsFound");
-
                 TargetFound?.Invoke();
             }
 
             yield return null;
         }
 
+        if (_trackingTargetCoroutine != null)
+        {
+            StopCoroutine(TrackingTargetJob());
+            _trackingTargetCoroutine = null;
+        }
+
+        _trackingTargetCoroutine = StartCoroutine(TrackingTargetJob());
+
         StopCoroutine(SearchingTargetJob());
         _searchTargetCoroutine = null;
+    }
+
+    private IEnumerator TrackingTargetJob()
+    {
+        while (_target != null)
+        {
+            if (Vector3.Distance(transform.position, _target.transform.position) > _maxRadiusSearching)
+            {
+                _target = null;
+
+                TargetDisappeared?.Invoke();
+            }
+
+            yield return null;
+        }
+
+        StopCoroutine(TrackingTargetJob());
+        _trackingTargetCoroutine = null;
     }
 }

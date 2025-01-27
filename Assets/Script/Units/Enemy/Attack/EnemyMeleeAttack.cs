@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class EnemyMeleeAttack : Attack
 {
-    [SerializeField] private SphereCollider _attackZone;
+    [SerializeField] private float _attackZoneRadius;
 
     private Coroutine _checkDistanceCoroutine;
 
@@ -60,10 +60,11 @@ public abstract class EnemyMeleeAttack : Attack
 
     private IEnumerator CheckDistanceJob()
     {
-        while (_isAttacking && _isCanceled == false)
+        while (_isAttacking && _isCanceled == false && _target != null)
         {
-            if (Vector3.Distance(transform.position, _target.transform.position) > _attackZone.radius)
+            if (Vector3.Distance(transform.position, _target.transform.position) > _attackZoneRadius)
             {
+                Debug.Log("CancelAttack");
                 CancelAttack();
             }
             yield return null;

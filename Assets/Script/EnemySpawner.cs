@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    private const float RadiusSpawnNewEnemy = 50f;
     private const int AttemptsForSearchNewPoint = 5;
 
     [Header("Spawn Point and Enemy prefab")]
@@ -13,8 +12,10 @@ public class EnemySpawner : MonoBehaviour
     [Header("Enemy parameters")]
     [SerializeField] private LayerMask _enemyLayer;
     [SerializeField] private LayerMask _obstacleLayer;
+    [SerializeField] private LayerMask _groundLayer;
 
     [Header("Parameters")]
+    [SerializeField] private float _radiusSpawnNewEnemy;
     [SerializeField] private float _radiusCheckingEnemyAround;
     [SerializeField] private float _radiusCheckingObstacleAround;
     [SerializeField] private float _startTimeBetweenSpawn;
@@ -70,19 +71,14 @@ public class EnemySpawner : MonoBehaviour
     {
         for (int attempt = 0; attempt < AttemptsForSearchNewPoint; attempt++)
         {
-            Vector3 newPositionEnemy = Random.insideUnitSphere * RadiusSpawnNewEnemy;
+            Vector3 newPositionEnemy = Random.insideUnitSphere * _radiusSpawnNewEnemy;
             newPositionEnemy.y = 0;
 
-            Debug.Log("newPositionEnemy = " + newPositionEnemy);
-
-            if (CheckEnemyInSpawnRadius(newPositionEnemy) && CheckObstacleInSpawnRadius(newPositionEnemy))
+            if (CheckEnemyInSpawnRadius(newPositionEnemy) && CheckObstacleInSpawnRadius(newPositionEnemy) && CheckGroundUnderEnemy(newPositionEnemy))
             {
-                Debug.Log("newPositionEnemy = " + newPositionEnemy);
                 return newPositionEnemy;
             }
         }
-
-        Debug.Log("GetSpawnPoint / return Vector3.zero");
 
         return Vector3.zero;
     }
@@ -90,8 +86,6 @@ public class EnemySpawner : MonoBehaviour
     private bool CheckEnemyInSpawnRadius(Vector3 spawnPointPosition)
     {
         Collider[] enemyInRadius = Physics.OverlapSphere(spawnPointPosition, _radiusCheckingEnemyAround, _enemyLayer);
-
-        Debug.Log("CheckEnemyInSpawnRadius / enemyInRadius = " + enemyInRadius.Length);
 
         if (enemyInRadius.Length > 0)
             return false;
@@ -103,9 +97,17 @@ public class EnemySpawner : MonoBehaviour
     {
         Collider[] obstacleInRadius = Physics.OverlapSphere(spawnPointPosition, _radiusCheckingObstacleAround, _obstacleLayer);
 
-        Debug.Log("CheckObstacleInSpawnRadius / enemyInRadius = " + obstacleInRadius.Length);
-
         if (obstacleInRadius.Length > 0)
+            return false;
+
+        return true;
+    }
+
+    private bool CheckGroundUnderEnemy(Vector3 spawnPointPosition)
+    {
+        Collider[] groundUnderEnemy = Physics.OverlapSphere(spawnPointPosition, _radiusCheckingObstacleAround, _groundLayer);
+
+        if (groundUnderEnemy.Length > 0)
             return false;
 
         return true;

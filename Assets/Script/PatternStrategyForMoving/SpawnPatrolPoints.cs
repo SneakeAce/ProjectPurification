@@ -6,7 +6,7 @@ public class SpawnPatrolPoints : MonoBehaviour
 {
     private const int MaxAttemptForCheckSpawnPoint = 10;
     private const float MinRadiusAppearanceAnotherPoint = 5f;
-    private const int TimeBeforeDestroyPoint = 1000;
+    private const int TimeBeforeDestroyPoint = 500;
 
     [SerializeField] private GameObject _pointPrefab;
 
@@ -18,18 +18,25 @@ public class SpawnPatrolPoints : MonoBehaviour
 
     [SerializeField] private float _radiusColliderPoint = 10f;
 
-    private List<Transform> _patrolPoints = new List<Transform>();
+    private List<Transform> _patrolPoints;
 
     public List<Transform> GetPatrolPoints()
     {
-        for (int currentPatrolPoints = 0; currentPatrolPoints < _maxPatrolPoints; currentPatrolPoints++)
+        _patrolPoints = new List<Transform>();
+
+        for (int currentPatrolPoints = 0; currentPatrolPoints < _maxPatrolPoints;)
         {
             Vector3 point = RandomPosition();
 
-            GameObject instancePatrolPoint = Instantiate(_pointPrefab, point, Quaternion.identity);
+            if (point != Vector3.zero)
+            {
+                GameObject instancePatrolPoint = Instantiate(_pointPrefab, point, Quaternion.identity);
 
-            if (instancePatrolPoint != null && point != Vector3.zero)
+                Debug.Log("instancePatrolPoint = " + instancePatrolPoint);
+                currentPatrolPoints++;
+
                 _patrolPoints.Add(instancePatrolPoint.transform);
+            }
         }
 
         return _patrolPoints;

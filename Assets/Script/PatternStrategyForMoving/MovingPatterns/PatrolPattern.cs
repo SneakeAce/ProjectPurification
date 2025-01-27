@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,12 +17,8 @@ public class PatrolPattern : IBehavioralPattern
     private float _startTimeBetweenGetNewPoint = 5f;
     private float _timeBetweenGetNewPoint;
 
-    private float _startTimeBetweenRepeatCheckingDistance = 6f;
-    private float _timeBetweenRepeatCheckingDistance;
-
     private bool _isMoving;
     private bool _hasPointReached;
-    private bool _hasGetNewPoint;
 
     public PatrolPattern(IMovable movable, SpawnPatrolPoints spawnPatrolPoints)
     {
@@ -40,8 +35,6 @@ public class PatrolPattern : IBehavioralPattern
 
     public void StartMove()
     {
-        Debug.Log("StartMove PatrolPattern");
-
         _timeBetweenGetNewPoint = _startTimeBetweenGetNewPoint;
 
         if (_patrolPoints.Count > 0)
@@ -59,6 +52,9 @@ public class PatrolPattern : IBehavioralPattern
         _hasPointReached = false;
 
         _movable.NavMeshAgent.isStopped = true;
+
+        if (_patrolPoints.Count > 0)
+            _patrolPoints.Clear();
     }
 
     public void Update()
@@ -67,7 +63,6 @@ public class PatrolPattern : IBehavioralPattern
 
         if (Vector3.Distance(_currentPositionMovable, _currentPoint.transform.position) <= MinDistanceToPoint)
         {
-            Debug.Log("Update / point has reached");
             _hasPointReached = true;
 
             GetNewPoint();
@@ -75,7 +70,7 @@ public class PatrolPattern : IBehavioralPattern
 
         if (_hasPointReached)
         {
-            StopMove();
+            StoppingMove();
 
             _movable.Animator.SetBool("IsRunning", _isMoving);
         }
@@ -90,14 +85,18 @@ public class PatrolPattern : IBehavioralPattern
         _movable.Animator.SetBool("IsRunning", _isMoving);
     }
 
+    private void StoppingMove()
+    {
+        _isMoving = false;
+        _hasPointReached = false;
+
+        _movable.NavMeshAgent.isStopped = true;
+    }
+
     private void GetNewPoint()
     {
-        Debug.Log("GetNewPoint");
-
         if (_timeBetweenGetNewPoint > 0)
-        {
-            Debug.Log("GetNewPoint / _timeBetweenGetNewPoint = " + _timeBetweenGetNewPoint);
-
+        { 
             _timeBetweenGetNewPoint -= Time.deltaTime;
             return;
         }
@@ -108,17 +107,13 @@ public class PatrolPattern : IBehavioralPattern
             {
                 _patrolPoints.Remove(_currentPoint);
                 _spawnPatrolPoints.DestroyPoint(_currentPoint.gameObject);
+
+                if (_patrolPoints.Count == 0)
+                {
+                    GetNewPatrolPoints();
+                }
             }
         }
-        else
-        {
-            Debug.Log("CreateNewPoint");
-            _patrolPoints.Clear();
-
-            _patrolPoints = _spawnPatrolPoints.GetPatrolPoints();
-        }
-
-        Debug.Log("PatrolPattern / GetNEwPoint / end Methods");
 
         _currentPoint = _patrolPoints[Random.Range(0, _patrolPoints.Count)];
 
@@ -135,4 +130,10 @@ public class PatrolPattern : IBehavioralPattern
         }
     }
 
+    private void GetNewPatrolPoints()
+    {
+        _patrolPoints.Clear();
+
+        _patrolPoints = _spawnPatrolPoints.GetPatrolPoints();
+    }
 }

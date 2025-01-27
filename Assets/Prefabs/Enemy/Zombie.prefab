@@ -489,6 +489,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _searchTarget: {fileID: 8005660174000040775}
   _spawnPatrolPoints: {fileID: 137048951313639673}
+  _minTimeBeforeSwitchBehavioral: 30
+  _maxTimeBeforeSwitchBehavioral: 90
 --- !u!1 &2650959761740464206
 GameObject:
   m_ObjectHideFlags: 0
@@ -1168,7 +1170,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1.6076621
+  m_Radius: 1.62
   m_Center: {x: 0.15120673, y: -0.13512719, z: 0.021188859}
 --- !u!114 &8619412216354016985
 MonoBehaviour:
@@ -1188,7 +1190,7 @@ MonoBehaviour:
   _damage: 10
   _reloadingTime: 2
   _enemyCharacter: {fileID: 6103294326399873054}
-  _attackZone: {fileID: 1759584542537061366}
+  _attackZoneRadius: 1.8
 --- !u!1 &5023891055251381934
 GameObject:
   m_ObjectHideFlags: 0
