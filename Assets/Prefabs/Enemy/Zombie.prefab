@@ -489,8 +489,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _searchTarget: {fileID: 8005660174000040775}
   _spawnPatrolPoints: {fileID: 137048951313639673}
-  _minTimeBeforeSwitchBehavioral: 30
-  _maxTimeBeforeSwitchBehavioral: 90
+  _baseTimeBetweenSwitchBehavioral: 45
 --- !u!1 &2650959761740464206
 GameObject:
   m_ObjectHideFlags: 0
