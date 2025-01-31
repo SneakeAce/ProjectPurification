@@ -8,19 +8,19 @@ public abstract class Weapon : MonoBehaviour
     [Header("Main parameters weapon")]
     [SerializeField] protected WeaponConfig _weaponConfig;
     [SerializeField] protected int _maxMagazineCapacity;
-    protected int _currentMagazineCapacity;
-
-    protected int _currentReleasedBulletAtTime = 1;
 
     [Header("Delay before firing")]
     private const float MinDelayBeforeFiring = 0.1f;
     [SerializeField] protected float _delayBeforeFiring;
     [SerializeField] protected float _startDelayBeforeFiring;
 
+    protected int _currentMagazineCapacity;
+    protected int _currentReleasedBulletAtTime = 1;
+
     protected bool _isReloading;
     private bool _isCanWork = false;
 
-    protected Unit _character;
+    protected Character _character;
 
     protected Coroutine _reloadingWeaponCoroutine;
 
@@ -32,7 +32,7 @@ public abstract class Weapon : MonoBehaviour
     public event Action<int> MaxValueChanged;
     public event Action<int> CurrentValueChanged;
 
-    public void Initialize(Unit character)
+    public void Initialize(Character character)
     {
         _character = character;
 
