@@ -11,15 +11,15 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Player
+  - Bushes
+  - Enemy
+  - Obstacle
+  - Ground
+  - Bullet
+  - AttackTrigger
+  - PatrolPoint
+  - Bulding
   - 
   - 
   - 
