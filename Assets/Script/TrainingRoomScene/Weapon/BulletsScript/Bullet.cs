@@ -19,7 +19,7 @@ public abstract class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider collision)
     {
-        Debug.Log("Collision == " + collision);
+        //Debug.Log("Collision == " + collision);
 
         if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {

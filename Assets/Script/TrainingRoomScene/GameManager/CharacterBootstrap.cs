@@ -11,11 +11,13 @@ public class CharacterBootstrap : MonoBehaviour
 
     [Header("Weapon")]
     [SerializeField] private Weapon _weapon;
-
+    [SerializeField] private PlacementController _placementController;
     public void Initialization()
     {
         _moveComponent.Initialize(_character);
         _weapon.Initialize(_character);
         _health.Initialize();
+
+        _placementController.Initialization(_character);
     }
 }
