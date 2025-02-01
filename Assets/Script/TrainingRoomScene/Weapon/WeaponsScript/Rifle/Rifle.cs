@@ -5,9 +5,13 @@ using UnityEngine;
 public class Rifle : Weapon
 {
     [SerializeField] private LayerMask _includeLayer;
-    [SerializeField] private GameObject _bulletPrefab;
     [SerializeField] private GameObject _spawnPoint;
-    private GameObject _instanceBulletPrefab;
+
+    public override void Initialize(Character character)
+    {
+        _bulletPool = new ObjectPool<Bullet>(_bulletPrefab, _maxPoolSize, _poolHolder.transform);
+        base.Initialize(character);
+    }
 
     protected override IEnumerator PrepareWeaponToShootingJob()
     {
@@ -39,15 +43,19 @@ public class Rifle : Weapon
 
         _delayBeforeFiring = _startDelayBeforeFiring;
 
-        _instanceBulletPrefab = Instantiate(_bulletPrefab, _spawnPoint.transform.position, rotate);
-
-        Bullet bullet = _instanceBulletPrefab.GetComponent<Bullet>();
+        Bullet bullet = _bulletPool.GetPoolObject();
 
         if (bullet == null)
             return;
 
-        bullet.InitializeBullet(_spawnPoint.transform.position, WeaponConfig.WeaponStatsConfig.RangeShooting, WeaponConfig.WeaponStatsConfig.Damage);
+        bullet.InitializeBullet(_spawnPoint.transform.position, rotate, WeaponConfig.WeaponStatsConfig.RangeShooting, 
+            WeaponConfig.WeaponStatsConfig.Damage, ReturnBulletToPool);
 
         CurrentValueChange();
+    }
+
+    private void ReturnBulletToPool(Bullet bullet)
+    {
+        _bulletPool.ReturnPoolObject(bullet);
     }
 }

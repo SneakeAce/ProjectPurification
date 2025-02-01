@@ -1,3 +1,5 @@
+using DG.Tweening;
+using System;
 using UnityEngine;
 
 public abstract class Bullet : MonoBehaviour
@@ -7,12 +9,20 @@ public abstract class Bullet : MonoBehaviour
 
     protected float _damage;
 
+    protected Action<Bullet> _returnToPool;
+
     public Rigidbody Rigidbody { get => _rigidbody; }
 
-    public void InitializeBullet(Vector3 startPoint, float distanceFlying, float bulletDamage)
+    public void InitializeBullet(Vector3 startPoint, Quaternion rotateDirection, float distanceFlying, float bulletDamage, Action<Bullet> returnToPool)
     {
+        this.transform.position = startPoint;
+        this.transform.rotation = rotateDirection;
+
+        _returnToPool = returnToPool;
+
         _damage = bulletDamage;
-        _moveBullet.Initialize(this, startPoint, distanceFlying);
+
+        _moveBullet.Initialize(this, startPoint, distanceFlying, _returnToPool);
     }
 
     public abstract void DamageDeal(EnemyCharacter unit);
@@ -29,13 +39,13 @@ public abstract class Bullet : MonoBehaviour
 
             DamageDeal(target);
 
-            DestroyBullet();
+            DeactivateBullet();
         }
     }
 
-    private void DestroyBullet()
+    private void DeactivateBullet()
     {
-        Destroy(gameObject);
+        _returnToPool?.Invoke(this);
     }
 
 }

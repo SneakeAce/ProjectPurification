@@ -134,9 +134,18 @@
             "id": "842fe3a8-fc4b-400a-a88d-0f8b030699b2",
             "actions": [
                 {
-                    "name": "ActivatePlacementMode",
+                    "name": "RotatingObject",
+                    "type": "Value",
+                    "id": "48b6b4a1-ff3d-460c-b48f-c4dfe724ca4d",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "TogglePlacementMode",
                     "type": "Button",
-                    "id": "ea247fc1-9ba5-47c9-86ef-12a13948b282",
+                    "id": "51d20c90-07c0-41f9-b70c-4c7c796af66b",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -145,56 +154,14 @@
                 {
                     "name": "DeactivatePlacementMode",
                     "type": "Button",
-                    "id": "9338ec5e-d8fa-4e50-a19f-c15a37cd79db",
+                    "id": "c7362065-7019-4742-b32e-d20ca73377ce",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "RotatingObject",
-                    "type": "Value",
-                    "id": "48b6b4a1-ff3d-460c-b48f-c4dfe724ca4d",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
                 }
             ],
             "bindings": [
-                {
-                    "name": "",
-                    "id": "b55279ce-9776-42d0-a810-3e2e565347b7",
-                    "path": "<Keyboard>/v",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "ActivatePlacementMode",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "98b6efa1-87f3-4060-86e8-84fee6352ceb",
-                    "path": "<Keyboard>/escape",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "DeactivatePlacementMode",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "8da5db5a-5e78-49e9-bfee-6b22b8a2591a",
-                    "path": "<Keyboard>/v",
-                    "interactions": "Hold(duration=0.4,pressPoint=0.5)",
-                    "processors": "",
-                    "groups": "",
-                    "action": "DeactivatePlacementMode",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
                 {
                     "name": "",
                     "id": "9c8eab99-f6bf-4149-9303-d16a49d1a5e7",
@@ -203,6 +170,39 @@
                     "processors": "",
                     "groups": "",
                     "action": "RotatingObject",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4d836407-9729-48ae-a140-f2b824fbc2a9",
+                    "path": "<Keyboard>/v",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "TogglePlacementMode",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4b9d8ca5-f19f-4147-9129-0f944a74ca0e",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "TogglePlacementMode",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "356b466b-886d-43ef-b7ca-f2264588a02a",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DeactivatePlacementMode",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

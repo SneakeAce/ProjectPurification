@@ -27,32 +27,43 @@ public class PlacementObjectSystem : MonoBehaviour
     private bool _objectCanBePlaced;
     private bool _placingJob;
     private bool _canShowPhantomObject;
+    private bool _canDisableMode;
 
     public void Initialization(Character character)
     {
-        _character = character;
+        _character = character; 
         _playerInput = _character.PlayerInput;
 
         _placingJob = false;
         _canShowPhantomObject = true;
+        _canDisableMode = false;
 
         _playerInput.UI.Disable();
 
-        _playerInput.PlacementObjectMode.ActivatePlacementMode.performed += OnEnablePlacementMode;
-        _playerInput.PlacementObjectMode.DeactivatePlacementMode.performed += OnDisablePlacementMode;
+        _playerInput.PlacementObjectMode.TogglePlacementMode.performed += OnTogglePlacementMode;
+        _playerInput.PlacementObjectMode.DeactivatePlacementMode.performed += OnDeactivatePlacementMode;
     }
 
-    public void OnEnablePlacementMode(InputAction.CallbackContext context)
+    public void OnTogglePlacementMode(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
-            _placingJob = true; 
+            _placingJob = !_placingJob;
+
+            if (_placingJob)
+            {
+                // вызов UI в игре
+            }
+            else
+            {
+                ResetVariables();
+            }
         }
     }
 
-    public void OnDisablePlacementMode(InputAction.CallbackContext context)
+    public void OnDeactivatePlacementMode(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && _placingJob)
         {
             _placingJob = false;
             ResetVariables();
@@ -63,7 +74,6 @@ public class PlacementObjectSystem : MonoBehaviour
     {
         if (_placingJob && _placedObjectPrefab != null)
         {
-
             if (_canShowPhantomObject)
             {
                 ShowObjectPosition();

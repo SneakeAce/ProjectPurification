@@ -156,9 +156,18 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             ""id"": ""842fe3a8-fc4b-400a-a88d-0f8b030699b2"",
             ""actions"": [
                 {
-                    ""name"": ""ActivatePlacementMode"",
+                    ""name"": ""RotatingObject"",
+                    ""type"": ""Value"",
+                    ""id"": ""48b6b4a1-ff3d-460c-b48f-c4dfe724ca4d"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""TogglePlacementMode"",
                     ""type"": ""Button"",
-                    ""id"": ""ea247fc1-9ba5-47c9-86ef-12a13948b282"",
+                    ""id"": ""51d20c90-07c0-41f9-b70c-4c7c796af66b"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -167,56 +176,14 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""DeactivatePlacementMode"",
                     ""type"": ""Button"",
-                    ""id"": ""9338ec5e-d8fa-4e50-a19f-c15a37cd79db"",
+                    ""id"": ""c7362065-7019-4742-b32e-d20ca73377ce"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""RotatingObject"",
-                    ""type"": ""Value"",
-                    ""id"": ""48b6b4a1-ff3d-460c-b48f-c4dfe724ca4d"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""b55279ce-9776-42d0-a810-3e2e565347b7"",
-                    ""path"": ""<Keyboard>/v"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""ActivatePlacementMode"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""98b6efa1-87f3-4060-86e8-84fee6352ceb"",
-                    ""path"": ""<Keyboard>/escape"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""DeactivatePlacementMode"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""8da5db5a-5e78-49e9-bfee-6b22b8a2591a"",
-                    ""path"": ""<Keyboard>/v"",
-                    ""interactions"": ""Hold(duration=0.4,pressPoint=0.5)"",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""DeactivatePlacementMode"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
                 {
                     ""name"": """",
                     ""id"": ""9c8eab99-f6bf-4149-9303-d16a49d1a5e7"",
@@ -225,6 +192,39 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""RotatingObject"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4d836407-9729-48ae-a140-f2b824fbc2a9"",
+                    ""path"": ""<Keyboard>/v"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TogglePlacementMode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4b9d8ca5-f19f-4147-9129-0f944a74ca0e"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TogglePlacementMode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""356b466b-886d-43ef-b7ca-f2264588a02a"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DeactivatePlacementMode"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -244,9 +244,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_UI_OpenOrCloseMenu = m_UI.FindAction("OpenOrCloseMenu", throwIfNotFound: true);
         // PlacementObjectMode
         m_PlacementObjectMode = asset.FindActionMap("PlacementObjectMode", throwIfNotFound: true);
-        m_PlacementObjectMode_ActivatePlacementMode = m_PlacementObjectMode.FindAction("ActivatePlacementMode", throwIfNotFound: true);
-        m_PlacementObjectMode_DeactivatePlacementMode = m_PlacementObjectMode.FindAction("DeactivatePlacementMode", throwIfNotFound: true);
         m_PlacementObjectMode_RotatingObject = m_PlacementObjectMode.FindAction("RotatingObject", throwIfNotFound: true);
+        m_PlacementObjectMode_TogglePlacementMode = m_PlacementObjectMode.FindAction("TogglePlacementMode", throwIfNotFound: true);
+        m_PlacementObjectMode_DeactivatePlacementMode = m_PlacementObjectMode.FindAction("DeactivatePlacementMode", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -446,16 +446,16 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     // PlacementObjectMode
     private readonly InputActionMap m_PlacementObjectMode;
     private List<IPlacementObjectModeActions> m_PlacementObjectModeActionsCallbackInterfaces = new List<IPlacementObjectModeActions>();
-    private readonly InputAction m_PlacementObjectMode_ActivatePlacementMode;
-    private readonly InputAction m_PlacementObjectMode_DeactivatePlacementMode;
     private readonly InputAction m_PlacementObjectMode_RotatingObject;
+    private readonly InputAction m_PlacementObjectMode_TogglePlacementMode;
+    private readonly InputAction m_PlacementObjectMode_DeactivatePlacementMode;
     public struct PlacementObjectModeActions
     {
         private @PlayerInput m_Wrapper;
         public PlacementObjectModeActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @ActivatePlacementMode => m_Wrapper.m_PlacementObjectMode_ActivatePlacementMode;
-        public InputAction @DeactivatePlacementMode => m_Wrapper.m_PlacementObjectMode_DeactivatePlacementMode;
         public InputAction @RotatingObject => m_Wrapper.m_PlacementObjectMode_RotatingObject;
+        public InputAction @TogglePlacementMode => m_Wrapper.m_PlacementObjectMode_TogglePlacementMode;
+        public InputAction @DeactivatePlacementMode => m_Wrapper.m_PlacementObjectMode_DeactivatePlacementMode;
         public InputActionMap Get() { return m_Wrapper.m_PlacementObjectMode; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -465,28 +465,28 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_PlacementObjectModeActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_PlacementObjectModeActionsCallbackInterfaces.Add(instance);
-            @ActivatePlacementMode.started += instance.OnActivatePlacementMode;
-            @ActivatePlacementMode.performed += instance.OnActivatePlacementMode;
-            @ActivatePlacementMode.canceled += instance.OnActivatePlacementMode;
-            @DeactivatePlacementMode.started += instance.OnDeactivatePlacementMode;
-            @DeactivatePlacementMode.performed += instance.OnDeactivatePlacementMode;
-            @DeactivatePlacementMode.canceled += instance.OnDeactivatePlacementMode;
             @RotatingObject.started += instance.OnRotatingObject;
             @RotatingObject.performed += instance.OnRotatingObject;
             @RotatingObject.canceled += instance.OnRotatingObject;
+            @TogglePlacementMode.started += instance.OnTogglePlacementMode;
+            @TogglePlacementMode.performed += instance.OnTogglePlacementMode;
+            @TogglePlacementMode.canceled += instance.OnTogglePlacementMode;
+            @DeactivatePlacementMode.started += instance.OnDeactivatePlacementMode;
+            @DeactivatePlacementMode.performed += instance.OnDeactivatePlacementMode;
+            @DeactivatePlacementMode.canceled += instance.OnDeactivatePlacementMode;
         }
 
         private void UnregisterCallbacks(IPlacementObjectModeActions instance)
         {
-            @ActivatePlacementMode.started -= instance.OnActivatePlacementMode;
-            @ActivatePlacementMode.performed -= instance.OnActivatePlacementMode;
-            @ActivatePlacementMode.canceled -= instance.OnActivatePlacementMode;
-            @DeactivatePlacementMode.started -= instance.OnDeactivatePlacementMode;
-            @DeactivatePlacementMode.performed -= instance.OnDeactivatePlacementMode;
-            @DeactivatePlacementMode.canceled -= instance.OnDeactivatePlacementMode;
             @RotatingObject.started -= instance.OnRotatingObject;
             @RotatingObject.performed -= instance.OnRotatingObject;
             @RotatingObject.canceled -= instance.OnRotatingObject;
+            @TogglePlacementMode.started -= instance.OnTogglePlacementMode;
+            @TogglePlacementMode.performed -= instance.OnTogglePlacementMode;
+            @TogglePlacementMode.canceled -= instance.OnTogglePlacementMode;
+            @DeactivatePlacementMode.started -= instance.OnDeactivatePlacementMode;
+            @DeactivatePlacementMode.performed -= instance.OnDeactivatePlacementMode;
+            @DeactivatePlacementMode.canceled -= instance.OnDeactivatePlacementMode;
         }
 
         public void RemoveCallbacks(IPlacementObjectModeActions instance)
@@ -518,8 +518,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     }
     public interface IPlacementObjectModeActions
     {
-        void OnActivatePlacementMode(InputAction.CallbackContext context);
-        void OnDeactivatePlacementMode(InputAction.CallbackContext context);
         void OnRotatingObject(InputAction.CallbackContext context);
+        void OnTogglePlacementMode(InputAction.CallbackContext context);
+        void OnDeactivatePlacementMode(InputAction.CallbackContext context);
     }
 }
