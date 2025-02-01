@@ -9,8 +9,11 @@ public class Rifle : Weapon
 
     public override void Initialize(Character character)
     {
-        _bulletPool = new ObjectPool<Bullet>(_bulletPrefab, _maxPoolSize, _poolHolder.transform);
+        CreatePoolHolder();
+
         base.Initialize(character);
+
+        _bulletPool = new ObjectPool<Bullet>(_bulletPrefab, _maxPoolSize, _poolHolder.transform);
     }
 
     protected override IEnumerator PrepareWeaponToShootingJob()
@@ -57,5 +60,12 @@ public class Rifle : Weapon
     private void ReturnBulletToPool(Bullet bullet)
     {
         _bulletPool.ReturnPoolObject(bullet);
+    }
+
+    private void CreatePoolHolder()
+    {
+        _poolHolder = new GameObject("AK47-BulletPool");
+        _poolHolder.transform.SetParent(null);
+        _poolHolder.transform.position = Vector3.zero;
     }
 }

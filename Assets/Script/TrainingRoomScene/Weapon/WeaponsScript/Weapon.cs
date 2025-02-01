@@ -1,5 +1,7 @@
+using DG.Tweening;
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 
@@ -15,7 +17,6 @@ public abstract class Weapon : MonoBehaviour
     [SerializeField] protected float _startDelayBeforeFiring;
 
     [Header("For Bullets Pool")]
-    [SerializeField] protected GameObject _poolHolder;
     [SerializeField] protected Bullet _bulletPrefab;
     [SerializeField] protected int _maxPoolSize;
 
@@ -27,6 +28,7 @@ public abstract class Weapon : MonoBehaviour
     protected bool _isReloading;
     private bool _isCanWork = false;
 
+    protected GameObject _poolHolder;
     protected ObjectPool<Bullet> _bulletPool;
     protected Character _character;
     protected Coroutine _reloadingWeaponCoroutine;
@@ -38,6 +40,10 @@ public abstract class Weapon : MonoBehaviour
 
     public event Action<int> MaxValueChanged;
     public event Action<int> CurrentValueChanged;
+
+    protected abstract IEnumerator PrepareWeaponToShootingJob(); // Для анимации подготовки оружия к стрельбе
+    protected abstract void Shooting(); // Для выстрела и анимации выстрела
+    protected abstract IEnumerator ReloadingJob(float timeReload); // Для анимации перезарядки 
 
     public virtual void Initialize(Character character)
     {
@@ -87,9 +93,5 @@ public abstract class Weapon : MonoBehaviour
 
         // Написать метод для стрельбы с зажатой клавишей, одиночными встрелами и выстрелами очередью. Через Enum и нажатие клавиши
     }
-
-    protected abstract IEnumerator PrepareWeaponToShootingJob(); // Для анимации подготовки оружия к стрельбе
-    protected abstract void Shooting(); // Для выстрела и анимации выстрела
-    protected abstract IEnumerator ReloadingJob(float timeReload); // Для анимации перезарядки 
 
 }

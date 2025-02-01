@@ -181,6 +181,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ChooseTypeOfBarrirer"",
+                    ""type"": ""Button"",
+                    ""id"": ""d02bab70-de29-47ca-b3e0-4c6a105e2e0d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -208,23 +217,56 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""4b9d8ca5-f19f-4147-9129-0f944a74ca0e"",
-                    ""path"": ""<Keyboard>/escape"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""TogglePlacementMode"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""356b466b-886d-43ef-b7ca-f2264588a02a"",
                     ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""DeactivatePlacementMode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""492676c5-d568-4363-b60f-937c4180607d"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChooseTypeOfBarrirer"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""eed66762-2ee8-4e64-9c4a-06eabe096afa"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChooseTypeOfBarrirer"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""75ed777a-224e-4652-b5b9-4e8f8106e625"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChooseTypeOfBarrirer"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f9919677-afab-4cd6-8671-d774772c71f2"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChooseTypeOfBarrirer"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -247,6 +289,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_PlacementObjectMode_RotatingObject = m_PlacementObjectMode.FindAction("RotatingObject", throwIfNotFound: true);
         m_PlacementObjectMode_TogglePlacementMode = m_PlacementObjectMode.FindAction("TogglePlacementMode", throwIfNotFound: true);
         m_PlacementObjectMode_DeactivatePlacementMode = m_PlacementObjectMode.FindAction("DeactivatePlacementMode", throwIfNotFound: true);
+        m_PlacementObjectMode_ChooseTypeOfBarrirer = m_PlacementObjectMode.FindAction("ChooseTypeOfBarrirer", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -449,6 +492,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlacementObjectMode_RotatingObject;
     private readonly InputAction m_PlacementObjectMode_TogglePlacementMode;
     private readonly InputAction m_PlacementObjectMode_DeactivatePlacementMode;
+    private readonly InputAction m_PlacementObjectMode_ChooseTypeOfBarrirer;
     public struct PlacementObjectModeActions
     {
         private @PlayerInput m_Wrapper;
@@ -456,6 +500,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @RotatingObject => m_Wrapper.m_PlacementObjectMode_RotatingObject;
         public InputAction @TogglePlacementMode => m_Wrapper.m_PlacementObjectMode_TogglePlacementMode;
         public InputAction @DeactivatePlacementMode => m_Wrapper.m_PlacementObjectMode_DeactivatePlacementMode;
+        public InputAction @ChooseTypeOfBarrirer => m_Wrapper.m_PlacementObjectMode_ChooseTypeOfBarrirer;
         public InputActionMap Get() { return m_Wrapper.m_PlacementObjectMode; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -474,6 +519,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @DeactivatePlacementMode.started += instance.OnDeactivatePlacementMode;
             @DeactivatePlacementMode.performed += instance.OnDeactivatePlacementMode;
             @DeactivatePlacementMode.canceled += instance.OnDeactivatePlacementMode;
+            @ChooseTypeOfBarrirer.started += instance.OnChooseTypeOfBarrirer;
+            @ChooseTypeOfBarrirer.performed += instance.OnChooseTypeOfBarrirer;
+            @ChooseTypeOfBarrirer.canceled += instance.OnChooseTypeOfBarrirer;
         }
 
         private void UnregisterCallbacks(IPlacementObjectModeActions instance)
@@ -487,6 +535,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @DeactivatePlacementMode.started -= instance.OnDeactivatePlacementMode;
             @DeactivatePlacementMode.performed -= instance.OnDeactivatePlacementMode;
             @DeactivatePlacementMode.canceled -= instance.OnDeactivatePlacementMode;
+            @ChooseTypeOfBarrirer.started -= instance.OnChooseTypeOfBarrirer;
+            @ChooseTypeOfBarrirer.performed -= instance.OnChooseTypeOfBarrirer;
+            @ChooseTypeOfBarrirer.canceled -= instance.OnChooseTypeOfBarrirer;
         }
 
         public void RemoveCallbacks(IPlacementObjectModeActions instance)
@@ -521,5 +572,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnRotatingObject(InputAction.CallbackContext context);
         void OnTogglePlacementMode(InputAction.CallbackContext context);
         void OnDeactivatePlacementMode(InputAction.CallbackContext context);
+        void OnChooseTypeOfBarrirer(InputAction.CallbackContext context);
     }
 }

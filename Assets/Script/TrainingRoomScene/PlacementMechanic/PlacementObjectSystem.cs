@@ -1,13 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlacementObjectSystem : MonoBehaviour
 {
     [Header("Properties Object")]
-    [SerializeField] private GameObject _placedObjectPrefab;
+    [SerializeField] private CreatedPoolBarrierSystem _poolBarrierSystem;
+
+    [SerializeField] private List<GameObject> _phantomBarriersPrefab;
+    
     [SerializeField] private GameObject _phantomObjectPrefab;
     [SerializeField] private Color _colorBeingPlacedObject;
     [SerializeField] private Color _colorNotBeingPlacedObject;
@@ -16,7 +21,10 @@ public class PlacementObjectSystem : MonoBehaviour
     [SerializeField] private float _radiusPlacing;
     [SerializeField] private float _objectRotationSpeed;
 
+    private ObjectPool<PlaceableObject> _poolObject;
+
     private GameObject _instancePhantomObject;
+    private GameObject _currentPhantomObject;
 
     private Material _phantomObjectMaterial;
     private Color _baseColorPhantomObject;
@@ -27,7 +35,7 @@ public class PlacementObjectSystem : MonoBehaviour
     private bool _objectCanBePlaced;
     private bool _placingJob;
     private bool _canShowPhantomObject;
-    private bool _canDisableMode;
+    private bool _poolBarrierSelected;
 
     public void Initialization(Character character)
     {
@@ -36,9 +44,12 @@ public class PlacementObjectSystem : MonoBehaviour
 
         _placingJob = false;
         _canShowPhantomObject = true;
-        _canDisableMode = false;
+        _poolBarrierSelected = false;
 
         _playerInput.UI.Disable();
+
+        _playerInput.PlacementObjectMode.TogglePlacementMode.performed -= OnTogglePlacementMode;
+        _playerInput.PlacementObjectMode.DeactivatePlacementMode.performed -= OnDeactivatePlacementMode;
 
         _playerInput.PlacementObjectMode.TogglePlacementMode.performed += OnTogglePlacementMode;
         _playerInput.PlacementObjectMode.DeactivatePlacementMode.performed += OnDeactivatePlacementMode;
@@ -53,10 +64,50 @@ public class PlacementObjectSystem : MonoBehaviour
             if (_placingJob)
             {
                 // вызов UI в игре
+                _playerInput.PlacementObjectMode.ChooseTypeOfBarrirer.performed -= OnChooseTypeBarrier;
+
+                _playerInput.PlacementObjectMode.ChooseTypeOfBarrirer.performed += OnChooseTypeBarrier;
             }
             else
             {
                 ResetVariables();
+            }
+        }
+    }
+
+    public void OnChooseTypeBarrier(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            if (int.TryParse(context.control.name, out int keyNumber))
+            {
+                if (keyNumber >= 1)
+                {
+                    int stepBackInList = 1;
+                    int selectedBarrierIndex = keyNumber - stepBackInList;
+
+                    Debug.Log("OnChooseTypeBarrier / selectedBarrierIndex = " + selectedBarrierIndex);
+
+                    if (Enum.IsDefined(typeof(BarrierType), selectedBarrierIndex))
+                    {
+
+                        BarrierType selectedType = (BarrierType)selectedBarrierIndex;
+                        Debug.Log("OnChooseTypeBarrier / Enum IsDefined!!! / selectedType = " + selectedType);
+
+                        if (_poolBarrierSystem.PoolDictionary.TryGetValue(selectedType, out ObjectPool<PlaceableObject> poolSelected))
+                        { 
+                            Debug.Log("OnChooseTypeBarrier / Getting Value!!!");
+
+                            _poolObject = poolSelected;
+
+                            _currentPhantomObject = SelectedPhantomBarrier(selectedBarrierIndex);
+
+                            _poolBarrierSelected = true;
+                        }
+
+                    }
+                }
+
             }
         }
     }
@@ -70,9 +121,14 @@ public class PlacementObjectSystem : MonoBehaviour
         }
     }
 
+    private GameObject SelectedPhantomBarrier(int index)
+    {
+        return _phantomBarriersPrefab[index];
+    }
+
     private void Update()
     {
-        if (_placingJob && _placedObjectPrefab != null)
+        if (_poolBarrierSelected && _placingJob && _poolObject != null)
         {
             if (_canShowPhantomObject)
             {
@@ -93,15 +149,19 @@ public class PlacementObjectSystem : MonoBehaviour
             {
                 _canShowPhantomObject = false;
 
-                PlaceObject(_instancePhantomObject);
+                PlaceObject();
             }
                 
         }
     }
 
-    private void PlaceObject(GameObject placedObject)
+    private void PlaceObject()
     {
-        GameObject objectPlacing = Instantiate(_placedObjectPrefab, placedObject.transform.position, placedObject.transform.rotation);
+        PlaceableObject newObject = _poolObject.GetPoolObject();
+
+        newObject.transform.SetParent(null);
+        newObject.transform.position = _instancePhantomObject.transform.position;
+        newObject.transform.rotation = _instancePhantomObject.transform.rotation;
 
         _phantomObjectMaterial.color = _baseColorPhantomObject;
 
@@ -111,7 +171,7 @@ public class PlacementObjectSystem : MonoBehaviour
     private void ShowObjectPosition()
     {
         if (_instancePhantomObject == null)
-            _instancePhantomObject = Instantiate(_phantomObjectPrefab, _character.transform.position, Quaternion.identity);
+            _instancePhantomObject = Instantiate(_currentPhantomObject, _character.transform.position, Quaternion.identity);
 
         if (_phantomObjectMaterial == null)
         {
@@ -175,10 +235,12 @@ public class PlacementObjectSystem : MonoBehaviour
     private void ResetVariables()
     {
         _playerInput.UI.Enable();
+        _playerInput.PlacementObjectMode.ChooseTypeOfBarrirer.performed -= OnChooseTypeBarrier;
 
         _canShowPhantomObject = true;
         _placingJob = false;
         _objectCanBePlaced = false;
+        _poolBarrierSelected = false;
 
         _phantomObjectMaterial = null;
 
