@@ -36,12 +36,10 @@ public class EnemySpawner : MonoBehaviour
         _timeBetweenSpawn = _startTimeBetweenSpawn;
 
         _isCanStartWork = true;
-        Debug.Log("EnemySpawner / Initialize / _isCanStartWork = " + _isCanStartWork);
     }
 
     private void Update()
     {
-        Debug.Log("EnemySpawner / Update / _isCanStartWork = " + _isCanStartWork);
         if (_isCanStartWork == false)
             return;
 
@@ -117,8 +115,8 @@ public class EnemySpawner : MonoBehaviour
         Collider[] groundUnderEnemy = Physics.OverlapSphere(spawnPointPosition, _radiusCheckingObstacleAround, _groundLayer);
 
         if (groundUnderEnemy.Length > 0)
-            return false;
+            return true;
 
-        return true;
+        return false;
     }
 }

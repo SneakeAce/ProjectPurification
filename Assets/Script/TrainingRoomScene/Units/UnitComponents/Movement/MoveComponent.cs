@@ -9,6 +9,8 @@ public class MoveComponent : MonoBehaviour
     [SerializeField] private LayerMask _includeLayer;
 
     private Character _character;
+    private PlayerInput _playerInput;
+
     private Vector3 _moveDirection;
     private Vector3 _targetPoint;
 
@@ -17,6 +19,7 @@ public class MoveComponent : MonoBehaviour
     public void Initialize(Character character)
     {
         _character = character;
+        _playerInput = _character.PlayerInput;
 
         _isCanWork = true;
     }
@@ -39,7 +42,10 @@ public class MoveComponent : MonoBehaviour
 
     private void RotateToTarget()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Vector2 inputMousePosition = _playerInput.MousePosition.MousePosition.ReadValue<Vector2>();
+        Vector3 mousePosition = new Vector3(inputMousePosition.x, inputMousePosition.y, 0f);
+
+        Ray ray = Camera.main.ScreenPointToRay(mousePosition);
 
         if (Physics.Raycast(ray, out RaycastHit hitInfo, Mathf.Infinity, _includeLayer))
         {
@@ -59,10 +65,9 @@ public class MoveComponent : MonoBehaviour
 
     private void Move()
     {
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        float moveVertical = Input.GetAxis("Vertical");
+        Vector2 directionMove = _playerInput.PlayerMovement.PlayerMovement.ReadValue<Vector2>();
 
-        _moveDirection = new Vector3(moveHorizontal, 0.0f, moveVertical);
+        _moveDirection = new Vector3(directionMove.x, 0.0f, directionMove.y);
         _moveDirection.y = 0;
 
         if (_moveDirection.sqrMagnitude > 0.1f)
@@ -81,8 +86,8 @@ public class MoveComponent : MonoBehaviour
 
         float moveSpeed = Mathf.Clamp(_moveDirection.magnitude, MinSpeed, MaxSpeed);
         _character.Animator.SetFloat("MoveSpeed", moveSpeed);
-        _character.Animator.SetFloat("MoveX", moveHorizontal);
-        _character.Animator.SetFloat("MoveZ", moveVertical);
+        _character.Animator.SetFloat("MoveX", directionMove.x);
+        _character.Animator.SetFloat("MoveZ", directionMove.y);
     }
 
 }

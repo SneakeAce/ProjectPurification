@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -10,10 +11,14 @@ public class MoveBullet : MonoBehaviour
 
     private Bullet _bullet;
 
-    private Coroutine _checkDistanceCoroutine;
+    private Coroutine _checkDistanceFlyingCoroutine;
 
-    public void Initialize(Bullet bullet, Vector3 startPoint, float distanceFlying)
+    private Action<Bullet> _returnToPool;
+
+    public void Initialize(Bullet bullet, Vector3 startPoint, float distanceFlying, Action<Bullet> returnToPool)
     {
+        _returnToPool = returnToPool;
+
         _distanceFlying = distanceFlying;
         _startPoint = startPoint; 
 
@@ -21,30 +26,29 @@ public class MoveBullet : MonoBehaviour
 
         BulletMove();
 
-        _checkDistanceCoroutine = StartCoroutine(CheckDistanceBulletJob());
+        _checkDistanceFlyingCoroutine = StartCoroutine(CheckDistanceFlyingJob());
     }
     
     private void BulletMove()
     {
-        //_bullet.Rigidbody.AddForce(transform.forward * _bulletSpeed, ForceMode.Impulse);
         _bullet.Rigidbody.velocity = transform.forward * _bulletSpeed;
     }
 
-    private void DestroyBullet()
+    private void DeactivateBullet()
     {
-        Destroy(this.gameObject);
+        _returnToPool?.Invoke(_bullet);
     }
 
-    private IEnumerator CheckDistanceBulletJob()
+    private IEnumerator CheckDistanceFlyingJob()
     {
-        while (Vector3.Distance(_startPoint, transform.position) < _distanceFlying)
+        while (Vector3.Distance(_startPoint, _bullet.transform.position) < _distanceFlying)
         {
             yield return null;
         }
 
-        DestroyBullet();
+        DeactivateBullet();
 
-        StopCoroutine(_checkDistanceCoroutine);
-        _checkDistanceCoroutine = null;
+        StopCoroutine(_checkDistanceFlyingCoroutine);
+        _checkDistanceFlyingCoroutine = null;
     }
 }

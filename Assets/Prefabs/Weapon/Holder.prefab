@@ -215,13 +215,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _weaponConfig: {fileID: 11400000, guid: 178d34b58cc522f46bad710acffad17f, type: 2}
-  _maxMagazineCapacity: 0
+  _maxMagazineCapacity: 30
   _delayBeforeFiring: 0
-  _startDelayBeforeFiring: 0
+  _startDelayBeforeFiring: 0.2
+  _bulletPrefab: {fileID: -2791993968105879479, guid: b726884e397a34a47aacc5c42d1140d6, type: 3}
+  _maxPoolSize: 100
   _includeLayer:
     serializedVersion: 2
     m_Bits: 1024
-  _bulletPrefab: {fileID: 5642858144603959214, guid: b726884e397a34a47aacc5c42d1140d6, type: 3}
   _spawnPoint: {fileID: 2347652379144244780}
 --- !u!1 &5345016227943656188
 GameObject:
