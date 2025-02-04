@@ -9,7 +9,6 @@ public class BaseZombieAttack : EnemyMeleeAttack
         if (character == null) 
             return;
 
-        Debug.Log("Zombie Attack");
         CharacterHealth characterHealth = character.GetComponent<CharacterHealth>();
 
         characterHealth.DamageTaken(_damage);

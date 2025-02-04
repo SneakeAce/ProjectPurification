@@ -3,23 +3,47 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyHealth : Health
+public class EnemyHealth : MonoBehaviour
 {
-    public override void AddHealth(float value)
+    [SerializeField] protected float _maxValue;
+    protected float _currentValue;
+
+    private bool _isAlive;
+    private EnemyCharacter _enemy;
+
+    public float MaxValue { get => _maxValue; set => _maxValue = value; }
+    public float CurrentValue { get => _currentValue; set => _currentValue = value; }
+
+    public EnemyCharacter Enemy { get => _enemy; set => _enemy = value; }
+    public bool IsAlive => _isAlive;
+
+
+    public event Action<EnemyHealth> UnitDead;
+
+    public void Initialize(EnemyCharacter enemy)
     {
-        throw new NotImplementedException();
+        _enemy = enemy;
+
+        _currentValue = _maxValue;
+
+        _isAlive = true;
     }
 
-    public override void DamageTaken(float damage)
+
+    public void DamageTaken(float damage)
     {
         _currentValue -= damage;
 
         if (_currentValue <= 0)
-            DestroyUnit();
+        {
+            _isAlive = false;
+
+            UnitDead?.Invoke(this);
+        }
     }
 
-    public override void DestroyUnit()
+    public void AddHealth(float value)
     {
-        Destroy(gameObject);
+        
     }
 }

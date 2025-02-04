@@ -19,14 +19,12 @@ public class SwitchBehavioralPattern : MonoBehaviour
 
     private bool _isStartingSearchTarget;
 
-    public void SetBehavioralPattern(IMovable enemy)
+    public void SetBehavioralPattern(IEnemy enemy)
     {
         _switchBehavioralPattern = this;
 
-        Debug.Log("SetBehavioralPattern");
-
         if (_enemyCharacter == null)
-            _enemyCharacter = enemy.EnemyCharacter;
+            _enemyCharacter = enemy.CharacterEnemy;
 
         MoveTypes moveType = GetRandomMoveType();
 
@@ -45,7 +43,7 @@ public class SwitchBehavioralPattern : MonoBehaviour
     {
         _currentMoveTypes = moveType;
 
-        _enemyCharacter.SetBehavioralPattern(_movementFactory.Get(moveType, _enemyCharacter, _switchBehavioralPattern));
+        _enemyCharacter.SetBehavioralPattern(_movementFactory.Get(_currentMoveTypes, _enemyCharacter, _switchBehavioralPattern));
     }
 
     private void StartSearchingTarget()
