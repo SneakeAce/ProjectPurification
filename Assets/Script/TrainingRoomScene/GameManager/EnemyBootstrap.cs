@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class EnemyBootstrap : MonoBehaviour
 {
-    [SerializeField] private EnemySpawner _spawner;
+    [SerializeField] private EnemySpawner _globalSpawner;
+    [SerializeField] private EnemySpawner _localSpawner;
     [SerializeField] private CreatedPoolEnemySystem _poolEnemySystem;
 
     public void Initialization()
     {
         _poolEnemySystem.Initialization();
-        _spawner.Initialization();
+        _globalSpawner.Initialization();
+        _localSpawner.Initialization();
     }
 }

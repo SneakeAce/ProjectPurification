@@ -7,7 +7,6 @@ public abstract class EnemySpawner : MonoBehaviour
     protected const int AttemptsForSearchNewSpawnPoint = 5;
 
     [SerializeField] protected CreatedPoolEnemySystem _poolsEnemy;
-    [SerializeField] protected float _radiusSpawn;
 
     [SerializeField] protected LayerMask _enemyLayer;
     [SerializeField] protected LayerMask _obstacleLayer;
