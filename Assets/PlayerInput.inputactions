@@ -206,6 +206,17 @@
                 },
                 {
                     "name": "",
+                    "id": "32c4f3e1-1d8f-4ec8-8b0f-5c72a156ced3",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DeactivatePlacementMode",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "492676c5-d568-4363-b60f-937c4180607d",
                     "path": "<Keyboard>/1",
                     "interactions": "",
@@ -245,6 +256,34 @@
                     "processors": "",
                     "groups": "",
                     "action": "ChooseTypeOfBarrirer",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "PlayerShooting",
+            "id": "fff08dc3-6ffe-4331-813c-1baf855c5211",
+            "actions": [
+                {
+                    "name": "Shoot",
+                    "type": "Button",
+                    "id": "24ded51d-b9ab-46b6-94cc-0d61846a7174",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "f96e7405-e733-4946-bb35-bd261fd09a01",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Shoot",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

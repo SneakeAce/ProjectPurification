@@ -19,7 +19,7 @@ public class EnemyMovementStrategyFactory
         _spawnPatrolPoints = spawnPatrolPoints;
     }
 
-    public IBehavioralPattern Get(MoveTypes type, IMovable movable, SwitchBehavioralPattern switchBehavioral)
+    public IBehavioralPattern Get(MoveTypes type, IEnemy movable, SwitchBehavioralPattern switchBehavioral)
     {
         switch (type)
         {

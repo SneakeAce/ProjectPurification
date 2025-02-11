@@ -23,7 +23,7 @@ public abstract class Attack : MonoBehaviour
 
     /* ======================================================================================================= */
 
-    public void Start()
+    public void Initialization()
     {
         _animator = _enemyCharacter.GetComponent<Animator>();
     }

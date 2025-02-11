@@ -35,7 +35,7 @@ public class PlaceableWoodBarrier : PlaceableObject
     {
         if (target != null)
         {
-            Health targetHealth = target.GetComponent<Health>();
+            EnemyHealth targetHealth = target.GetComponent<EnemyHealth>();
 
             if (targetHealth != null)
             {

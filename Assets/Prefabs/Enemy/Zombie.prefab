@@ -84,8 +84,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   _maxPatrolPoints: 5
-  _maxRadiusSpawnPoint: 20
-  _radiusColliderPoint: 4
+  _maxRadiusSpawnPoint: 25
+  _radiusCheckingAnotherNearestPoint: 5
+  _radiusCheckingObstacle: 10
 --- !u!1 &876117183529099288
 GameObject:
   m_ObjectHideFlags: 0
@@ -617,10 +618,12 @@ MonoBehaviour:
   _rigidbody: {fileID: 6938383541195745583}
   _collider: {fileID: 1306851891802736650}
   _animator: {fileID: 3904298615849470748}
-  _health: {fileID: 6663867329574412406}
+  enemyType: 0
   _moveSpeed: 5
   _agent: {fileID: 6876466728516156861}
   _holderAttackLogic: {fileID: 5021893960976105794}
+  _health: {fileID: 6663867329574412406}
+  _attackEnemy: {fileID: 8619412216354016985}
 --- !u!114 &6663867329574412406
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1133,7 +1136,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6900340402661381929
 Transform:
   m_ObjectHideFlags: 0
@@ -1168,7 +1171,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1.62
+  m_Radius: 2
   m_Center: {x: 0.15120673, y: -0.13512719, z: 0.021188859}
 --- !u!114 &8619412216354016985
 MonoBehaviour:
@@ -1188,7 +1191,7 @@ MonoBehaviour:
   _damage: 10
   _reloadingTime: 2
   _enemyCharacter: {fileID: 6103294326399873054}
-  _attackZoneRadius: 1.8
+  _attackZoneRadius: 2
 --- !u!1 &5023891055251381934
 GameObject:
   m_ObjectHideFlags: 0

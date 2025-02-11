@@ -8,7 +8,7 @@ public class NoMovePattern : IBehavioralPattern
     private const float RandomTimeBetweenSwitchBehavioral = 60f;
     private const float MinTimeBetweenSwitchBehavioral = 30f;
 
-    private IMovable _movable;
+    private IEnemy _movable;
 
     private float _timeBetweenSwitchBehavior;
     private float _timeBetweenRotating;
@@ -20,7 +20,7 @@ public class NoMovePattern : IBehavioralPattern
 
     private Quaternion _rotate;
 
-    public NoMovePattern(IMovable movable, SwitchBehavioralPattern switchBehavioral)
+    public NoMovePattern(IEnemy movable, SwitchBehavioralPattern switchBehavioral)
     {
         _switchBehavioral = switchBehavioral;
         _movable = movable;

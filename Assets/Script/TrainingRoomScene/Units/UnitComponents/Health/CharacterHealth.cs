@@ -1,12 +1,23 @@
 using System;
 using UnityEngine;
 
-public class CharacterHealth : Health
+public class CharacterHealth : MonoBehaviour
 {
+    [SerializeField] protected float _maxValue;
+    protected float _currentValue;
+
+    public float MaxValue { get => _maxValue; set => _maxValue = value; }
+    public float CurrentValue { get => _currentValue; set => _currentValue = value; }
+
     public event Action<float> MaxValueChanged;
     public event Action<float> CurrentValueChanged;
 
-    public override void DamageTaken(float damage)
+    public void Initialize()
+    {
+        _currentValue = _maxValue;
+    }
+
+    public void DamageTaken(float damage)
     {
         _currentValue -= damage;
 
@@ -16,7 +27,7 @@ public class CharacterHealth : Health
             DestroyUnit();
     }
 
-    public override void AddHealth(float value)
+    public void AddHealth(float value)
     {
         _currentValue += value;
 
@@ -26,7 +37,7 @@ public class CharacterHealth : Health
         CurrentValueChanged?.Invoke(_currentValue);
     }
 
-    public override void DestroyUnit()
+    public void DestroyUnit()
     {
         Destroy(gameObject);
     }

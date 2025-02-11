@@ -3,29 +3,31 @@ using UnityEngine;
 public class MoveToTargetPattern : IBehavioralPattern
 {
     private Character _target;
-    private IMovable _movable;
+    private IEnemy _movable;
 
-    private const float MinDistanceToTarget = 0.1f; 
+    private const float MinDistanceToTarget = 0.12f; 
 
-    public MoveToTargetPattern(IMovable movable, Character target)
+    public MoveToTargetPattern(IEnemy movable, Character target)
     {
         _movable = movable;
         _target = target;
+
+        _movable.NavMeshAgent.stoppingDistance = 1.5f;
     }
 
     public void StartMove()
     {
-        _movable.NavMeshAgent.stoppingDistance = 2f;
         _movable.NavMeshAgent.isStopped = false;
     }
+
     public void StopMove() 
     {
-        _movable.NavMeshAgent.SetDestination(_movable.Transform.position + new Vector3(MinDistanceToTarget, 0.0f, MinDistanceToTarget));
+       _movable.NavMeshAgent.SetDestination(_movable.Transform.position + new Vector3(MinDistanceToTarget, 0.0f, MinDistanceToTarget));
 
         _movable.NavMeshAgent.isStopped = true;
 
         _movable.Animator.SetBool("IsRunning", false);
-    } 
+    }
 
     public void Update()
     {
@@ -42,7 +44,10 @@ public class MoveToTargetPattern : IBehavioralPattern
         {
             StartMove();
         }
-        
+
+        if (_movable.NavMeshAgent.isStopped)
+            return;
+
         _movable.NavMeshAgent.SetDestination(_target.transform.position);
 
         _movable.Animator.SetBool("IsRunning", true);

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -8,7 +9,7 @@ public class PatrolPattern : IBehavioralPattern
     private const float MinDistanceToPoint = 0.11f;
     private const float MaxDistanceToPoint = 1.5f;
 
-    private IMovable _movable;
+    private IEnemy _movable;
 
     private Transform _currentPoint;
 
@@ -23,7 +24,7 @@ public class PatrolPattern : IBehavioralPattern
     private bool _isMoving;
     private bool _hasPointReached;
 
-    public PatrolPattern(IMovable movable, SpawnPatrolPoints spawnPatrolPoints, SwitchBehavioralPattern switchBehavioral)
+    public PatrolPattern(IEnemy movable, SpawnPatrolPoints spawnPatrolPoints, SwitchBehavioralPattern switchBehavioral)
     {
         _switchBehavioral = switchBehavioral;
 
@@ -38,6 +39,8 @@ public class PatrolPattern : IBehavioralPattern
 
         if (_patrolPoints.Count > 0)
             _currentPoint = _patrolPoints[Random.Range(0, _patrolPoints.Count)];
+
+        //_movable.EnemyHealth.UnitDead += OnDeleteAllPoints;
     }
 
     public void StartMove()
@@ -59,6 +62,7 @@ public class PatrolPattern : IBehavioralPattern
         _hasPointReached = false;
 
         _movable.NavMeshAgent.isStopped = true;
+        //OnDeleteAllPoints(_movable.EnemyHealth);
 
         if (_patrolPoints.Count > 0)
             _patrolPoints.Clear();
@@ -66,8 +70,13 @@ public class PatrolPattern : IBehavioralPattern
 
     public void Update()
     {
+        if (_currentPoint == null)
+            return;
+
         if (Vector3.Distance(_movable.Transform.position, _currentPoint.transform.position) <= MinDistanceToPoint)
         {
+            Debug.Log("HasPointReached");
+
             _hasPointReached = true;
 
             GetNewPoint();
@@ -75,9 +84,8 @@ public class PatrolPattern : IBehavioralPattern
 
         if (_hasPointReached)
         {
+            Debug.Log("HasPointReached StoppingMove");
             StoppingMove();
-
-            _movable.Animator.SetBool("IsRunning", _isMoving);
         }
 
         if (_movable.NavMeshAgent.isStopped && _hasPointReached == false) 
@@ -96,6 +104,8 @@ public class PatrolPattern : IBehavioralPattern
         _hasPointReached = false;
 
         _movable.NavMeshAgent.isStopped = true;
+
+        _movable.Animator.SetBool("IsRunning", _isMoving);
     }
 
     private void GetNewPoint()
@@ -130,6 +140,13 @@ public class PatrolPattern : IBehavioralPattern
                     else
                     {
                         GetNewPatrolPoints();
+
+                        if (_patrolPoints.Count == 0)
+                        {
+                            Debug.LogWarning("Ќе удалось создать новые точки патрулировани€!");
+                            StopMove();
+                            return;
+                        }
                     }
                 }
             }
@@ -156,5 +173,25 @@ public class PatrolPattern : IBehavioralPattern
         _patrolPoints.Clear();
 
         _patrolPoints = _spawnPatrolPoints.GetPatrolPoints();
+    }
+
+    private void OnDeleteAllPoints(EnemyHealth enemyHealth)
+    {
+        if (_patrolPoints.Count > 0)
+        {
+            foreach (Transform patrolPoint in _patrolPoints)
+            {
+                if (_patrolPoints.Contains(patrolPoint))
+                {
+                    _patrolPoints.Remove(patrolPoint);
+                    _spawnPatrolPoints.DestroyPoint(patrolPoint.gameObject);
+                }
+            }
+
+            _patrolPoints.Clear();
+        }
+
+        if (enemyHealth.IsAlive == false)
+            enemyHealth.UnitDead -= OnDeleteAllPoints;
     }
 }

@@ -27,7 +27,7 @@ public class ObjectPool<T> where T : MonoBehaviour
         if (_isExpandPool) 
             return CreatePoolObject(_isExpandPool);
 
-        throw new Exception("Pool is not expand. We used all active objects");
+        return null;
     }
 
     public void ReturnPoolObject(T poolObject)

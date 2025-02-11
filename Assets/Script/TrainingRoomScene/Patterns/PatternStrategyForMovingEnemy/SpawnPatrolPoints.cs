@@ -16,7 +16,8 @@ public class SpawnPatrolPoints : MonoBehaviour
     [SerializeField] private int _maxPatrolPoints;
     [SerializeField] private float _maxRadiusSpawnPoint;
 
-    [SerializeField] private float _radiusColliderPoint = 10f;
+    [SerializeField] private float _radiusCheckingAnotherNearestPoint;
+    [SerializeField] private float _radiusCheckingObstacle;
 
     private List<Transform> _patrolPoints;
 
@@ -40,7 +41,7 @@ public class SpawnPatrolPoints : MonoBehaviour
         for (int currentPatrolPoints = 0; currentPatrolPoints < _maxPatrolPoints;)
         {
             Vector3 point = RandomPosition();
-
+            
             if (point != Vector3.zero)
             {
                 GameObject instancePatrolPoint = Instantiate(_pointPrefab, point, Quaternion.identity);
@@ -49,6 +50,11 @@ public class SpawnPatrolPoints : MonoBehaviour
                 currentPatrolPoints++;
 
                 _patrolPoints.Add(instancePatrolPoint.transform);
+            }
+            else
+            {
+                Debug.Log("Не удалось создать точку. Вернулось Vector3.zero");
+                break;
             }
         }
 
@@ -82,7 +88,7 @@ public class SpawnPatrolPoints : MonoBehaviour
 
     private bool CheckOtherPointAround(Vector3 newPointPosition)
     {
-        Collider[] pointsInRadius = Physics.OverlapSphere(newPointPosition, _radiusColliderPoint, _pointLayer);
+        Collider[] pointsInRadius = Physics.OverlapSphere(newPointPosition, _radiusCheckingAnotherNearestPoint, _pointLayer);
 
         if (pointsInRadius.Length > 0)
             return false;
@@ -92,7 +98,7 @@ public class SpawnPatrolPoints : MonoBehaviour
 
     private bool CheckObstacleAroundPoint(Vector3 newPointPosition)
     {
-        Collider[] obstacleInRadius = Physics.OverlapSphere(newPointPosition, _radiusColliderPoint, _obstacleLayer);
+        Collider[] obstacleInRadius = Physics.OverlapSphere(newPointPosition, _radiusCheckingObstacle, _obstacleLayer);
 
         if (obstacleInRadius.Length > 0)
             return false;

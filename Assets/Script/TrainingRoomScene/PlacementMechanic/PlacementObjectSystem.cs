@@ -12,15 +12,17 @@ public class PlacementObjectSystem : MonoBehaviour
     [SerializeField] private CreatedPoolBarrierSystem _poolBarrierSystem;
 
     [SerializeField] private List<GameObject> _phantomBarriersPrefab;
+
+    [SerializeField] private LayerMask _barriersLayer;
     
-    [SerializeField] private GameObject _phantomObjectPrefab;
     [SerializeField] private Color _colorBeingPlacedObject;
     [SerializeField] private Color _colorNotBeingPlacedObject;
 
     [Header("Values Properties")]
     [SerializeField] private float _radiusPlacing;
     [SerializeField] private float _objectRotationSpeed;
-
+    [SerializeField] private float _radiusCheckingAnotherBarriers;
+    
     private ObjectPool<PlaceableObject> _poolObject;
 
     private GameObject _instancePhantomObject;
@@ -37,6 +39,10 @@ public class PlacementObjectSystem : MonoBehaviour
     private bool _canShowPhantomObject;
     private bool _poolBarrierSelected;
 
+    private Vector3 _halfSizeBox;
+    private Transform _objectTransform;
+    Bounds boundsObj;
+
     public void Initialization(Character character)
     {
         _character = character; 
@@ -45,8 +51,6 @@ public class PlacementObjectSystem : MonoBehaviour
         _placingJob = false;
         _canShowPhantomObject = true;
         _poolBarrierSelected = false;
-
-        _playerInput.UI.Disable();
 
         _playerInput.PlacementObjectMode.TogglePlacementMode.performed -= OnTogglePlacementMode;
         _playerInput.PlacementObjectMode.DeactivatePlacementMode.performed -= OnDeactivatePlacementMode;
@@ -63,6 +67,9 @@ public class PlacementObjectSystem : MonoBehaviour
 
             if (_placingJob)
             {
+                _playerInput.UI.Disable();
+                _playerInput.PlayerShooting.Disable();
+
                 // вызов UI в игре
                 _playerInput.PlacementObjectMode.ChooseTypeOfBarrirer.performed -= OnChooseTypeBarrier;
 
@@ -140,7 +147,7 @@ public class PlacementObjectSystem : MonoBehaviour
 
                 if (scroll != 0)
                 {
-                    RotationPlacedObject(_instancePhantomObject, scroll);
+                    _instancePhantomObject.transform.rotation =  RotationPlacedObject(_instancePhantomObject, scroll);
                 }
 
             }
@@ -185,13 +192,13 @@ public class PlacementObjectSystem : MonoBehaviour
         if (_instancePhantomObject.transform.position == Vector3.zero)
             return;
 
-        if (_phantomObjectMaterial != null && CanPlaced(_instancePhantomObject.transform.position))
+        if (_phantomObjectMaterial != null && CanPlacedObject(_instancePhantomObject.transform))
         {
             _phantomObjectMaterial.color = _colorBeingPlacedObject;
 
             _objectCanBePlaced = true;
         }
-        else if (_phantomObjectMaterial != null && CanPlaced(_instancePhantomObject.transform.position) == false)
+        else if (_phantomObjectMaterial != null && CanPlacedObject(_instancePhantomObject.transform) == false)
         {
             _phantomObjectMaterial.color = _colorNotBeingPlacedObject;
 
@@ -199,19 +206,29 @@ public class PlacementObjectSystem : MonoBehaviour
         }
     }
 
-    private void RotationPlacedObject(GameObject objectPlaced, float scroll)
+    private Quaternion RotationPlacedObject(GameObject objectPlaced, float scroll)
     {
         Quaternion targetRotation = objectPlaced.transform.rotation * Quaternion.Euler(0, scroll * _objectRotationSpeed, 0);
 
-        objectPlaced.transform.rotation = Quaternion.Lerp(objectPlaced.transform.rotation, targetRotation, _objectRotationSpeed * Time.deltaTime);
+        return Quaternion.Lerp(objectPlaced.transform.rotation, targetRotation, _objectRotationSpeed * Time.deltaTime);
     }
 
-    private bool CanPlaced(Vector3 objectPosition)
+    private bool CanPlacedObject(Transform objectTransform)
     {
-        if (Vector3.Distance(_character.transform.position, objectPosition) > _radiusPlacing)
-            return false;
+        _objectTransform = objectTransform;
 
-        return true;
+        boundsObj = objectTransform.gameObject.GetComponent<BoxCollider>().bounds;
+
+        _halfSizeBox = new Vector3(boundsObj.size.x / 2, boundsObj.size.y / 2, boundsObj.size.z / 2);
+        
+        Collider[] barriersAround = Physics.OverlapBox(objectTransform.position, _halfSizeBox, objectTransform.rotation, _barriersLayer);
+
+        if (barriersAround.Length <= 0 && Vector3.Distance(_character.transform.position, objectTransform.position) <= _radiusPlacing)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     private Vector3 PlacingPosition()
@@ -234,6 +251,7 @@ public class PlacementObjectSystem : MonoBehaviour
 
     private void ResetVariables()
     {
+        _playerInput.PlayerShooting.Enable();
         _playerInput.UI.Enable();
         _playerInput.PlacementObjectMode.ChooseTypeOfBarrirer.performed -= OnChooseTypeBarrier;
 
