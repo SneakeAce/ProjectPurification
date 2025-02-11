@@ -70,6 +70,9 @@ public class PatrolPattern : IBehavioralPattern
 
     public void Update()
     {
+        if (_currentPoint == null)
+            return;
+
         if (Vector3.Distance(_movable.Transform.position, _currentPoint.transform.position) <= MinDistanceToPoint)
         {
             Debug.Log("HasPointReached");

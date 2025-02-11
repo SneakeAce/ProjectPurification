@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.TextCore.Text;
 
 public abstract class Weapon : MonoBehaviour
@@ -30,7 +31,10 @@ public abstract class Weapon : MonoBehaviour
 
     protected GameObject _poolHolder;
     protected ObjectPool<Bullet> _bulletPool;
+
     protected Character _character;
+    protected PlayerInput _playerInput;
+
     protected Coroutine _reloadingWeaponCoroutine;
 
     public WeaponConfig WeaponConfig => _weaponConfig;
@@ -48,6 +52,7 @@ public abstract class Weapon : MonoBehaviour
     public virtual void Initialize(Character character)
     {
         _character = character;
+        _playerInput = character.PlayerInput;
 
         _currentMagazineCapacity = _maxMagazineCapacity;
 
@@ -64,7 +69,7 @@ public abstract class Weapon : MonoBehaviour
         CurrentValueChanged?.Invoke(_currentMagazineCapacity);
     }
 
-    protected virtual void Update()
+    protected void Update()
     {
         if (_isCanWork == false)
             return;
@@ -72,7 +77,7 @@ public abstract class Weapon : MonoBehaviour
         if (_delayBeforeFiring > 0)
             _delayBeforeFiring -= Time.deltaTime;
 
-        if ((Input.GetMouseButtonDown(0) || Input.GetMouseButton(0)) && _delayBeforeFiring <= 0 && _currentMagazineCapacity > 0)
+        if ((_playerInput.PlayerShooting.Shoot.IsPressed() || _playerInput.PlayerShooting.Shoot.WasPressedThisFrame()) && _delayBeforeFiring <= 0 && _currentMagazineCapacity > 0)
         {
             _character.Animator.SetTrigger("Firing");
 
@@ -81,7 +86,7 @@ public abstract class Weapon : MonoBehaviour
         else if (_currentMagazineCapacity == 0 && _isReloading == false)
         {
             _isReloading = true;
-            Debug.Log("Update Weapon Start Reloading");
+
             if (_reloadingWeaponCoroutine != null)
             {
                 StopCoroutine(_reloadingWeaponCoroutine);

@@ -228,6 +228,17 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""32c4f3e1-1d8f-4ec8-8b0f-5c72a156ced3"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DeactivatePlacementMode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""492676c5-d568-4363-b60f-937c4180607d"",
                     ""path"": ""<Keyboard>/1"",
                     ""interactions"": """",
@@ -271,6 +282,34 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""PlayerShooting"",
+            ""id"": ""fff08dc3-6ffe-4331-813c-1baf855c5211"",
+            ""actions"": [
+                {
+                    ""name"": ""Shoot"",
+                    ""type"": ""Button"",
+                    ""id"": ""24ded51d-b9ab-46b6-94cc-0d61846a7174"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""f96e7405-e733-4946-bb35-bd261fd09a01"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -290,6 +329,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_PlacementObjectMode_TogglePlacementMode = m_PlacementObjectMode.FindAction("TogglePlacementMode", throwIfNotFound: true);
         m_PlacementObjectMode_DeactivatePlacementMode = m_PlacementObjectMode.FindAction("DeactivatePlacementMode", throwIfNotFound: true);
         m_PlacementObjectMode_ChooseTypeOfBarrirer = m_PlacementObjectMode.FindAction("ChooseTypeOfBarrirer", throwIfNotFound: true);
+        // PlayerShooting
+        m_PlayerShooting = asset.FindActionMap("PlayerShooting", throwIfNotFound: true);
+        m_PlayerShooting_Shoot = m_PlayerShooting.FindAction("Shoot", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -555,6 +597,52 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         }
     }
     public PlacementObjectModeActions @PlacementObjectMode => new PlacementObjectModeActions(this);
+
+    // PlayerShooting
+    private readonly InputActionMap m_PlayerShooting;
+    private List<IPlayerShootingActions> m_PlayerShootingActionsCallbackInterfaces = new List<IPlayerShootingActions>();
+    private readonly InputAction m_PlayerShooting_Shoot;
+    public struct PlayerShootingActions
+    {
+        private @PlayerInput m_Wrapper;
+        public PlayerShootingActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Shoot => m_Wrapper.m_PlayerShooting_Shoot;
+        public InputActionMap Get() { return m_Wrapper.m_PlayerShooting; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(PlayerShootingActions set) { return set.Get(); }
+        public void AddCallbacks(IPlayerShootingActions instance)
+        {
+            if (instance == null || m_Wrapper.m_PlayerShootingActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_PlayerShootingActionsCallbackInterfaces.Add(instance);
+            @Shoot.started += instance.OnShoot;
+            @Shoot.performed += instance.OnShoot;
+            @Shoot.canceled += instance.OnShoot;
+        }
+
+        private void UnregisterCallbacks(IPlayerShootingActions instance)
+        {
+            @Shoot.started -= instance.OnShoot;
+            @Shoot.performed -= instance.OnShoot;
+            @Shoot.canceled -= instance.OnShoot;
+        }
+
+        public void RemoveCallbacks(IPlayerShootingActions instance)
+        {
+            if (m_Wrapper.m_PlayerShootingActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IPlayerShootingActions instance)
+        {
+            foreach (var item in m_Wrapper.m_PlayerShootingActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_PlayerShootingActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public PlayerShootingActions @PlayerShooting => new PlayerShootingActions(this);
     public interface IPlayerMovementActions
     {
         void OnPlayerMovement(InputAction.CallbackContext context);
@@ -573,5 +661,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnTogglePlacementMode(InputAction.CallbackContext context);
         void OnDeactivatePlacementMode(InputAction.CallbackContext context);
         void OnChooseTypeOfBarrirer(InputAction.CallbackContext context);
+    }
+    public interface IPlayerShootingActions
+    {
+        void OnShoot(InputAction.CallbackContext context);
     }
 }
