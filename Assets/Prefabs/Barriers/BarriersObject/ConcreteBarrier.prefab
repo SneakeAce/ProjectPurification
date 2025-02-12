@@ -120,8 +120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b2f88434a3c5974aaad1ebc38ef07e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _barrierType: 2
-  _maxEndurance: 124
+  _barrierConfig: {fileID: 11400000, guid: 8e59ff3a30f250f49a66ce3aa97dac0f, type: 2}
   _damage: 41
   _radiusDamage: 41
   _startTimeBetweenAttack: 124

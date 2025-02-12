@@ -11,9 +11,7 @@ GameObject:
   - component: {fileID: 535266788062882697}
   - component: {fileID: 2451476181175458126}
   - component: {fileID: 4683415543025123114}
-  - component: {fileID: 7540923731264609117}
-  - component: {fileID: 3329118783847823974}
-  - component: {fileID: 7160411475913447049}
+  - component: {fileID: 2099084981909235247}
   - component: {fileID: 3366252404372129345}
   - component: {fileID: 2703745918196137257}
   m_Layer: 15
@@ -88,7 +86,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &7540923731264609117
+--- !u!65 &2099084981909235247
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -107,50 +105,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.046822548, y: 1.1371331, z: 0.048281394}
-  m_Center: {x: 0.6109052, y: 0.49224114, z: 0.00035975315}
---- !u!65 &3329118783847823974
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7354886405341396968}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.04814124, y: 1.1371331, z: 0.048281394}
-  m_Center: {x: -0.5822562, y: 0.49224114, z: 0.00035975315}
---- !u!65 &7160411475913447049
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7354886405341396968}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1.1337032, y: 0.92778444, z: 0.010448456}
-  m_Center: {x: 0.011633873, y: 0.5558256, z: 0.0029659271}
+  m_Size: {x: 1.2406433, y: 1.1371331, z: 0.048281394}
+  m_Center: {x: 0.013994813, y: 0.4922411, z: 0.00035975315}
 --- !u!114 &3366252404372129345
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,8 +119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 141d1099a28a33c4f83a950e2ca6ab06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _barrierType: 1
-  _maxEndurance: 4124
+  _barrierConfig: {fileID: 11400000, guid: c97f40a5e2a44264d8bef82552fe05ed, type: 2}
 --- !u!114 &2703745918196137257
 MonoBehaviour:
   m_ObjectHideFlags: 0

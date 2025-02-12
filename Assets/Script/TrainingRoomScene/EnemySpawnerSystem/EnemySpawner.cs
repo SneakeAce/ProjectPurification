@@ -1,13 +1,11 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class EnemySpawner : MonoBehaviour
 {
     protected const int AttemptsForSearchNewSpawnPoint = 5;
 
-    [SerializeField] protected CreatedPoolEnemySystem _poolsEnemy;
-
+    [SerializeField] protected CreatedPoolsBootstrap _createdPools;
     [SerializeField] protected LayerMask _enemyLayer;
     [SerializeField] protected LayerMask _obstacleLayer;
     [SerializeField] protected LayerMask _groundLayer;
@@ -21,6 +19,8 @@ public abstract class EnemySpawner : MonoBehaviour
     protected Coroutine _spawningCoroutine;
     protected SwitchBehavioralPattern _behavioralPattern;
 
+    protected CreatedPoolEnemiesSystem PoolsEnemy => _createdPools.PoolEnemySystem;
+
     public abstract void SpawnEnemy();
     public abstract IEnumerator SpawningJob();
     public abstract bool CheckEnemyAroundSpawnPoint(Vector3 spawnPointPosition);
@@ -29,6 +29,7 @@ public abstract class EnemySpawner : MonoBehaviour
 
     public virtual void Initialization()
     {
+        Debug.Log("poolsEnemy = " + PoolsEnemy);
         _isCanWork = true;
 
         _spawningCoroutine = StartCoroutine(SpawningJob());

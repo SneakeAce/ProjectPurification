@@ -14,7 +14,7 @@ public class LocalEnemySpawner : EnemySpawner
 
     private int _currentEnemyOnScene;
 
-    private ObjectPool<EnemyCharacter> _selectedEnemyPool;
+    private ObjectPool<EnemyCharacter> _selectedEnemyPool; 
 
     public override void Initialization()
     {
@@ -103,7 +103,7 @@ public class LocalEnemySpawner : EnemySpawner
     {
         EnemyType enemyTypeSelected = (EnemyType)_enemyTypeInSpawner;
 
-        if (_poolsEnemy.PoolDictionary.TryGetValue(enemyTypeSelected, out ObjectPool<EnemyCharacter> poolSelected))
+        if (PoolsEnemy.PoolDictionary.TryGetValue(enemyTypeSelected, out ObjectPool<EnemyCharacter> poolSelected))
             return poolSelected;
 
         return null;

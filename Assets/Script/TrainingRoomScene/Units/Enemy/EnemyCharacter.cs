@@ -5,8 +5,7 @@ public class EnemyCharacter : Unit, IEnemy, IPoolable
 {
     private IBehavioralPattern _behavioralPattern;
 
-    [SerializeField] private EnemyType enemyType;
-    [SerializeField] private float _moveSpeed;
+    [SerializeField] private EnemyConfig _enemyConfig;
     [SerializeField] private NavMeshAgent _agent;
     [SerializeField] private GameObject _holderAttackLogic;
     [SerializeField] private EnemyHealth _health;
@@ -14,14 +13,15 @@ public class EnemyCharacter : Unit, IEnemy, IPoolable
 
     private ObjectPool<EnemyCharacter> _pool;
 
-    public float MoveSpeed => _moveSpeed;
+    public float MoveSpeed => _enemyConfig.SpecificationsEnemy.MoveSpeed;
+    public int MaxCountOnCurrentScene => _enemyConfig.SpecificationsEnemy.MaxCountOnCurrentScne;
+    public EnemyType EnemyType => _enemyConfig.SpecificationsEnemy.EnemyType;
+    public EnemyCharacter CharacterEnemy => this;
+    public EnemyHealth EnemyHealth => _health;
     public Animator EnemyAnimator => Animator;
     public Rigidbody EnemyRigidbody => Rigidbody;
     public Transform Transform => transform;
     public NavMeshAgent NavMeshAgent => _agent;
-    public EnemyCharacter CharacterEnemy => this;
-    public EnemyHealth EnemyHealth => _health;
-    public EnemyType EnemyType => enemyType;
 
     public void Initialize()
     {
