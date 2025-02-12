@@ -3,7 +3,7 @@ using UnityEngine;
 public class Bootstrap : MonoBehaviour
 {
     [SerializeField] private CharacterBootstrap _characterBootstrap;
-    [SerializeField] private CreatedPoolsBootstrap _createdPoolsBootstrap;
+    [SerializeField] private PoolCreator _createdPoolsBootstrap;
     [SerializeField] private UIBootstrap _uiBootstrap;
     [SerializeField] private EnemyBootstrap _enemyBootstrap;
 

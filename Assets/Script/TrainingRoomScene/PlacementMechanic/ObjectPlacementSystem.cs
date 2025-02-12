@@ -1,158 +1,113 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class ObjectPlacementSystem : MonoBehaviour
+public abstract class ObjectPlacementSystem : MonoBehaviour
 {
-    [SerializeField] private CreatedPoolsBootstrap _createdPools;
+    [SerializeField] protected PoolCreator _createdPools;
+    [SerializeField] protected List<GameObject> _phantomObjectsPrefab;
 
-    [Header("Properties Object")]
-    [SerializeField] private List<GameObject> _phantomObjectsPrefab;
+    [SerializeField] protected LayerMask _objectsIncludeLayer;
 
-    [SerializeField] private LayerMask _objectsIncludeLayer;
+    [SerializeField] protected Color _colorBeingPlacedObject;
+    [SerializeField] protected Color _colorNotBeingPlacedObject;
+
+    [SerializeField] protected float _radiusPlacing;
+    [SerializeField] protected float _objectRotationSpeed;
     
-    [SerializeField] private Color _colorBeingPlacedObject;
-    [SerializeField] private Color _colorNotBeingPlacedObject;
+    protected ObjectPool<PlaceableObject> _poolObject;
+    protected GameObject _instancePhantomObject;
+    protected GameObject _currentPhantomObject;
 
-    [Header("Values Properties")]
-    [SerializeField] private float _radiusPlacing;
-    [SerializeField] private float _objectRotationSpeed;
-    
-    private ObjectPool<PlaceableObject> _poolObject;
+    protected Material _phantomObjectMaterial;
+    protected Color _baseColorPhantomObject;
 
-    private GameObject _instancePhantomObject;
-    private GameObject _currentPhantomObject;
+    protected Character _character;
+    protected PlayerInput _playerInput;
+    private Coroutine _placementModeCoroutine;
 
-    private Material _phantomObjectMaterial;
-    private Color _baseColorPhantomObject;
+    protected bool _objectCanBePlaced;
+    protected bool _placingJob;
+    protected bool _canShowPhantomObject;
+    protected bool _poolObjectSelected;
 
-    private Character _character;
-    private PlayerInput _playerInput;
+    public abstract void OnTogglePlacementMode(InputAction.CallbackContext context);
 
-    private bool _objectCanBePlaced;
-    private bool _placingJob;
-    private bool _canShowPhantomObject;
-    private bool _poolObjectSelected;
+    public abstract void OnChooseTypePlacingObject(InputAction.CallbackContext context);
 
-    private CreatedPoolBarriersSystem PoolBarrierSystem => _createdPools.PoolBarrierSystem;
+    public abstract void OnDeactivatePlacementMode(InputAction.CallbackContext context);
 
-    public void Initialization(Character character)
+    public abstract void Initialization(Character character);
+
+    public void StartWork()
     {
-        _character = character; 
-        _playerInput = _character.PlayerInput;
-
-        _placingJob = false;
-        _canShowPhantomObject = true;
-        _poolObjectSelected = false;
-
-        _playerInput.PlacementObjectMode.TogglePlacementMode.performed -= OnTogglePlacementMode;
-        _playerInput.PlacementObjectMode.DeactivatePlacementMode.performed -= OnDeactivatePlacementMode;
-
-        _playerInput.PlacementObjectMode.TogglePlacementMode.performed += OnTogglePlacementMode;
-        _playerInput.PlacementObjectMode.DeactivatePlacementMode.performed += OnDeactivatePlacementMode;
-    }
-
-    public void OnTogglePlacementMode(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            _placingJob = !_placingJob;
-
-            if (_placingJob)
-            {
-                _playerInput.UI.Disable();
-                _playerInput.PlayerShooting.Disable();
-
-                // вызов UI в игре
-                _playerInput.PlacementObjectMode.ChooseTypeOfBarrirer.performed -= OnChooseTypeBarrier;
-
-                _playerInput.PlacementObjectMode.ChooseTypeOfBarrirer.performed += OnChooseTypeBarrier;
-            }
-            else
-            {
-                ResetVariables();
-            }
-        }
-    }
-
-    public void OnChooseTypeBarrier(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            if (int.TryParse(context.control.name, out int keyNumber))
-            {
-                if (keyNumber >= 1)
-                {
-                    int stepBackInList = 1;
-                    int selectedBarrierIndex = keyNumber - stepBackInList;
-
-                    Debug.Log("OnChooseTypeBarrier / selectedBarrierIndex = " + selectedBarrierIndex);
-
-                    if (Enum.IsDefined(typeof(BarrierType), selectedBarrierIndex))
-                    {
-
-                        BarrierType selectedType = (BarrierType)selectedBarrierIndex;
-                        Debug.Log("OnChooseTypeBarrier / Enum IsDefined!!! / selectedType = " + selectedType);
-
-                        if (PoolBarrierSystem.PoolDictionary.TryGetValue(selectedType, out ObjectPool<PlaceableObject> poolSelected))
-                        { 
-                            Debug.Log("OnChooseTypeBarrier / Getting Value!!!");
-
-                            _poolObject = poolSelected;
-
-                            _currentPhantomObject = SelectedPhantomBarrier(selectedBarrierIndex);
-
-                            _poolObjectSelected = true;
-                        }
-
-                    }
-                }
-
-            }
-        }
-    }
-
-    public void OnDeactivatePlacementMode(InputAction.CallbackContext context)
-    {
-        if (context.performed && _placingJob)
-        {
-            _placingJob = false;
+        if (_placementModeCoroutine != null)
             ResetVariables();
-        }
+        
+        _placementModeCoroutine = StartCoroutine(PlacementModeJob());
     }
 
-    private GameObject SelectedPhantomBarrier(int index)
+    protected GameObject SelectedPhantomBarrier(int index)
     {
         return _phantomObjectsPrefab[index];
     }
 
-    private void Update()
+    protected void ResetVariables()
     {
-        if (_poolObjectSelected && _placingJob && _poolObject != null)
+        StopCoroutine(_placementModeCoroutine);
+        _placementModeCoroutine = null;
+
+        _playerInput.PlayerShooting.Enable();
+        _playerInput.UI.Enable();
+        _playerInput.PlacementObjectMode.ChooseTypeOfBarrirer.performed -= OnChooseTypePlacingObject;
+
+        _canShowPhantomObject = true;
+        _placingJob = false;
+        _objectCanBePlaced = false;
+        _poolObjectSelected = false;
+
+        _phantomObjectMaterial = null;
+
+        if (_instancePhantomObject != null)
         {
-            if (_canShowPhantomObject)
+            Destroy(_instancePhantomObject);
+            _instancePhantomObject = null;
+        }
+    }
+
+    private IEnumerator PlacementModeJob()
+    {
+        while (_placingJob)
+        {
+            if (_poolObjectSelected && _placingJob && _poolObject != null)
             {
-                ShowObjectPosition();
-
-                Vector2 mouseScroll = _playerInput.PlacementObjectMode.RotatingObject.ReadValue<Vector2>();
-
-                float scroll = mouseScroll.y;
-
-                if (scroll != 0)
+                if (_canShowPhantomObject)
                 {
-                    _instancePhantomObject.transform.rotation =  RotationPlacedObject(_instancePhantomObject, scroll);
+                    ShowObjectPosition();
+
+                    Vector2 mouseScroll = _playerInput.PlacementObjectMode.RotatingObject.ReadValue<Vector2>();
+
+                    float scroll = mouseScroll.y;
+
+                    if (scroll != 0)
+                    {
+                        _instancePhantomObject.transform.rotation = RotationPlacedObject(_instancePhantomObject, scroll);
+                    }
+
+                }
+
+                if (Input.GetMouseButtonDown(0) && _objectCanBePlaced)
+                {
+                    _canShowPhantomObject = false;
+
+                    PlaceObject();
                 }
 
             }
 
-            if (Input.GetMouseButtonDown(0) && _objectCanBePlaced)
-            {
-                _canShowPhantomObject = false;
-
-                PlaceObject();
-            }
-                
+            yield return null;
         }
     }
 
@@ -243,23 +198,4 @@ public class ObjectPlacementSystem : MonoBehaviour
         return Vector3.zero;
     }
 
-    private void ResetVariables()
-    {
-        _playerInput.PlayerShooting.Enable();
-        _playerInput.UI.Enable();
-        _playerInput.PlacementObjectMode.ChooseTypeOfBarrirer.performed -= OnChooseTypeBarrier;
-
-        _canShowPhantomObject = true;
-        _placingJob = false;
-        _objectCanBePlaced = false;
-        _poolObjectSelected = false;
-
-        _phantomObjectMaterial = null;
-
-        if (_instancePhantomObject != null)
-        {
-            Destroy(_instancePhantomObject);
-            _instancePhantomObject = null;
-        }
-    }
 }
