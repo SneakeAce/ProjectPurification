@@ -9,7 +9,7 @@ public class CharacterBootstrap : MonoBehaviour
 
     [Header("Weapon")]
     [SerializeField] private Weapon _weapon;
-    [SerializeField] private PlacementObjectSystem _placementController;
+    [SerializeField] private ObjectPlacementSystem _placementController;
 
     public void Initialization()
     {

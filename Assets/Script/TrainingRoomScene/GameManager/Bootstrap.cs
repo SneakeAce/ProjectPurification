@@ -3,15 +3,15 @@ using UnityEngine;
 public class Bootstrap : MonoBehaviour
 {
     [SerializeField] private CharacterBootstrap _characterBootstrap;
-    [SerializeField] private EnemyBootstrap _enemyBootstrap;
+    [SerializeField] private CreatedPoolsBootstrap _createdPoolsBootstrap;
     [SerializeField] private UIBootstrap _uiBootstrap;
-    [SerializeField] private CreatedPoolBarrierSystem _createdPoolBarrierSystem;
+    [SerializeField] private EnemyBootstrap _enemyBootstrap;
 
     public void Initialization()
     {
         _characterBootstrap.Initialization();
+        _createdPoolsBootstrap.Initialization();
         _uiBootstrap.Initialization();
         _enemyBootstrap.Initialization();
-        _createdPoolBarrierSystem.Initialization();
     }
 }

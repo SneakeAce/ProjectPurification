@@ -618,8 +618,7 @@ MonoBehaviour:
   _rigidbody: {fileID: 6938383541195745583}
   _collider: {fileID: 1306851891802736650}
   _animator: {fileID: 3904298615849470748}
-  enemyType: 0
-  _moveSpeed: 5
+  _enemyConfig: {fileID: 11400000, guid: aa13e65e410ff2f44b299368c4d97dc8, type: 2}
   _agent: {fileID: 6876466728516156861}
   _holderAttackLogic: {fileID: 5021893960976105794}
   _health: {fileID: 6663867329574412406}

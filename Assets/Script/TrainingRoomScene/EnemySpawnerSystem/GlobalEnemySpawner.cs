@@ -118,7 +118,7 @@ public class GlobalEnemySpawner : EnemySpawner
         {
             EnemyType enemyTypeSelected = (EnemyType)randomNumber;
 
-            if (_poolsEnemy.PoolDictionary.TryGetValue(enemyTypeSelected, out ObjectPool<EnemyCharacter> poolSelected))
+            if (PoolsEnemy.PoolDictionary.TryGetValue(enemyTypeSelected, out ObjectPool<EnemyCharacter> poolSelected))
             {
                 _selectedEnemyPool = poolSelected;
             }
