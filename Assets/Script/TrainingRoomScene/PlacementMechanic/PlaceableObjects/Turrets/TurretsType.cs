@@ -2,17 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TurretsType : MonoBehaviour
+public enum TurretType
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    AutomaticTurret = 0,
+    MachineGunTurret = 1,
+    ArmorPiercingTurret = 2,
+    FlameThrowingTurret = 3,
 }

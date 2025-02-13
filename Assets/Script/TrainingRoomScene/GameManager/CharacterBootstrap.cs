@@ -9,7 +9,8 @@ public class CharacterBootstrap : MonoBehaviour
 
     [Header("Weapon")]
     [SerializeField] private Weapon _weapon;
-    [SerializeField] private ObjectPlacementSystem _placementController;
+    [SerializeField] private ObjectPlacementSystem _barrierPlacementController;
+    [SerializeField] private ObjectPlacementSystem _turretPlacementController;
 
     public void Initialization()
     {
@@ -18,6 +19,7 @@ public class CharacterBootstrap : MonoBehaviour
         _weapon.Initialize(_character);
         _health.Initialize();
 
-        _placementController.Initialization(_character);
+        _barrierPlacementController.Initialization(_character);
+        _turretPlacementController.Initialization(_character);
     }
 }

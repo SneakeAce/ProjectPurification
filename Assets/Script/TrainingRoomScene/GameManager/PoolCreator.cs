@@ -10,11 +10,17 @@ public class PoolCreator : MonoBehaviour
     [Header("Enmeies Prefabs")]
     [SerializeField] private List<EnemyCharacter> _enemyCharacterObjects;
 
+    [Header("Turrets Prefabs")]
+    [SerializeField] private List<Turret> _turretObjects;
+
     private CreatedPoolBarriersSystem _createdPoolBarrierSystem;
     private CreatedPoolEnemiesSystem _poolEnemySystem;
+    private CreatedPoolTurretsSystem _poolTurretsSystem;
 
     public CreatedPoolEnemiesSystem PoolEnemySystem => _poolEnemySystem;
     public CreatedPoolBarriersSystem PoolBarrierSystem => _createdPoolBarrierSystem;
+    public CreatedPoolTurretsSystem PoolTurretsSystem => _poolTurretsSystem; 
+
 
     public void Initialization()
     {
@@ -23,5 +29,8 @@ public class PoolCreator : MonoBehaviour
 
         _poolEnemySystem = new CreatedPoolEnemiesSystem(_enemyCharacterObjects);
         _poolEnemySystem.Initialization();
+
+        _poolTurretsSystem = new CreatedPoolTurretsSystem(_turretObjects);
+        _poolTurretsSystem.Initialization();
     }
 }

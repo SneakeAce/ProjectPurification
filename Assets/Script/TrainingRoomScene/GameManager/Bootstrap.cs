@@ -7,8 +7,8 @@ public class Bootstrap : MonoBehaviour
     [SerializeField] private UIBootstrap _uiBootstrap;
     [SerializeField] private EnemyBootstrap _enemyBootstrap;
 
-    public void Initialization()
-    {
+    public void Initialization() 
+    { 
         _characterBootstrap.Initialization();
         _createdPoolsBootstrap.Initialization();
         _uiBootstrap.Initialization();
