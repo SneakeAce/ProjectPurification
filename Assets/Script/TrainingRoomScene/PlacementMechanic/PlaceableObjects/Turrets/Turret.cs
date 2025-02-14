@@ -4,8 +4,17 @@ using UnityEngine;
 
 public class Turret : MonoBehaviour
 {
-    [SerializeField] private TurretConfig _turretConfig;
+    // Bullet áóäåò ïîëó÷àòüñÿ èç ïóëà
 
-    public TurretType TurretType => _turretConfig.SpecificationTurret.TurretType;
-    public int MaxCountOnCurrentScene => _turretConfig.SpecificationTurret.MaxCountOnScene;
+    [SerializeField] private TurretConfig _turretConfig;
+    [SerializeField] private WeaponConfig _weaponConfig;
+
+    private Bullet _turretBullet;
+
+    private TurretWeapon _weapon;
+
+    public TurretType TurretType => _turretConfig.ÑharacteristicsTurret.TurretType;
+    public int MaxCountOnCurrentScene => _turretConfig.ÑharacteristicsTurret.MaxCountOnScene;
+
+
 }

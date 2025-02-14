@@ -7,15 +7,15 @@ public abstract class PlaceableObject : MonoBehaviour
     
     protected float _currentEndurance;
 
-    public BarriersType BarrierType => _barrierConfig.SpecificationsBarrier.BarrierType;
-    public int MaxCountOnCurrentScene => _barrierConfig.SpecificationsBarrier.MaxCountOnCurrentScene;
+    public BarriersType BarrierType => _barrierConfig.ÑharacteristicsBarrier.BarrierType;
+    public int MaxCountOnCurrentScene => _barrierConfig.ÑharacteristicsBarrier.MaxCountOnCurrentScene;
 
     public event Action<float> CurrentEnduranceChanged;
     public event Action<float> MaxEnduranceChanged;
 
     public virtual void Initialization()
     {
-        _currentEndurance = _barrierConfig.SpecificationsBarrier.MaxEndurance;
+        _currentEndurance = _barrierConfig.ÑharacteristicsBarrier.MaxEndurance;
     }
 
     public void TakeDamage(float damage)

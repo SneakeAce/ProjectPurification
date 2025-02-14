@@ -13,9 +13,9 @@ public class EnemyCharacter : Unit, IEnemy, IPoolable
 
     private ObjectPool<EnemyCharacter> _pool;
 
-    public float MoveSpeed => _enemyConfig.SpecificationsEnemy.MoveSpeed;
-    public int MaxCountOnCurrentScene => _enemyConfig.SpecificationsEnemy.MaxCountOnCurrentScne;
-    public EnemyType EnemyType => _enemyConfig.SpecificationsEnemy.EnemyType;
+    public float MoveSpeed => _enemyConfig.ÑharacteristicsEnemy.MoveSpeed;
+    public int MaxCountOnCurrentScene => _enemyConfig.ÑharacteristicsEnemy.MaxCountOnCurrentScne;
+    public EnemyType EnemyType => _enemyConfig.ÑharacteristicsEnemy.EnemyType;
     public EnemyCharacter CharacterEnemy => this;
     public EnemyHealth EnemyHealth => _health;
     public Animator EnemyAnimator => Animator;

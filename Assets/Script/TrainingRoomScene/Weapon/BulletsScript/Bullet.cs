@@ -13,6 +13,8 @@ public abstract class Bullet : MonoBehaviour
 
     public Rigidbody Rigidbody { get => _rigidbody; }
 
+    public abstract void DamageDeal(EnemyCharacter unit);
+
     public void InitializeBullet(Vector3 startPoint, Quaternion rotateDirection, float distanceFlying, float bulletDamage, Action<Bullet> returnToPool)
     {
         this.transform.position = startPoint;
@@ -24,8 +26,6 @@ public abstract class Bullet : MonoBehaviour
 
         _moveBullet.Initialize(this, startPoint, distanceFlying, _returnToPool);
     }
-
-    public abstract void DamageDeal(EnemyCharacter unit);
 
     private void OnTriggerEnter(Collider collision)
     {
