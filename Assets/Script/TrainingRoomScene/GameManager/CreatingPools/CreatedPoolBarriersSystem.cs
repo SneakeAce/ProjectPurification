@@ -6,18 +6,18 @@ public class CreatedPoolBarriersSystem
 {
     private List<PlaceableObject> _placeableObjects;
 
-    private Dictionary<BarrierType, ObjectPool<PlaceableObject>> _poolDictionary;
+    private Dictionary<BarriersType, ObjectPool<PlaceableObject>> _poolDictionary;
 
     public CreatedPoolBarriersSystem(IEnumerable<PlaceableObject> placeableObjects)
     {
         _placeableObjects = new List<PlaceableObject>(placeableObjects);
     }
 
-    public Dictionary<BarrierType, ObjectPool<PlaceableObject>> PoolDictionary => _poolDictionary;
+    public Dictionary<BarriersType, ObjectPool<PlaceableObject>> PoolDictionary => _poolDictionary;
   
     public void Initialization()
     {
-        _poolDictionary = new Dictionary<BarrierType, ObjectPool<PlaceableObject>>();
+        _poolDictionary = new Dictionary<BarriersType, ObjectPool<PlaceableObject>>();
 
         StartingCreatePools();
     }
@@ -33,18 +33,18 @@ public class CreatedPoolBarriersSystem
 
                 switch (placeableObject.BarrierType)
                 {
-                    case BarrierType.WoodBarrier:
+                    case BarriersType.WoodBarrier:
                         ObjectPool<PlaceableObject> poolWoodBarrier = CreatePool(placeableObject.BarrierType, placeableObject.MaxCountOnCurrentScene, placeableObject);
                         _poolDictionary.Add(placeableObject.BarrierType, poolWoodBarrier);
                         break;
 
-                    case BarrierType.MetallBarrier:
+                    case BarriersType.MetallBarrier:
                         ObjectPool<PlaceableObject> poolMetallBarrier = CreatePool(placeableObject.BarrierType, placeableObject.MaxCountOnCurrentScene, placeableObject);
                         _poolDictionary.Add(placeableObject.BarrierType, poolMetallBarrier);
 
                         break;
 
-                    case BarrierType.ConcreteBarrier:
+                    case BarriersType.ConcreteBarrier:
                         ObjectPool<PlaceableObject> poolConcreteBarrier = CreatePool(placeableObject.BarrierType, placeableObject.MaxCountOnCurrentScene, placeableObject);
                         _poolDictionary.Add(placeableObject.BarrierType, poolConcreteBarrier);
 
@@ -57,7 +57,7 @@ public class CreatedPoolBarriersSystem
         }
     }
 
-    private ObjectPool<PlaceableObject> CreatePool(BarrierType barrierType, int maxPoolSize, PlaceableObject placeableObject)
+    private ObjectPool<PlaceableObject> CreatePool(BarriersType barrierType, int maxPoolSize, PlaceableObject placeableObject)
     {
         ObjectPool<PlaceableObject> placeableObjectPool;
 

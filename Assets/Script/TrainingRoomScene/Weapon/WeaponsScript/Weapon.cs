@@ -8,6 +8,10 @@ using UnityEngine.TextCore.Text;
 
 public abstract class Weapon : MonoBehaviour
 {
+
+    // Вынести данные в конфиг WeaponConfig
+    // Вынести пул в отдельный скрипт
+    //
     private const float MinDelayBeforeFiring = 0.1f;
 
     [Header("Main parameters weapon")]

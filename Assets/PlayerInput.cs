@@ -24,6 +24,34 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     ""name"": ""PlayerInput"",
     ""maps"": [
         {
+            ""name"": ""UI"",
+            ""id"": ""00d3571d-fa66-44c9-8a93-435b638bb407"",
+            ""actions"": [
+                {
+                    ""name"": ""OpenOrCloseMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""6fab9b44-2a77-4c77-9a6d-8d1b72bc0a69"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""ad6a39d5-9278-4e6c-b4df-0afce6bb48de"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OpenOrCloseMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
             ""name"": ""PlayerMovement"",
             ""id"": ""0a871a89-6c48-44a7-8103-a51a375185a2"",
             ""actions"": [
@@ -96,6 +124,34 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             ]
         },
         {
+            ""name"": ""PlayerShooting"",
+            ""id"": ""fff08dc3-6ffe-4331-813c-1baf855c5211"",
+            ""actions"": [
+                {
+                    ""name"": ""Shoot"",
+                    ""type"": ""Button"",
+                    ""id"": ""24ded51d-b9ab-46b6-94cc-0d61846a7174"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""f96e7405-e733-4946-bb35-bd261fd09a01"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
             ""name"": ""MousePosition"",
             ""id"": ""48c98000-1a86-4344-9254-f9f5d678829d"",
             ""actions"": [
@@ -124,34 +180,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""UI"",
-            ""id"": ""00d3571d-fa66-44c9-8a93-435b638bb407"",
-            ""actions"": [
-                {
-                    ""name"": ""OpenOrCloseMenu"",
-                    ""type"": ""Button"",
-                    ""id"": ""6fab9b44-2a77-4c77-9a6d-8d1b72bc0a69"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""ad6a39d5-9278-4e6c-b4df-0afce6bb48de"",
-                    ""path"": ""<Keyboard>/escape"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""OpenOrCloseMenu"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
-        },
-        {
             ""name"": ""PlacementObjectMode"",
             ""id"": ""842fe3a8-fc4b-400a-a88d-0f8b030699b2"",
             ""actions"": [
@@ -163,6 +191,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""ChooseTypeOfBarrirer"",
+                    ""type"": ""Button"",
+                    ""id"": ""d02bab70-de29-47ca-b3e0-4c6a105e2e0d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 },
                 {
                     ""name"": ""TogglePlacementMode"",
@@ -183,9 +220,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""ChooseTypeOfBarrirer"",
+                    ""name"": ""PlaceObject"",
                     ""type"": ""Button"",
-                    ""id"": ""d02bab70-de29-47ca-b3e0-4c6a105e2e0d"",
+                    ""id"": ""36c0af4e-6cd2-4406-b6be-4f4ed4b86bc1"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -239,6 +276,17 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""283762f9-5180-483f-ac3d-aaa7dfc13a13"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlaceObject"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""492676c5-d568-4363-b60f-937c4180607d"",
                     ""path"": ""<Keyboard>/1"",
                     ""interactions"": """",
@@ -284,13 +332,49 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""PlayerShooting"",
-            ""id"": ""fff08dc3-6ffe-4331-813c-1baf855c5211"",
+            ""name"": ""PlacementTurretMode"",
+            ""id"": ""242b474d-d519-496f-9eea-e990df5b041a"",
             ""actions"": [
                 {
-                    ""name"": ""Shoot"",
+                    ""name"": ""RotatingTurret"",
+                    ""type"": ""Value"",
+                    ""id"": ""c26e79ac-c3f6-449f-8927-846447c67145"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""ChooseTypeTurret"",
                     ""type"": ""Button"",
-                    ""id"": ""24ded51d-b9ab-46b6-94cc-0d61846a7174"",
+                    ""id"": ""46869ec8-a557-4ace-ab1a-c35adaa3bf1a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""TogglePlacementMode"",
+                    ""type"": ""Button"",
+                    ""id"": ""c13711b7-8cf3-478e-bbe6-e7af69112d29"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DeactivateMode"",
+                    ""type"": ""Button"",
+                    ""id"": ""f658a1f5-a601-4f13-b0a9-9003b2920e78"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PlaceTurret"",
+                    ""type"": ""Button"",
+                    ""id"": ""a26d8508-2ed8-4d36-a8ad-18b65a3917f3"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -300,12 +384,100 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""f96e7405-e733-4946-bb35-bd261fd09a01"",
+                    ""id"": ""2dfd656b-a1ba-4a3b-a01c-7205e8679244"",
+                    ""path"": ""<Mouse>/scroll"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotatingTurret"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1cf1e5c4-5fa3-471c-a26d-89a27786bbad"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TogglePlacementMode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b1a85e2f-f487-4e07-b9a1-3cfeba35d5a7"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DeactivateMode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""be6e51a9-0128-4abe-9747-8807c99c41ab"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DeactivateMode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""03e74877-6bc1-4760-970b-8e10f7fad47c"",
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Shoot"",
+                    ""action"": ""PlaceTurret"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b55d9f77-f18d-4c66-9d54-26998be755a9"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChooseTypeTurret"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""66ba8822-6616-4e26-b79e-3cae3a703825"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChooseTypeTurret"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0b8bb5bc-ec86-4243-83ef-77b4ffe30993"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChooseTypeTurret"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""78eb186e-4dd6-4d74-a39c-a2b7e011ca20"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChooseTypeTurret"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -314,24 +486,32 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     ],
     ""controlSchemes"": []
 }");
-        // PlayerMovement
-        m_PlayerMovement = asset.FindActionMap("PlayerMovement", throwIfNotFound: true);
-        m_PlayerMovement_PlayerMovement = m_PlayerMovement.FindAction("PlayerMovement", throwIfNotFound: true);
-        // MousePosition
-        m_MousePosition = asset.FindActionMap("MousePosition", throwIfNotFound: true);
-        m_MousePosition_MousePosition = m_MousePosition.FindAction("MousePosition", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_OpenOrCloseMenu = m_UI.FindAction("OpenOrCloseMenu", throwIfNotFound: true);
-        // PlacementObjectMode
-        m_PlacementObjectMode = asset.FindActionMap("PlacementObjectMode", throwIfNotFound: true);
-        m_PlacementObjectMode_RotatingObject = m_PlacementObjectMode.FindAction("RotatingObject", throwIfNotFound: true);
-        m_PlacementObjectMode_TogglePlacementMode = m_PlacementObjectMode.FindAction("TogglePlacementMode", throwIfNotFound: true);
-        m_PlacementObjectMode_DeactivatePlacementMode = m_PlacementObjectMode.FindAction("DeactivatePlacementMode", throwIfNotFound: true);
-        m_PlacementObjectMode_ChooseTypeOfBarrirer = m_PlacementObjectMode.FindAction("ChooseTypeOfBarrirer", throwIfNotFound: true);
+        // PlayerMovement
+        m_PlayerMovement = asset.FindActionMap("PlayerMovement", throwIfNotFound: true);
+        m_PlayerMovement_PlayerMovement = m_PlayerMovement.FindAction("PlayerMovement", throwIfNotFound: true);
         // PlayerShooting
         m_PlayerShooting = asset.FindActionMap("PlayerShooting", throwIfNotFound: true);
         m_PlayerShooting_Shoot = m_PlayerShooting.FindAction("Shoot", throwIfNotFound: true);
+        // MousePosition
+        m_MousePosition = asset.FindActionMap("MousePosition", throwIfNotFound: true);
+        m_MousePosition_MousePosition = m_MousePosition.FindAction("MousePosition", throwIfNotFound: true);
+        // PlacementObjectMode
+        m_PlacementObjectMode = asset.FindActionMap("PlacementObjectMode", throwIfNotFound: true);
+        m_PlacementObjectMode_RotatingObject = m_PlacementObjectMode.FindAction("RotatingObject", throwIfNotFound: true);
+        m_PlacementObjectMode_ChooseTypeOfBarrirer = m_PlacementObjectMode.FindAction("ChooseTypeOfBarrirer", throwIfNotFound: true);
+        m_PlacementObjectMode_TogglePlacementMode = m_PlacementObjectMode.FindAction("TogglePlacementMode", throwIfNotFound: true);
+        m_PlacementObjectMode_DeactivatePlacementMode = m_PlacementObjectMode.FindAction("DeactivatePlacementMode", throwIfNotFound: true);
+        m_PlacementObjectMode_PlaceObject = m_PlacementObjectMode.FindAction("PlaceObject", throwIfNotFound: true);
+        // PlacementTurretMode
+        m_PlacementTurretMode = asset.FindActionMap("PlacementTurretMode", throwIfNotFound: true);
+        m_PlacementTurretMode_RotatingTurret = m_PlacementTurretMode.FindAction("RotatingTurret", throwIfNotFound: true);
+        m_PlacementTurretMode_ChooseTypeTurret = m_PlacementTurretMode.FindAction("ChooseTypeTurret", throwIfNotFound: true);
+        m_PlacementTurretMode_TogglePlacementMode = m_PlacementTurretMode.FindAction("TogglePlacementMode", throwIfNotFound: true);
+        m_PlacementTurretMode_DeactivateMode = m_PlacementTurretMode.FindAction("DeactivateMode", throwIfNotFound: true);
+        m_PlacementTurretMode_PlaceTurret = m_PlacementTurretMode.FindAction("PlaceTurret", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -390,6 +570,52 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         return asset.FindBinding(bindingMask, out action);
     }
 
+    // UI
+    private readonly InputActionMap m_UI;
+    private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
+    private readonly InputAction m_UI_OpenOrCloseMenu;
+    public struct UIActions
+    {
+        private @PlayerInput m_Wrapper;
+        public UIActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @OpenOrCloseMenu => m_Wrapper.m_UI_OpenOrCloseMenu;
+        public InputActionMap Get() { return m_Wrapper.m_UI; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(UIActions set) { return set.Get(); }
+        public void AddCallbacks(IUIActions instance)
+        {
+            if (instance == null || m_Wrapper.m_UIActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_UIActionsCallbackInterfaces.Add(instance);
+            @OpenOrCloseMenu.started += instance.OnOpenOrCloseMenu;
+            @OpenOrCloseMenu.performed += instance.OnOpenOrCloseMenu;
+            @OpenOrCloseMenu.canceled += instance.OnOpenOrCloseMenu;
+        }
+
+        private void UnregisterCallbacks(IUIActions instance)
+        {
+            @OpenOrCloseMenu.started -= instance.OnOpenOrCloseMenu;
+            @OpenOrCloseMenu.performed -= instance.OnOpenOrCloseMenu;
+            @OpenOrCloseMenu.canceled -= instance.OnOpenOrCloseMenu;
+        }
+
+        public void RemoveCallbacks(IUIActions instance)
+        {
+            if (m_Wrapper.m_UIActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IUIActions instance)
+        {
+            foreach (var item in m_Wrapper.m_UIActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_UIActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public UIActions @UI => new UIActions(this);
+
     // PlayerMovement
     private readonly InputActionMap m_PlayerMovement;
     private List<IPlayerMovementActions> m_PlayerMovementActionsCallbackInterfaces = new List<IPlayerMovementActions>();
@@ -435,6 +661,52 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         }
     }
     public PlayerMovementActions @PlayerMovement => new PlayerMovementActions(this);
+
+    // PlayerShooting
+    private readonly InputActionMap m_PlayerShooting;
+    private List<IPlayerShootingActions> m_PlayerShootingActionsCallbackInterfaces = new List<IPlayerShootingActions>();
+    private readonly InputAction m_PlayerShooting_Shoot;
+    public struct PlayerShootingActions
+    {
+        private @PlayerInput m_Wrapper;
+        public PlayerShootingActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Shoot => m_Wrapper.m_PlayerShooting_Shoot;
+        public InputActionMap Get() { return m_Wrapper.m_PlayerShooting; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(PlayerShootingActions set) { return set.Get(); }
+        public void AddCallbacks(IPlayerShootingActions instance)
+        {
+            if (instance == null || m_Wrapper.m_PlayerShootingActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_PlayerShootingActionsCallbackInterfaces.Add(instance);
+            @Shoot.started += instance.OnShoot;
+            @Shoot.performed += instance.OnShoot;
+            @Shoot.canceled += instance.OnShoot;
+        }
+
+        private void UnregisterCallbacks(IPlayerShootingActions instance)
+        {
+            @Shoot.started -= instance.OnShoot;
+            @Shoot.performed -= instance.OnShoot;
+            @Shoot.canceled -= instance.OnShoot;
+        }
+
+        public void RemoveCallbacks(IPlayerShootingActions instance)
+        {
+            if (m_Wrapper.m_PlayerShootingActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IPlayerShootingActions instance)
+        {
+            foreach (var item in m_Wrapper.m_PlayerShootingActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_PlayerShootingActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public PlayerShootingActions @PlayerShooting => new PlayerShootingActions(this);
 
     // MousePosition
     private readonly InputActionMap m_MousePosition;
@@ -482,67 +754,23 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     }
     public MousePositionActions @MousePosition => new MousePositionActions(this);
 
-    // UI
-    private readonly InputActionMap m_UI;
-    private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
-    private readonly InputAction m_UI_OpenOrCloseMenu;
-    public struct UIActions
-    {
-        private @PlayerInput m_Wrapper;
-        public UIActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @OpenOrCloseMenu => m_Wrapper.m_UI_OpenOrCloseMenu;
-        public InputActionMap Get() { return m_Wrapper.m_UI; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(UIActions set) { return set.Get(); }
-        public void AddCallbacks(IUIActions instance)
-        {
-            if (instance == null || m_Wrapper.m_UIActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_UIActionsCallbackInterfaces.Add(instance);
-            @OpenOrCloseMenu.started += instance.OnOpenOrCloseMenu;
-            @OpenOrCloseMenu.performed += instance.OnOpenOrCloseMenu;
-            @OpenOrCloseMenu.canceled += instance.OnOpenOrCloseMenu;
-        }
-
-        private void UnregisterCallbacks(IUIActions instance)
-        {
-            @OpenOrCloseMenu.started -= instance.OnOpenOrCloseMenu;
-            @OpenOrCloseMenu.performed -= instance.OnOpenOrCloseMenu;
-            @OpenOrCloseMenu.canceled -= instance.OnOpenOrCloseMenu;
-        }
-
-        public void RemoveCallbacks(IUIActions instance)
-        {
-            if (m_Wrapper.m_UIActionsCallbackInterfaces.Remove(instance))
-                UnregisterCallbacks(instance);
-        }
-
-        public void SetCallbacks(IUIActions instance)
-        {
-            foreach (var item in m_Wrapper.m_UIActionsCallbackInterfaces)
-                UnregisterCallbacks(item);
-            m_Wrapper.m_UIActionsCallbackInterfaces.Clear();
-            AddCallbacks(instance);
-        }
-    }
-    public UIActions @UI => new UIActions(this);
-
     // PlacementObjectMode
     private readonly InputActionMap m_PlacementObjectMode;
     private List<IPlacementObjectModeActions> m_PlacementObjectModeActionsCallbackInterfaces = new List<IPlacementObjectModeActions>();
     private readonly InputAction m_PlacementObjectMode_RotatingObject;
+    private readonly InputAction m_PlacementObjectMode_ChooseTypeOfBarrirer;
     private readonly InputAction m_PlacementObjectMode_TogglePlacementMode;
     private readonly InputAction m_PlacementObjectMode_DeactivatePlacementMode;
-    private readonly InputAction m_PlacementObjectMode_ChooseTypeOfBarrirer;
+    private readonly InputAction m_PlacementObjectMode_PlaceObject;
     public struct PlacementObjectModeActions
     {
         private @PlayerInput m_Wrapper;
         public PlacementObjectModeActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @RotatingObject => m_Wrapper.m_PlacementObjectMode_RotatingObject;
+        public InputAction @ChooseTypeOfBarrirer => m_Wrapper.m_PlacementObjectMode_ChooseTypeOfBarrirer;
         public InputAction @TogglePlacementMode => m_Wrapper.m_PlacementObjectMode_TogglePlacementMode;
         public InputAction @DeactivatePlacementMode => m_Wrapper.m_PlacementObjectMode_DeactivatePlacementMode;
-        public InputAction @ChooseTypeOfBarrirer => m_Wrapper.m_PlacementObjectMode_ChooseTypeOfBarrirer;
+        public InputAction @PlaceObject => m_Wrapper.m_PlacementObjectMode_PlaceObject;
         public InputActionMap Get() { return m_Wrapper.m_PlacementObjectMode; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -555,15 +783,18 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @RotatingObject.started += instance.OnRotatingObject;
             @RotatingObject.performed += instance.OnRotatingObject;
             @RotatingObject.canceled += instance.OnRotatingObject;
+            @ChooseTypeOfBarrirer.started += instance.OnChooseTypeOfBarrirer;
+            @ChooseTypeOfBarrirer.performed += instance.OnChooseTypeOfBarrirer;
+            @ChooseTypeOfBarrirer.canceled += instance.OnChooseTypeOfBarrirer;
             @TogglePlacementMode.started += instance.OnTogglePlacementMode;
             @TogglePlacementMode.performed += instance.OnTogglePlacementMode;
             @TogglePlacementMode.canceled += instance.OnTogglePlacementMode;
             @DeactivatePlacementMode.started += instance.OnDeactivatePlacementMode;
             @DeactivatePlacementMode.performed += instance.OnDeactivatePlacementMode;
             @DeactivatePlacementMode.canceled += instance.OnDeactivatePlacementMode;
-            @ChooseTypeOfBarrirer.started += instance.OnChooseTypeOfBarrirer;
-            @ChooseTypeOfBarrirer.performed += instance.OnChooseTypeOfBarrirer;
-            @ChooseTypeOfBarrirer.canceled += instance.OnChooseTypeOfBarrirer;
+            @PlaceObject.started += instance.OnPlaceObject;
+            @PlaceObject.performed += instance.OnPlaceObject;
+            @PlaceObject.canceled += instance.OnPlaceObject;
         }
 
         private void UnregisterCallbacks(IPlacementObjectModeActions instance)
@@ -571,15 +802,18 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @RotatingObject.started -= instance.OnRotatingObject;
             @RotatingObject.performed -= instance.OnRotatingObject;
             @RotatingObject.canceled -= instance.OnRotatingObject;
+            @ChooseTypeOfBarrirer.started -= instance.OnChooseTypeOfBarrirer;
+            @ChooseTypeOfBarrirer.performed -= instance.OnChooseTypeOfBarrirer;
+            @ChooseTypeOfBarrirer.canceled -= instance.OnChooseTypeOfBarrirer;
             @TogglePlacementMode.started -= instance.OnTogglePlacementMode;
             @TogglePlacementMode.performed -= instance.OnTogglePlacementMode;
             @TogglePlacementMode.canceled -= instance.OnTogglePlacementMode;
             @DeactivatePlacementMode.started -= instance.OnDeactivatePlacementMode;
             @DeactivatePlacementMode.performed -= instance.OnDeactivatePlacementMode;
             @DeactivatePlacementMode.canceled -= instance.OnDeactivatePlacementMode;
-            @ChooseTypeOfBarrirer.started -= instance.OnChooseTypeOfBarrirer;
-            @ChooseTypeOfBarrirer.performed -= instance.OnChooseTypeOfBarrirer;
-            @ChooseTypeOfBarrirer.canceled -= instance.OnChooseTypeOfBarrirer;
+            @PlaceObject.started -= instance.OnPlaceObject;
+            @PlaceObject.performed -= instance.OnPlaceObject;
+            @PlaceObject.canceled -= instance.OnPlaceObject;
         }
 
         public void RemoveCallbacks(IPlacementObjectModeActions instance)
@@ -598,72 +832,113 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     }
     public PlacementObjectModeActions @PlacementObjectMode => new PlacementObjectModeActions(this);
 
-    // PlayerShooting
-    private readonly InputActionMap m_PlayerShooting;
-    private List<IPlayerShootingActions> m_PlayerShootingActionsCallbackInterfaces = new List<IPlayerShootingActions>();
-    private readonly InputAction m_PlayerShooting_Shoot;
-    public struct PlayerShootingActions
+    // PlacementTurretMode
+    private readonly InputActionMap m_PlacementTurretMode;
+    private List<IPlacementTurretModeActions> m_PlacementTurretModeActionsCallbackInterfaces = new List<IPlacementTurretModeActions>();
+    private readonly InputAction m_PlacementTurretMode_RotatingTurret;
+    private readonly InputAction m_PlacementTurretMode_ChooseTypeTurret;
+    private readonly InputAction m_PlacementTurretMode_TogglePlacementMode;
+    private readonly InputAction m_PlacementTurretMode_DeactivateMode;
+    private readonly InputAction m_PlacementTurretMode_PlaceTurret;
+    public struct PlacementTurretModeActions
     {
         private @PlayerInput m_Wrapper;
-        public PlayerShootingActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Shoot => m_Wrapper.m_PlayerShooting_Shoot;
-        public InputActionMap Get() { return m_Wrapper.m_PlayerShooting; }
+        public PlacementTurretModeActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @RotatingTurret => m_Wrapper.m_PlacementTurretMode_RotatingTurret;
+        public InputAction @ChooseTypeTurret => m_Wrapper.m_PlacementTurretMode_ChooseTypeTurret;
+        public InputAction @TogglePlacementMode => m_Wrapper.m_PlacementTurretMode_TogglePlacementMode;
+        public InputAction @DeactivateMode => m_Wrapper.m_PlacementTurretMode_DeactivateMode;
+        public InputAction @PlaceTurret => m_Wrapper.m_PlacementTurretMode_PlaceTurret;
+        public InputActionMap Get() { return m_Wrapper.m_PlacementTurretMode; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(PlayerShootingActions set) { return set.Get(); }
-        public void AddCallbacks(IPlayerShootingActions instance)
+        public static implicit operator InputActionMap(PlacementTurretModeActions set) { return set.Get(); }
+        public void AddCallbacks(IPlacementTurretModeActions instance)
         {
-            if (instance == null || m_Wrapper.m_PlayerShootingActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_PlayerShootingActionsCallbackInterfaces.Add(instance);
-            @Shoot.started += instance.OnShoot;
-            @Shoot.performed += instance.OnShoot;
-            @Shoot.canceled += instance.OnShoot;
+            if (instance == null || m_Wrapper.m_PlacementTurretModeActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_PlacementTurretModeActionsCallbackInterfaces.Add(instance);
+            @RotatingTurret.started += instance.OnRotatingTurret;
+            @RotatingTurret.performed += instance.OnRotatingTurret;
+            @RotatingTurret.canceled += instance.OnRotatingTurret;
+            @ChooseTypeTurret.started += instance.OnChooseTypeTurret;
+            @ChooseTypeTurret.performed += instance.OnChooseTypeTurret;
+            @ChooseTypeTurret.canceled += instance.OnChooseTypeTurret;
+            @TogglePlacementMode.started += instance.OnTogglePlacementMode;
+            @TogglePlacementMode.performed += instance.OnTogglePlacementMode;
+            @TogglePlacementMode.canceled += instance.OnTogglePlacementMode;
+            @DeactivateMode.started += instance.OnDeactivateMode;
+            @DeactivateMode.performed += instance.OnDeactivateMode;
+            @DeactivateMode.canceled += instance.OnDeactivateMode;
+            @PlaceTurret.started += instance.OnPlaceTurret;
+            @PlaceTurret.performed += instance.OnPlaceTurret;
+            @PlaceTurret.canceled += instance.OnPlaceTurret;
         }
 
-        private void UnregisterCallbacks(IPlayerShootingActions instance)
+        private void UnregisterCallbacks(IPlacementTurretModeActions instance)
         {
-            @Shoot.started -= instance.OnShoot;
-            @Shoot.performed -= instance.OnShoot;
-            @Shoot.canceled -= instance.OnShoot;
+            @RotatingTurret.started -= instance.OnRotatingTurret;
+            @RotatingTurret.performed -= instance.OnRotatingTurret;
+            @RotatingTurret.canceled -= instance.OnRotatingTurret;
+            @ChooseTypeTurret.started -= instance.OnChooseTypeTurret;
+            @ChooseTypeTurret.performed -= instance.OnChooseTypeTurret;
+            @ChooseTypeTurret.canceled -= instance.OnChooseTypeTurret;
+            @TogglePlacementMode.started -= instance.OnTogglePlacementMode;
+            @TogglePlacementMode.performed -= instance.OnTogglePlacementMode;
+            @TogglePlacementMode.canceled -= instance.OnTogglePlacementMode;
+            @DeactivateMode.started -= instance.OnDeactivateMode;
+            @DeactivateMode.performed -= instance.OnDeactivateMode;
+            @DeactivateMode.canceled -= instance.OnDeactivateMode;
+            @PlaceTurret.started -= instance.OnPlaceTurret;
+            @PlaceTurret.performed -= instance.OnPlaceTurret;
+            @PlaceTurret.canceled -= instance.OnPlaceTurret;
         }
 
-        public void RemoveCallbacks(IPlayerShootingActions instance)
+        public void RemoveCallbacks(IPlacementTurretModeActions instance)
         {
-            if (m_Wrapper.m_PlayerShootingActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_PlacementTurretModeActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(IPlayerShootingActions instance)
+        public void SetCallbacks(IPlacementTurretModeActions instance)
         {
-            foreach (var item in m_Wrapper.m_PlayerShootingActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_PlacementTurretModeActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_PlayerShootingActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_PlacementTurretModeActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public PlayerShootingActions @PlayerShooting => new PlayerShootingActions(this);
+    public PlacementTurretModeActions @PlacementTurretMode => new PlacementTurretModeActions(this);
+    public interface IUIActions
+    {
+        void OnOpenOrCloseMenu(InputAction.CallbackContext context);
+    }
     public interface IPlayerMovementActions
     {
         void OnPlayerMovement(InputAction.CallbackContext context);
+    }
+    public interface IPlayerShootingActions
+    {
+        void OnShoot(InputAction.CallbackContext context);
     }
     public interface IMousePositionActions
     {
         void OnMousePosition(InputAction.CallbackContext context);
     }
-    public interface IUIActions
-    {
-        void OnOpenOrCloseMenu(InputAction.CallbackContext context);
-    }
     public interface IPlacementObjectModeActions
     {
         void OnRotatingObject(InputAction.CallbackContext context);
+        void OnChooseTypeOfBarrirer(InputAction.CallbackContext context);
         void OnTogglePlacementMode(InputAction.CallbackContext context);
         void OnDeactivatePlacementMode(InputAction.CallbackContext context);
-        void OnChooseTypeOfBarrirer(InputAction.CallbackContext context);
+        void OnPlaceObject(InputAction.CallbackContext context);
     }
-    public interface IPlayerShootingActions
+    public interface IPlacementTurretModeActions
     {
-        void OnShoot(InputAction.CallbackContext context);
+        void OnRotatingTurret(InputAction.CallbackContext context);
+        void OnChooseTypeTurret(InputAction.CallbackContext context);
+        void OnTogglePlacementMode(InputAction.CallbackContext context);
+        void OnDeactivateMode(InputAction.CallbackContext context);
+        void OnPlaceTurret(InputAction.CallbackContext context);
     }
 }
