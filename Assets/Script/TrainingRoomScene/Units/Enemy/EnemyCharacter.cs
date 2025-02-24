@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyCharacter : Unit, IEnemy, IPoolable
+public class EnemyCharacter : MonoBehaviour, IUnit, IEnemy, IPoolable
 {
     private IBehavioralPattern _behavioralPattern;
 
@@ -10,6 +10,10 @@ public class EnemyCharacter : Unit, IEnemy, IPoolable
     [SerializeField] private GameObject _holderAttackLogic;
     [SerializeField] private EnemyHealth _health;
     [SerializeField] private Attack _attackEnemy;
+
+    private Rigidbody _rigidbody;
+    private Collider _collider;
+    private Animator _animator;
 
     private ObjectPool<EnemyCharacter> _pool;
 
@@ -22,9 +26,16 @@ public class EnemyCharacter : Unit, IEnemy, IPoolable
     public Rigidbody EnemyRigidbody => Rigidbody;
     public Transform Transform => transform;
     public NavMeshAgent NavMeshAgent => _agent;
+    public Rigidbody Rigidbody => _rigidbody;
+    public Collider Collider => _collider;
+    public Animator Animator => _animator;
 
     public void Initialize()
     {
+        _rigidbody = GetComponent<Rigidbody>();
+        _collider = GetComponent<Collider>();
+        _animator = GetComponent<Animator>();
+
         _attackEnemy.Initialization();
         EnemyHealth.Initialize(this);
     }

@@ -1,45 +1,39 @@
-using DG.Tweening;
 using System;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.TextCore.Text;
+using Zenject;
 
 public abstract class Weapon : MonoBehaviour
 {
-
     // Вынести данные в конфиг WeaponConfig
     // Вынести пул в отдельный скрипт
     //
+    protected const int ReleasedBulletsOfSingleShootingMode = 1;
     private const float MinDelayBeforeFiring = 0.1f;
 
-    [Header("Main parameters weapon")]
-    [SerializeField] protected WeaponConfig _weaponConfig;
-    [SerializeField] protected int _maxMagazineCapacity;
+    protected WeaponConfig _weaponConfig;
+    protected Bullet _bulletPrefab;
+    protected BulletType _bulletTypeUsedInCurrentWeapon;
 
-    [Header("Delay before firing")]
-    [SerializeField] protected float _startDelayBeforeFiring;
-
-    [Header("For Bullets Pool")]
-    [SerializeField] protected Bullet _bulletPrefab;
-    [SerializeField] protected int _maxPoolSize;
-
-    protected int _currentMagazineCapacity;
-    protected int _currentReleasedBulletAtTime = 1;
-
-    protected float _delayBeforeFiring;
-
-    protected bool _isReloading;
-    private bool _isCanWork = false;
-
-    protected GameObject _poolHolder;
-    protected ObjectPool<Bullet> _bulletPool;
+    protected GameObject _spawnPoint;
 
     protected Character _character;
     protected PlayerInput _playerInput;
 
     protected Coroutine _reloadingWeaponCoroutine;
+
+    protected int _maxMagazineCapacity;
+    protected int _currentMagazineCapacity;
+
+    protected float _startDelayBeforeFiring;
+    protected float _delayBeforeFiring;
+
+    protected bool _isReloading;
+    private bool _isCanWork = false;
+
+    // Вынести создание пула в отдельный класс!!!
+    private CreatedPoolBulletsSystem _poolBullets;
+    protected ObjectPool<Bullet> _bulletPool;
 
     public WeaponConfig WeaponConfig => _weaponConfig;
 
@@ -49,21 +43,31 @@ public abstract class Weapon : MonoBehaviour
     public event Action<int> MaxValueChanged;
     public event Action<int> CurrentValueChanged;
 
+    [Inject]
+    private void Construct(Character character, WeaponConfig weaponConfig, PoolCreator poolCreator)
+    {
+        _character = character;
+        _weaponConfig = weaponConfig;
+        _poolBullets = poolCreator.PoolBulletsSystem;
+    }
+
     protected abstract IEnumerator PrepareWeaponToShootingJob(); // Для анимации подготовки оружия к стрельбе
     protected abstract void Shooting(); // Для выстрела и анимации выстрела
     protected abstract IEnumerator ReloadingJob(float timeReload); // Для анимации перезарядки 
 
-    public virtual void Initialize(Character character)
+    public void Initialize()
     {
-        _character = character;
         _playerInput = character.PlayerInput;
 
-        _currentMagazineCapacity = _maxMagazineCapacity;
+        _bulletPool = GetPool();
 
-        if (_startDelayBeforeFiring < MinDelayBeforeFiring)
-            _startDelayBeforeFiring = MinDelayBeforeFiring;
+        _spawnPoint = _weaponConfig.WeaponStatsConfig.SpawnPointBullets;
+        _bulletTypeUsedInCurrentWeapon = _weaponConfig.WeaponStatsConfig.BulletTypeUsed;
 
-        _delayBeforeFiring = _startDelayBeforeFiring;
+        _currentMagazineCapacity = _maxMagazineCapacity = _weaponConfig.WeaponStatsConfig.MaxMagazineCapacity;
+
+        _startDelayBeforeFiring = _weaponConfig.WeaponStatsConfig.DelayBeforeFiring;
+        _delayBeforeFiring = Mathf.Clamp(_delayBeforeFiring, MinDelayBeforeFiring, _startDelayBeforeFiring);
 
         _isCanWork = true;
     }
@@ -73,7 +77,7 @@ public abstract class Weapon : MonoBehaviour
         CurrentValueChanged?.Invoke(_currentMagazineCapacity);
     }
 
-    protected void Update()
+    private void Update()
     {
         if (_isCanWork == false)
             return;
@@ -103,4 +107,13 @@ public abstract class Weapon : MonoBehaviour
         // Написать метод для стрельбы с зажатой клавишей, одиночными встрелами и выстрелами очередью. Через Enum и нажатие клавиши
     }
 
+    private ObjectPool<Bullet> GetPool()
+    {
+        BulletType bulletType = (BulletType)_bulletTypeUsedInCurrentWeapon;
+
+        if (_poolBullets.PoolDictionary.TryGetValue(bulletType, out ObjectPool<Bullet> poolSelected))
+            return poolSelected;
+
+        return null;
+    }
 }

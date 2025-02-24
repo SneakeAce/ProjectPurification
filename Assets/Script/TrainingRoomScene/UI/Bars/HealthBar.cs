@@ -1,8 +1,9 @@
 using UnityEngine;
+using Zenject;
 
 public class HealthBar : Bar
 {
-    [SerializeField] protected CharacterHealth _health;
+    [Inject] protected CharacterHealth _health;
 
     protected float _currentValue;
     protected float _maxValue;

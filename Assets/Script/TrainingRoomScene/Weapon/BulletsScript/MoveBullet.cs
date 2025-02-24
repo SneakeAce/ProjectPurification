@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MoveBullet : MonoBehaviour
 {
-    [SerializeField] private float _bulletSpeed;
+    private float _bulletSpeed;
 
     private float _distanceFlying;
     private Vector3 _startPoint;
@@ -15,11 +15,13 @@ public class MoveBullet : MonoBehaviour
 
     private Action<Bullet> _returnToPool;
 
-    public void Initialize(Bullet bullet, Vector3 startPoint, float distanceFlying, Action<Bullet> returnToPool)
+    public void Initialize(Bullet bullet, Vector3 startPoint, float distanceFlying, float bulletSpeed, Action<Bullet> returnToPool)
     {
         _returnToPool = returnToPool;
 
         _distanceFlying = distanceFlying;
+        _bulletSpeed = bulletSpeed;
+
         _startPoint = startPoint; 
 
         _bullet = bullet;

@@ -1,20 +1,25 @@
 using System;
-using UnityEngine;
 
-public class CharacterHealth : MonoBehaviour
+public class CharacterHealth
 {
-    [SerializeField] protected float _maxValue;
+    private const float MinCurrentHealth = 0f;
+
+    protected float _maxValue;
     protected float _currentValue;
+
+    private Character _character;
 
     public float MaxValue { get => _maxValue; set => _maxValue = value; }
     public float CurrentValue { get => _currentValue; set => _currentValue = value; }
 
     public event Action<float> MaxValueChanged;
     public event Action<float> CurrentValueChanged;
+    public event Action<Character> OnDead;
 
-    public void Initialize()
+    public void Initialization(Character character)
     {
-        _currentValue = _maxValue;
+        _character = character;
+        _currentValue = _maxValue = _character.PlayerConfig.MaxHealth; 
     }
 
     public void DamageTaken(float damage)
@@ -23,8 +28,8 @@ public class CharacterHealth : MonoBehaviour
 
         CurrentValueChanged?.Invoke(_currentValue);
 
-        if (_currentValue <= 0)
-            DestroyUnit();
+        if (_currentValue <= MinCurrentHealth)
+            OnDead?.Invoke(_character);
     }
 
     public void AddHealth(float value)
@@ -37,8 +42,4 @@ public class CharacterHealth : MonoBehaviour
         CurrentValueChanged?.Invoke(_currentValue);
     }
 
-    public void DestroyUnit()
-    {
-        Destroy(gameObject);
-    }
 }

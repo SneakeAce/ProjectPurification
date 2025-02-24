@@ -1,20 +1,71 @@
-using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using Zenject;
 
-public class Character : Unit
+public class Character : MonoBehaviour, IUnit
 {
-    [SerializeField] private CharacterHealth _health;
     private PlayerInput _playerInput;
+    private PlayerConfig _playerConfig;
+    private CharacterHealth _health;
+    private MoveComponent _moveComponent;
+
+    private Rigidbody _rigidbody;
+    private Collider _collider;
+    private Animator _animator;
 
     public PlayerInput PlayerInput => _playerInput;
+    public Rigidbody Rigidbody => _rigidbody;
+    public Collider Collider => _collider;
+    public Animator Animator => _animator;
+    public PlayerConfig PlayerConfig => _playerConfig;
 
-    public CharacterHealth Health => _health;
+    [Inject]
+    private void Construct(PlayerInput playerInput, PlayerConfig playerConfig, CharacterHealth health, MoveComponent moveComponent)
+    {
+        _playerInput = playerInput;
+        _playerInput.Enable();
+
+        _playerConfig = playerConfig;
+
+        _health = health;
+        _moveComponent = moveComponent;
+    }
 
     public void Initialization()
     {
-        _playerInput = new PlayerInput();
+        _rigidbody = GetComponent<Rigidbody>();
+        _collider = GetComponent<Collider>();
+        _animator = GetComponent<Animator>();
 
-        _playerInput.Enable();
+        _health.Initialization(this);
+        _health.OnDead += DestroyCharacter;
+
+        _moveComponent.Initialization(this);
+    }
+
+    private void Update()
+    {
+        RotateToMousePosition();
+    }
+
+    private void FixedUpdate()
+    {
+        Move();
+    }
+
+    private void Move()
+    {
+        _moveComponent.FixedUpdate();
+    }
+
+    private void RotateToMousePosition()
+    {
+        _moveComponent.Update();
+    }
+
+    private void DestroyCharacter(Character character)
+    {
+        _health.OnDead -= DestroyCharacter;
+
+        Destroy(character.gameObject);
     }
 }

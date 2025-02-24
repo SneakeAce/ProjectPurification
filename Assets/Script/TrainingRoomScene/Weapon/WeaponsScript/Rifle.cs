@@ -1,21 +1,8 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Rifle : Weapon
 {
-    [SerializeField] private LayerMask _includeLayer;
-    [SerializeField] private GameObject _spawnPoint;
-
-    public override void Initialize(Character character)
-    {
-        CreatePoolHolder();
-
-        base.Initialize(character);
-
-        _bulletPool = new ObjectPool<Bullet>(_bulletPrefab, _maxPoolSize, _poolHolder.transform);
-    }
-
     protected override IEnumerator PrepareWeaponToShootingJob()
     {
         throw new System.NotImplementedException();
@@ -42,7 +29,7 @@ public class Rifle : Weapon
     {
         Quaternion rotate = Quaternion.Euler(0, _character.transform.eulerAngles.y, 0);
 
-        _currentMagazineCapacity = _currentMagazineCapacity - _currentReleasedBulletAtTime;
+        _currentMagazineCapacity = _currentMagazineCapacity - ReleasedBulletsOfSingleShootingMode;
 
         _delayBeforeFiring = _startDelayBeforeFiring;
 
@@ -60,12 +47,5 @@ public class Rifle : Weapon
     private void ReturnBulletToPool(Bullet bullet)
     {
         _bulletPool.ReturnPoolObject(bullet);
-    }
-
-    private void CreatePoolHolder()
-    {
-        _poolHolder = new GameObject("AK47-BulletPool");
-        _poolHolder.transform.SetParent(null);
-        _poolHolder.transform.position = Vector3.zero;
     }
 }
