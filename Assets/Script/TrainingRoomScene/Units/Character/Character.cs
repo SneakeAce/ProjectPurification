@@ -28,9 +28,11 @@ public class Character : MonoBehaviour, IUnit
 
         _health = health;
         _moveComponent = moveComponent;
+
+        Initialization();
     }
 
-    public void Initialization()
+    private void Initialization()
     {
         _rigidbody = GetComponent<Rigidbody>();
         _collider = GetComponent<Collider>();

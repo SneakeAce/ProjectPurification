@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using Zenject;
 
 public abstract class Weapon : MonoBehaviour
@@ -10,6 +11,10 @@ public abstract class Weapon : MonoBehaviour
     //
     protected const int ReleasedBulletsOfSingleShootingMode = 1;
     private const float MinDelayBeforeFiring = 0.1f;
+
+    [Inject] LazyInject<Character> _lazyCharacter;
+    [Inject] LazyInject<WeaponConfig> _lazyWeaponConfig;
+    [Inject] LazyInject<PoolCreator> _lazyPoolCreator;
 
     protected WeaponConfig _weaponConfig;
     protected Bullet _bulletPrefab;
@@ -43,21 +48,16 @@ public abstract class Weapon : MonoBehaviour
     public event Action<int> MaxValueChanged;
     public event Action<int> CurrentValueChanged;
 
-    [Inject]
-    private void Construct(Character character, WeaponConfig weaponConfig, PoolCreator poolCreator)
-    {
-        _character = character;
-        _weaponConfig = weaponConfig;
-        _poolBullets = poolCreator.PoolBulletsSystem;
-    }
-
     protected abstract IEnumerator PrepareWeaponToShootingJob(); // Для анимации подготовки оружия к стрельбе
     protected abstract void Shooting(); // Для выстрела и анимации выстрела
-    protected abstract IEnumerator ReloadingJob(float timeReload); // Для анимации перезарядки 
 
     public void Initialize()
     {
-        _playerInput = character.PlayerInput;
+        _character = _lazyCharacter.Value;
+        _weaponConfig = _lazyWeaponConfig.Value;
+        _poolBullets = _lazyPoolCreator.Value.PoolBulletsSystem;
+
+        _playerInput = _character.PlayerInput;
 
         _bulletPool = GetPool();
 
@@ -105,6 +105,19 @@ public abstract class Weapon : MonoBehaviour
         }
 
         // Написать метод для стрельбы с зажатой клавишей, одиночными встрелами и выстрелами очередью. Через Enum и нажатие клавиши
+    }
+
+    private IEnumerator ReloadingJob(float timeReload)
+    {
+        yield return new WaitForSeconds(timeReload);
+
+        _currentMagazineCapacity = _maxMagazineCapacity;
+        CurrentValueChange();
+
+        _isReloading = false;
+
+        StopCoroutine(_reloadingWeaponCoroutine);
+        _reloadingWeaponCoroutine = null;
     }
 
     private ObjectPool<Bullet> GetPool()

@@ -13,14 +13,9 @@ public class StartLevel : MonoBehaviour
 
     // Добавить анимации появления интерфейса игрока и сокрытие интерфейса обучения.
 
-    private void Start()
-    {
-        _bootstrap.Initialization();
-    }
-
     public void StartLvl()
     {
-        //_startLevelCoroutine = StartCoroutine(StartLevelCoroutine());
+        _startLevelCoroutine = StartCoroutine(StartLevelCoroutine());
     }
 
     private IEnumerator StartLevelCoroutine()

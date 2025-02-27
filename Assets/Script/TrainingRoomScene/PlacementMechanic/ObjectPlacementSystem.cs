@@ -1,69 +1,112 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public abstract class ObjectPlacementSystem : MonoBehaviour
+public abstract class ObjectPlacementSystem : IPlacementSystem
 {
-    [SerializeField] protected PoolCreator _createdPools;
-    [SerializeField] protected List<GameObject> _phantomObjectsPrefab;
+    protected LayerMask _obstaclesLayers;
 
-    [SerializeField] protected LayerMask _objectsIncludeLayer;
+    protected Color _colorBeingPlacedObject;
+    protected Color _colorNotBeingPlacedObject;
 
-    [SerializeField] protected Color _colorBeingPlacedObject;
-    [SerializeField] protected Color _colorNotBeingPlacedObject;
-
-    [SerializeField] protected float _radiusPlacing;
-    [SerializeField] protected float _objectRotationSpeed;
-    
+    protected List<GameObject> _phantomObjectsPrefab;
     protected GameObject _instancePhantomObject;
     protected GameObject _currentPhantomObject;
 
     protected Character _character;
     protected PlayerInput _playerInput;
-    protected Coroutine _placementModeCoroutine;
+
+    protected float _radiusPlacing;
+    protected float _objectRotationSpeed;
 
     protected bool _objectCanBePlaced;
     protected bool _placingJob;
     protected bool _canShowPhantomObject;
     protected bool _poolObjectSelected;
 
-    public abstract void OnTogglePlacementMode(InputAction.CallbackContext context);
+    public bool PlacingJob { get => _placingJob; }
 
-    public abstract void OnChooseTypePlacingObject(InputAction.CallbackContext context);
+    public event Action StopWork;
+    public event Action<GameObject> CreatePhantomObject;
+    public event Action<GameObject> DestroyPhantomObject;
 
-    public abstract void OnDeactivatePlacementMode(InputAction.CallbackContext context);
+    protected ObjectPlacementSystem(ObjectPlacementSystemConfig config, Character character)
+    {
+        _character = character;
+        _playerInput = _character.PlayerInput;
 
-    public abstract void Initialization(Character character);
-    public abstract IEnumerator PlacementModeJob();
+        _obstaclesLayers = config.ObstaclesLayer;
+
+        _colorBeingPlacedObject = config.ColorBeingPlacedObject;
+        _colorNotBeingPlacedObject = config.ColorNotBeingPlacedObject;
+
+        _phantomObjectsPrefab = config.PhantomObjectsPrefab;
+
+        _radiusPlacing = config.RadiusPlacing;
+        _objectRotationSpeed = config.RotationSpeedObject;
+    }
+
+    public abstract void ChooseTypePlacingObject(InputAction.CallbackContext context);
+    public abstract void WorkPlacementMode();
     public abstract void ShowObjectPosition();
     public abstract void PlaceObject();
 
-    public void StartWork()
+    public void EnterMode(InputAction.CallbackContext context)
     {
-        if (_placementModeCoroutine != null)
+        _placingJob = !_placingJob;
+
+        if (_placingJob)
+        {
+            Debug.Log($"Called UI Placement System: {this}");
+            // вызов UI в игре
+        }
+        else
+        {
             ResetVariables();
-        
-        _placementModeCoroutine = StartCoroutine(PlacementModeJob());
+        }
     }
 
-    protected GameObject SelectedPhantomBarrier(int index)
+    public void ChooseTypeOfPlacingObject(InputAction.CallbackContext context)
+    {
+        if (_placingJob)
+            ChooseTypePlacingObject(context);
+        else
+            return;
+    }
+
+    public void ExitMode()
+    {
+        if (_placingJob)
+            ResetVariables();
+        else
+            return;
+    }
+
+    public void Work()
+    {
+        WorkPlacementMode();
+    }
+
+    public GameObject CreateObject()
+    {
+        CreatePhantomObject?.Invoke(_currentPhantomObject);
+
+        return _currentPhantomObject;
+    }
+
+    public void DestroyObject()
+    {
+        DestroyPhantomObject?.Invoke(_instancePhantomObject);
+    }
+
+    protected GameObject SelectedPhantomObject(int index)
     {
         return _phantomObjectsPrefab[index];
     }
 
     protected void ResetVariables()
     {
-        _playerInput.PlayerShooting.Enable();
-        _playerInput.PlacementTurretMode.Enable();
-        _playerInput.PlacementObjectMode.Enable();
-        _playerInput.UI.Enable();
-
-        _playerInput.PlacementObjectMode.ChooseTypeOfBarrirer.performed -= OnChooseTypePlacingObject; 
-        _playerInput.PlacementTurretMode.ChooseTypeTurret.performed -= OnChooseTypePlacingObject;
-
-
         _canShowPhantomObject = true;
         _placingJob = false;
         _objectCanBePlaced = false;
@@ -71,9 +114,11 @@ public abstract class ObjectPlacementSystem : MonoBehaviour
 
         if (_instancePhantomObject != null)
         {
-            Destroy(_instancePhantomObject);
+            DestroyObject();
             _instancePhantomObject = null;
         }
+
+        StopWork?.Invoke();
     }
 
     protected Quaternion RotationPlacedObject(GameObject objectPlaced, float scroll)
@@ -91,7 +136,7 @@ public abstract class ObjectPlacementSystem : MonoBehaviour
 
         Vector3 halfSizeBox = new Vector3(boundsObj.size.x / divider, boundsObj.size.y / divider, boundsObj.size.z / divider);
         
-        Collider[] obstacleAround = Physics.OverlapBox(objectTransform.position, halfSizeBox, objectTransform.rotation, _objectsIncludeLayer);
+        Collider[] obstacleAround = Physics.OverlapBox(objectTransform.position, halfSizeBox, objectTransform.rotation, _obstaclesLayers);
 
         if (obstacleAround.Length <= 0 && Vector3.Distance(_character.transform.position, objectTransform.position) <= _radiusPlacing)
         {
@@ -118,5 +163,4 @@ public abstract class ObjectPlacementSystem : MonoBehaviour
 
         return Vector3.zero;
     }
-
 }

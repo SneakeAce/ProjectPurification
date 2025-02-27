@@ -180,7 +180,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""PlacementObjectMode"",
+            ""name"": ""PlacementBarrierMode"",
             ""id"": ""842fe3a8-fc4b-400a-a88d-0f8b030699b2"",
             ""actions"": [
                 {
@@ -498,13 +498,13 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         // MousePosition
         m_MousePosition = asset.FindActionMap("MousePosition", throwIfNotFound: true);
         m_MousePosition_MousePosition = m_MousePosition.FindAction("MousePosition", throwIfNotFound: true);
-        // PlacementObjectMode
-        m_PlacementObjectMode = asset.FindActionMap("PlacementObjectMode", throwIfNotFound: true);
-        m_PlacementObjectMode_RotatingObject = m_PlacementObjectMode.FindAction("RotatingObject", throwIfNotFound: true);
-        m_PlacementObjectMode_ChooseTypeOfBarrirer = m_PlacementObjectMode.FindAction("ChooseTypeOfBarrirer", throwIfNotFound: true);
-        m_PlacementObjectMode_TogglePlacementMode = m_PlacementObjectMode.FindAction("TogglePlacementMode", throwIfNotFound: true);
-        m_PlacementObjectMode_DeactivatePlacementMode = m_PlacementObjectMode.FindAction("DeactivatePlacementMode", throwIfNotFound: true);
-        m_PlacementObjectMode_PlaceObject = m_PlacementObjectMode.FindAction("PlaceObject", throwIfNotFound: true);
+        // PlacementBarrierMode
+        m_PlacementBarrierMode = asset.FindActionMap("PlacementBarrierMode", throwIfNotFound: true);
+        m_PlacementBarrierMode_RotatingObject = m_PlacementBarrierMode.FindAction("RotatingObject", throwIfNotFound: true);
+        m_PlacementBarrierMode_ChooseTypeOfBarrirer = m_PlacementBarrierMode.FindAction("ChooseTypeOfBarrirer", throwIfNotFound: true);
+        m_PlacementBarrierMode_TogglePlacementMode = m_PlacementBarrierMode.FindAction("TogglePlacementMode", throwIfNotFound: true);
+        m_PlacementBarrierMode_DeactivatePlacementMode = m_PlacementBarrierMode.FindAction("DeactivatePlacementMode", throwIfNotFound: true);
+        m_PlacementBarrierMode_PlaceObject = m_PlacementBarrierMode.FindAction("PlaceObject", throwIfNotFound: true);
         // PlacementTurretMode
         m_PlacementTurretMode = asset.FindActionMap("PlacementTurretMode", throwIfNotFound: true);
         m_PlacementTurretMode_RotatingTurret = m_PlacementTurretMode.FindAction("RotatingTurret", throwIfNotFound: true);
@@ -754,32 +754,32 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     }
     public MousePositionActions @MousePosition => new MousePositionActions(this);
 
-    // PlacementObjectMode
-    private readonly InputActionMap m_PlacementObjectMode;
-    private List<IPlacementObjectModeActions> m_PlacementObjectModeActionsCallbackInterfaces = new List<IPlacementObjectModeActions>();
-    private readonly InputAction m_PlacementObjectMode_RotatingObject;
-    private readonly InputAction m_PlacementObjectMode_ChooseTypeOfBarrirer;
-    private readonly InputAction m_PlacementObjectMode_TogglePlacementMode;
-    private readonly InputAction m_PlacementObjectMode_DeactivatePlacementMode;
-    private readonly InputAction m_PlacementObjectMode_PlaceObject;
-    public struct PlacementObjectModeActions
+    // PlacementBarrierMode
+    private readonly InputActionMap m_PlacementBarrierMode;
+    private List<IPlacementBarrierModeActions> m_PlacementBarrierModeActionsCallbackInterfaces = new List<IPlacementBarrierModeActions>();
+    private readonly InputAction m_PlacementBarrierMode_RotatingObject;
+    private readonly InputAction m_PlacementBarrierMode_ChooseTypeOfBarrirer;
+    private readonly InputAction m_PlacementBarrierMode_TogglePlacementMode;
+    private readonly InputAction m_PlacementBarrierMode_DeactivatePlacementMode;
+    private readonly InputAction m_PlacementBarrierMode_PlaceObject;
+    public struct PlacementBarrierModeActions
     {
         private @PlayerInput m_Wrapper;
-        public PlacementObjectModeActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @RotatingObject => m_Wrapper.m_PlacementObjectMode_RotatingObject;
-        public InputAction @ChooseTypeOfBarrirer => m_Wrapper.m_PlacementObjectMode_ChooseTypeOfBarrirer;
-        public InputAction @TogglePlacementMode => m_Wrapper.m_PlacementObjectMode_TogglePlacementMode;
-        public InputAction @DeactivatePlacementMode => m_Wrapper.m_PlacementObjectMode_DeactivatePlacementMode;
-        public InputAction @PlaceObject => m_Wrapper.m_PlacementObjectMode_PlaceObject;
-        public InputActionMap Get() { return m_Wrapper.m_PlacementObjectMode; }
+        public PlacementBarrierModeActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @RotatingObject => m_Wrapper.m_PlacementBarrierMode_RotatingObject;
+        public InputAction @ChooseTypeOfBarrirer => m_Wrapper.m_PlacementBarrierMode_ChooseTypeOfBarrirer;
+        public InputAction @TogglePlacementMode => m_Wrapper.m_PlacementBarrierMode_TogglePlacementMode;
+        public InputAction @DeactivatePlacementMode => m_Wrapper.m_PlacementBarrierMode_DeactivatePlacementMode;
+        public InputAction @PlaceObject => m_Wrapper.m_PlacementBarrierMode_PlaceObject;
+        public InputActionMap Get() { return m_Wrapper.m_PlacementBarrierMode; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(PlacementObjectModeActions set) { return set.Get(); }
-        public void AddCallbacks(IPlacementObjectModeActions instance)
+        public static implicit operator InputActionMap(PlacementBarrierModeActions set) { return set.Get(); }
+        public void AddCallbacks(IPlacementBarrierModeActions instance)
         {
-            if (instance == null || m_Wrapper.m_PlacementObjectModeActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_PlacementObjectModeActionsCallbackInterfaces.Add(instance);
+            if (instance == null || m_Wrapper.m_PlacementBarrierModeActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_PlacementBarrierModeActionsCallbackInterfaces.Add(instance);
             @RotatingObject.started += instance.OnRotatingObject;
             @RotatingObject.performed += instance.OnRotatingObject;
             @RotatingObject.canceled += instance.OnRotatingObject;
@@ -797,7 +797,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @PlaceObject.canceled += instance.OnPlaceObject;
         }
 
-        private void UnregisterCallbacks(IPlacementObjectModeActions instance)
+        private void UnregisterCallbacks(IPlacementBarrierModeActions instance)
         {
             @RotatingObject.started -= instance.OnRotatingObject;
             @RotatingObject.performed -= instance.OnRotatingObject;
@@ -816,21 +816,21 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @PlaceObject.canceled -= instance.OnPlaceObject;
         }
 
-        public void RemoveCallbacks(IPlacementObjectModeActions instance)
+        public void RemoveCallbacks(IPlacementBarrierModeActions instance)
         {
-            if (m_Wrapper.m_PlacementObjectModeActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_PlacementBarrierModeActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(IPlacementObjectModeActions instance)
+        public void SetCallbacks(IPlacementBarrierModeActions instance)
         {
-            foreach (var item in m_Wrapper.m_PlacementObjectModeActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_PlacementBarrierModeActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_PlacementObjectModeActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_PlacementBarrierModeActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public PlacementObjectModeActions @PlacementObjectMode => new PlacementObjectModeActions(this);
+    public PlacementBarrierModeActions @PlacementBarrierMode => new PlacementBarrierModeActions(this);
 
     // PlacementTurretMode
     private readonly InputActionMap m_PlacementTurretMode;
@@ -925,7 +925,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     {
         void OnMousePosition(InputAction.CallbackContext context);
     }
-    public interface IPlacementObjectModeActions
+    public interface IPlacementBarrierModeActions
     {
         void OnRotatingObject(InputAction.CallbackContext context);
         void OnChooseTypeOfBarrirer(InputAction.CallbackContext context);

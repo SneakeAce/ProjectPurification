@@ -1,59 +1,23 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class TurretPlacementSystem : ObjectPlacementSystem
 {
+    private CreatedPoolTurretsSystem _poolTurretsSystem;
+
     private ObjectPool<Turret> _poolObject;
 
     private MeshRenderer[] _phantomObjectMesh;
     private List<Material> _phantomObjectMaterial = new List<Material>();
 
-    public CreatedPoolTurretsSystem PoolBarrierSystem => _createdPools.PoolTurretsSystem;
-
-    public override void Initialization(Character character)
+    public TurretPlacementSystem(ObjectPlacementSystemConfig config, Character character, CreatedPoolTurretsSystem poolTurretsSystem) : base(config, character)
     {
-        _character = character;
-        _playerInput = _character.PlayerInput;
-
-        _placingJob = false;
-        _canShowPhantomObject = true;
-        _poolObjectSelected = false;
-
-        _playerInput.PlacementTurretMode.TogglePlacementMode.performed -= OnTogglePlacementMode;
-        _playerInput.PlacementTurretMode.DeactivateMode.performed -= OnDeactivatePlacementMode;
-                     
-        _playerInput.PlacementTurretMode.TogglePlacementMode.performed += OnTogglePlacementMode;
-        _playerInput.PlacementTurretMode.DeactivateMode.performed += OnDeactivatePlacementMode;
+        _poolTurretsSystem = poolTurretsSystem;
     }
 
-    public override void OnTogglePlacementMode(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            _placingJob = !_placingJob;
-
-            if (_placingJob)
-            {
-                _playerInput.UI.Disable();
-                _playerInput.PlayerShooting.Disable();
-                _playerInput.PlacementObjectMode.Disable();
-
-                // вызов UI в игре
-                _playerInput.PlacementTurretMode.ChooseTypeTurret.performed -= OnChooseTypePlacingObject;
-
-                _playerInput.PlacementTurretMode.ChooseTypeTurret.performed += OnChooseTypePlacingObject;
-            }
-            else
-            {
-                ResetVariables();
-            }
-        }
-    }
-
-    public override void OnChooseTypePlacingObject(InputAction.CallbackContext context)
+    public override void ChooseTypePlacingObject(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
@@ -68,15 +32,13 @@ public class TurretPlacementSystem : ObjectPlacementSystem
                     {
                         TurretType selectedType = (TurretType)selectedTurretIndex;
 
-                        if (PoolBarrierSystem.PoolDictionary.TryGetValue(selectedType, out ObjectPool<Turret> poolSelected))
+                        if (_poolTurretsSystem.PoolDictionary.TryGetValue(selectedType, out ObjectPool<Turret> poolSelected))
                         {
                             _poolObject = poolSelected;
 
-                            _currentPhantomObject = SelectedPhantomBarrier(selectedTurretIndex);
+                            _currentPhantomObject = SelectedPhantomObject(selectedTurretIndex);
 
                             _poolObjectSelected = true;
-
-                            StartWork();
                         }
 
                     }
@@ -86,56 +48,43 @@ public class TurretPlacementSystem : ObjectPlacementSystem
         }
     }
 
-    public override void OnDeactivatePlacementMode(InputAction.CallbackContext context)
+    public override void WorkPlacementMode()
     {
-        if (context.performed && _placingJob)
+        if (_poolObjectSelected && _placingJob && _poolObject != null)
         {
-            _placingJob = false;
-            ResetVariables();
-        }
-    }
-
-    public override IEnumerator PlacementModeJob()
-    {
-        while (_placingJob)
-        {
-            if (_poolObjectSelected && _placingJob && _poolObject != null)
+            if (_canShowPhantomObject)
             {
-                if (_canShowPhantomObject)
+                ShowObjectPosition();
+
+                Vector2 mouseScroll = _playerInput.PlacementTurretMode.RotatingTurret.ReadValue<Vector2>();
+
+                float scroll = mouseScroll.y;
+
+                if (scroll != 0)
                 {
-                    ShowObjectPosition();
-
-                    Vector2 mouseScroll = _playerInput.PlacementTurretMode.RotatingTurret.ReadValue<Vector2>();
-
-                    float scroll = mouseScroll.y;
-
-                    if (scroll != 0)
-                    {
-                        _instancePhantomObject.transform.rotation = RotationPlacedObject(_instancePhantomObject, scroll);
-                    }
-
-                }
-
-                if (Input.GetMouseButtonDown(0) && _objectCanBePlaced)
-                {
-                    _canShowPhantomObject = false;
-
-                    PlaceObject();
+                    _instancePhantomObject.transform.rotation = RotationPlacedObject(_instancePhantomObject, scroll);
                 }
 
             }
 
-            yield return null;
-        }
+            if (Input.GetMouseButtonDown(0) && _objectCanBePlaced)
+            {
+                _canShowPhantomObject = false;
 
-        StopCoroutine(_placementModeCoroutine);
-        _placementModeCoroutine = null;
+                PlaceObject();
+            }
+        }
     }
 
     public override void ShowObjectPosition()
     {
         if (_instancePhantomObject == null)
-            _instancePhantomObject = Instantiate(_currentPhantomObject, _character.transform.position, Quaternion.identity);
+        {
+            CreateObject();
+
+            _instancePhantomObject.transform.position = _character.transform.position;
+            _instancePhantomObject.transform.rotation = Quaternion.identity;
+        }
 
         _phantomObjectMesh = _instancePhantomObject.GetComponentsInChildren<MeshRenderer>();
 

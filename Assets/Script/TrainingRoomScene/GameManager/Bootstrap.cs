@@ -9,7 +9,7 @@ public class Bootstrap : MonoBehaviour
 
     public void Initialization() 
     { 
-        _characterBootstrap.Initialization();
+        //_characterBootstrap.Initialization();
         _createdPoolsBootstrap.Initialization();
         _uiBootstrap.Initialization();
         _enemyBootstrap.Initialization();

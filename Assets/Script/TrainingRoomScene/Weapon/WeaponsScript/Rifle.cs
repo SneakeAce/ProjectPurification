@@ -8,23 +8,6 @@ public class Rifle : Weapon
         throw new System.NotImplementedException();
     }
 
-    protected override IEnumerator ReloadingJob(float timeReload)
-    {
-        while (timeReload > 0)
-        {
-            timeReload -= Time.deltaTime;
-            yield return null;
-        }
-
-        _currentMagazineCapacity = _maxMagazineCapacity;
-        CurrentValueChange();
-
-        _isReloading = false;
-
-        StopCoroutine(_reloadingWeaponCoroutine);
-        _reloadingWeaponCoroutine = null;
-    }
-
     protected override void Shooting()
     {
         Quaternion rotate = Quaternion.Euler(0, _character.transform.eulerAngles.y, 0);
