@@ -3,10 +3,15 @@ using Zenject;
 
 public class HealthBar : Bar
 {
-    [Inject] protected CharacterHealth _health;
+    private CharacterHealth _health;
 
-    protected float _currentValue;
-    protected float _maxValue;
+    [Inject]
+    private void Construct(CharacterHealth health)
+    {
+        _health = health;
+
+        Initialize();
+    }
 
     public override void Initialize()
     {

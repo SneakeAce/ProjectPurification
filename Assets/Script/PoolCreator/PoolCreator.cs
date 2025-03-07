@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -28,16 +27,16 @@ public class PoolCreator : MonoBehaviour
 
     public void Initialization()
     {
-        _createdPoolBarrierSystem = new CreatedPoolBarriersSystem(_placeableObjects);
-        _createdPoolBarrierSystem.Initialization();
+        //_createdPoolBarrierSystem = new CreatedPoolBarriersSystem(_placeableObjects);
+        //_createdPoolBarrierSystem.Initialization();
 
-        _poolEnemySystem = new CreatedPoolEnemiesSystem(_enemyCharacterObjects);
-        _poolEnemySystem.Initialization();
+        //_poolEnemySystem = new CreatedPoolEnemiesSystem(_enemyCharacterObjects);
+        //_poolEnemySystem.Initialization();
 
-        _poolTurretsSystem = new CreatedPoolTurretsSystem(_turretObjects);
-        _poolTurretsSystem.Initialization();
+        //_poolTurretsSystem = new CreatedPoolTurretsSystem(_turretObjects);
+        //_poolTurretsSystem.Initialization();
 
-        _poolBulletsSystem = new CreatedPoolBulletsSystem(_bulletObjects);
-        _poolBulletsSystem.Initialization();
+        //_poolBulletsSystem = new CreatedPoolBulletsSystem(_bulletObjects);
+        //_poolBulletsSystem.Initialization();
     }
 }

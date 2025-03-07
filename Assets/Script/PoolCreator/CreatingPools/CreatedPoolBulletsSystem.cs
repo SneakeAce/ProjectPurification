@@ -2,31 +2,24 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CreatedPoolBulletsSystem
+public class CreatedPoolBulletsSystem : CreatedPoolSystem<Bullet, BulletType>
 {
-    private List<Bullet> _bulletObjects;
-
-    private Dictionary<BulletType, ObjectPool<Bullet>> _poolDictionary;
-
-    public CreatedPoolBulletsSystem(IEnumerable<Bullet> bulletObjects)
+    public CreatedPoolBulletsSystem(CreatedPoolBulletConfig config) : base(config)
     {
-        _bulletObjects = new List<Bullet>(bulletObjects);
     }
 
-    public Dictionary<BulletType, ObjectPool<Bullet>> PoolDictionary => _poolDictionary;
-
-    public void Initialization()
+    protected override void Initialization()
     {
         _poolDictionary = new Dictionary<BulletType, ObjectPool<Bullet>>();
 
         StartingCreatePools();
     }
 
-    private void StartingCreatePools()
+    protected override void StartingCreatePools()
     {
-        if (_bulletObjects.Count > 0)
+        if (_monoObjects.Count > 0)
         {
-            foreach (Bullet bulletObject in _bulletObjects)
+            foreach (Bullet bulletObject in _monoObjects)
             {
                 if (_poolDictionary.ContainsKey(bulletObject.BulletType))
                     continue;
@@ -34,30 +27,30 @@ public class CreatedPoolBulletsSystem
                 switch (bulletObject.BulletType)
                 {
                     case BulletType.PistolBullet:
-                        ObjectPool<Bullet> poolAutomaticTurret = CreatePool(bulletObject.BulletType, bulletObject.MaxCountOnScene, bulletObject);
+                        ObjectPool<Bullet> poolAutomaticTurret = CreatePool(bulletObject.BulletType, bulletObject, bulletObject.MaxCountOnScene);
                         _poolDictionary.Add(bulletObject.BulletType, poolAutomaticTurret);
                         break;
 
                     case BulletType.RifleBullet:
-                        ObjectPool<Bullet> poolMachineGunTurret = CreatePool(bulletObject.BulletType, bulletObject.MaxCountOnScene, bulletObject);
+                        ObjectPool<Bullet> poolMachineGunTurret = CreatePool(bulletObject.BulletType, bulletObject, bulletObject.MaxCountOnScene);
                         _poolDictionary.Add(bulletObject.BulletType, poolMachineGunTurret);
 
                         break;
 
                     case BulletType.MachineGunBullet:
-                        ObjectPool<Bullet> poolArmorPiercingTurret = CreatePool(bulletObject.BulletType, bulletObject.MaxCountOnScene, bulletObject);
+                        ObjectPool<Bullet> poolArmorPiercingTurret = CreatePool(bulletObject.BulletType, bulletObject, bulletObject.MaxCountOnScene);
                         _poolDictionary.Add(bulletObject.BulletType, poolArmorPiercingTurret);
 
                         break;
 
                     default:
-                        throw new ArgumentException("This turret type does not exist");
+                        throw new ArgumentException("This Bullet type does not exist");
                 }
             }
         }
     }
 
-    private ObjectPool<Bullet> CreatePool(BulletType bulletType, int maxPoolSize, Bullet bulletObject)
+    protected override ObjectPool<Bullet> CreatePool(BulletType bulletType, Bullet bulletObject, int maxPoolSize)
     {
         ObjectPool<Bullet> turretObjectPool;
 

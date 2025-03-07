@@ -25,12 +25,12 @@ public class PlacementSystemInstaller : MonoInstaller
 
     private void BindPlacementSystems()
     {
-        Container.Bind<IPlacementSystem>().To<BarrierPlacementSystem>().AsTransient();
-        Container.Bind<IPlacementSystem>().To<TurretPlacementSystem>().AsTransient();
+        Container.Bind<IPlacementSystem>().To<BarrierPlacementSystem>().AsTransient().NonLazy();
+        Container.Bind<IPlacementSystem>().To<TurretPlacementSystem>().AsTransient().NonLazy();
     }
 
     private void BindPlacementSystemsController()
     {
-        Container.Bind<ObjectPlacementSystemsController>().FromInstance(_placementSystemsController).AsSingle();
+        Container.Bind<ObjectPlacementSystemsController>().FromInstance(_placementSystemsController).AsSingle().NonLazy();
     }
 }

@@ -3,31 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CreatedPoolTurretsSystem
+public class CreatedPoolTurretsSystem : CreatedPoolSystem<Turret, TurretType>
 {
-    private List<Turret> _turretObjects;
-
-    private Dictionary<TurretType, ObjectPool<Turret>> _poolDictionary;
-
-    public CreatedPoolTurretsSystem(IEnumerable<Turret> turretObjects)
+    public CreatedPoolTurretsSystem(CreatedPoolTurretConfig config) : base(config)
     {
-        _turretObjects = new List<Turret>(turretObjects);
     }
 
-    public Dictionary<TurretType, ObjectPool<Turret>> PoolDictionary => _poolDictionary;
-
-    public void Initialization()
+    protected override void Initialization()
     {
         _poolDictionary = new Dictionary<TurretType, ObjectPool<Turret>>();
 
         StartingCreatePools();
     }
 
-    private void StartingCreatePools()
+    protected override void StartingCreatePools()
     {
-        if (_turretObjects.Count > 0)
+        if (_monoObjects.Count > 0)
         {
-            foreach (Turret turretObject in _turretObjects)
+            foreach (Turret turretObject in _monoObjects)
             {
                 if (_poolDictionary.ContainsKey(turretObject.TurretType))
                     continue;
@@ -35,18 +28,18 @@ public class CreatedPoolTurretsSystem
                 switch (turretObject.TurretType)
                 {
                     case TurretType.AutomaticTurret:
-                        ObjectPool<Turret> poolAutomaticTurret = CreatePool(turretObject.TurretType, turretObject.MaxCountOnCurrentScene, turretObject);
+                        ObjectPool<Turret> poolAutomaticTurret = CreatePool(turretObject.TurretType, turretObject, turretObject.MaxCountOnCurrentScene);
                         _poolDictionary.Add(turretObject.TurretType, poolAutomaticTurret);
                         break;
 
                     case TurretType.MachineGunTurret:
-                        ObjectPool<Turret> poolMachineGunTurret = CreatePool(turretObject.TurretType, turretObject.MaxCountOnCurrentScene, turretObject);
+                        ObjectPool<Turret> poolMachineGunTurret = CreatePool(turretObject.TurretType, turretObject, turretObject.MaxCountOnCurrentScene);
                         _poolDictionary.Add(turretObject.TurretType, poolMachineGunTurret);
 
                         break;
 
                     case TurretType.ArmorPiercingTurret:
-                        ObjectPool<Turret> poolArmorPiercingTurret = CreatePool(turretObject.TurretType, turretObject.MaxCountOnCurrentScene, turretObject);
+                        ObjectPool<Turret> poolArmorPiercingTurret = CreatePool(turretObject.TurretType, turretObject, turretObject.MaxCountOnCurrentScene);
                         _poolDictionary.Add(turretObject.TurretType, poolArmorPiercingTurret);
 
                         break;
@@ -58,7 +51,7 @@ public class CreatedPoolTurretsSystem
         }
     }
 
-    private ObjectPool<Turret> CreatePool(TurretType turretType, int maxPoolSize, Turret turretObject)
+    protected override ObjectPool<Turret> CreatePool(TurretType turretType, Turret turretObject, int maxPoolSize)
     {
         ObjectPool<Turret> turretObjectPool;
 

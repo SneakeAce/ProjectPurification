@@ -5,9 +5,6 @@ using Zenject;
 public class PlayerInstaller : MonoInstaller
 {
     [SerializeField] private PlayerConfig _playerConfig;
-    [SerializeField] private CharacterBootstrap _bootstrap;
-
-    private Character _character;
 
     public override void InstallBindings()
     {

@@ -1,13 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class BulletBar : Bar
 {
-    [SerializeField] protected Weapon _weapon;
+    private Weapon _weapon;
 
-    protected int _currentValue;
-    protected int _maxValue;
+    [Inject]
+    private void Construct(Weapon weapon)
+    {
+        _weapon = weapon;
+
+        Initialize();
+    }
 
     public override void Initialize()
     {
