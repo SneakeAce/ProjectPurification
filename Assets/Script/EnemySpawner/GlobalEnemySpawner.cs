@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -12,18 +11,21 @@ public class GlobalEnemySpawner : EnemySpawner
     private const float MinRotationValue = 0f;
     private const float MaxRotationValue = 360f;
 
-    [SerializeField] private List<SpawnPoint> _spawnPoints;
+    private List<SpawnPoint> _spawnPoints;
     private List<EnemyType> _enemyTypes = new List<EnemyType>();
 
     private ObjectPool<EnemyCharacter> _selectedEnemyPool;
 
+    public GlobalEnemySpawner(GlobalEnemySpawnerConfig config)
+    {
+        _spawnPoints = new List<SpawnPoint>(config.SpawnPoints);
+    }
+
     public override void Initialization()
     {
-        InitializationSpawnPoint();
+        //InitializationSpawnPoint();
 
         GetEnemyTypeCount();
-
-        base.Initialization();
     }
 
     public override void SpawnEnemy()
@@ -35,16 +37,6 @@ public class GlobalEnemySpawner : EnemySpawner
 
         SwitchBehavioralPattern behavioralPattern = enemy.GetComponentInChildren<SwitchBehavioralPattern>();
         behavioralPattern.SetBehavioralPattern(enemy);
-    }
-
-    public override IEnumerator SpawningJob()
-    {
-        while (_isCanWork)
-        {
-            yield return new WaitForSeconds(_timeBetweenSpawn);
-            
-            SpawnEnemy();
-        }
     }
 
     public override bool CheckEnemyAroundSpawnPoint(Vector3 spawnPointPosition)
@@ -77,7 +69,7 @@ public class GlobalEnemySpawner : EnemySpawner
         return true;
     }
 
-    public Vector3 GetSpawnPoint(SpawnPoint selectedSpawnPoint)
+    private Vector3 GetSpawnPoint(SpawnPoint selectedSpawnPoint)
     {
         if (_spawnPoints.Count == 0)
             return Vector3.zero;
@@ -169,18 +161,18 @@ public class GlobalEnemySpawner : EnemySpawner
         return null;
     }
 
-    private void InitializationSpawnPoint()
-    {
-        if (_spawnPoints.Count > 0)
-        {
-            foreach(SpawnPoint spawnPoint in _spawnPoints)
-            {
-                spawnPoint.Initialization();
-            }
-        }
-    }
+    //private void InitializationSpawnPoint()
+    //{
+    //    if (_spawnPoints.Count > 0)
+    //    {
+    //        foreach(SpawnPoint spawnPoint in _spawnPoints)
+    //        {
+    //            spawnPoint.Initialization();
+    //        }
+    //    }
+    //}
 
-    private void OnReturnEnemyToPool(EnemyHealth enemyHealth)
+    public override void OnReturnEnemyToPool(EnemyHealth enemyHealth)
     {
         int decreasingValue = 1;
 

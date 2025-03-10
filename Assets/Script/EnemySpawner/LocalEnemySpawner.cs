@@ -8,23 +8,34 @@ public class LocalEnemySpawner : EnemySpawner
     private const float MinRotationValue = 0f;
     private const float MaxRotationValue = 360f;
 
-    [SerializeField] private EnemyTypeInSpawner _enemyTypeInSpawner;
-    [SerializeField] private float _radiusSpawn;
-    [SerializeField] private int _maxEnemyOnScene;
+    private float _radiusSpawn;
 
+    private int _maxEnemyOnScene;
     private int _currentEnemyOnScene;
 
-    private ObjectPool<EnemyCharacter> _selectedEnemyPool; 
+    private EnemyTypeInSpawner _enemyTypeInSpawner;
+    private Transform _transformSpawner;
+
+    private ObjectPool<EnemyCharacter> _selectedEnemyPool;
+
+    public LocalEnemySpawner(LocalEnemySpawnerConfig config)
+    {
+        _transformSpawner = config.TransformSpawner;
+        _enemyTypeInSpawner = config.EnemyTypeInSpawner;
+        _radiusSpawn = config.RadiusSpawn;
+        _maxEnemyOnScene = config.MaxEnemyOnSceneInCurrentLocalSpawner;
+    }
 
     public override void Initialization()
     {
         _selectedEnemyPool = GetPool();
-
-        base.Initialization();
     }
 
     public override void SpawnEnemy()
     {
+        if (_currentEnemyOnScene < _maxEnemyOnScene)
+            return;
+
         Vector3 newPosition = GetSpawnPoint();
 
         if (newPosition == Vector3.zero)
@@ -39,24 +50,11 @@ public class LocalEnemySpawner : EnemySpawner
         behavioralPattern.SetBehavioralPattern(enemy);
     }
 
-    public override IEnumerator SpawningJob()
-    {
-        while (_isCanWork)
-        {
-            yield return new WaitForSeconds(_timeBetweenSpawn);
-
-            if (_currentEnemyOnScene < _maxEnemyOnScene)
-            {
-                SpawnEnemy();
-            }
-        }
-    }
-
-    public Vector3 GetSpawnPoint()
+    private Vector3 GetSpawnPoint()
     {
         for (int attempt = 0; attempt < AttemptsForSearchNewSpawnPoint; attempt++)
         {
-            Vector3 newPositionEnemy = transform.position + (Random.insideUnitSphere * _radiusSpawn);
+            Vector3 newPositionEnemy = _transformSpawner.position + (Random.insideUnitSphere * _radiusSpawn);
             newPositionEnemy.y = 0;
 
             if (CheckEnemyAroundSpawnPoint(newPositionEnemy) && CheckGroundUnderSpawnPoint(newPositionEnemy) && CheckObstacleAroundSpawnPoint(newPositionEnemy))
@@ -131,7 +129,7 @@ public class LocalEnemySpawner : EnemySpawner
         return enemy;
     }
 
-    private void OnReturnEnemyToPool(EnemyHealth enemyHealth)
+    public override void OnReturnEnemyToPool(EnemyHealth enemyHealth)
     {
         Debug.Log("OnReturnEnemyToPool ");
         int decreasingValue = 1;

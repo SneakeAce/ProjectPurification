@@ -13,13 +13,15 @@ public class ObjectPlacementSystemsController : MonoBehaviour
 
     private Coroutine _workPlacementSystemCoroutine;
 
-    private string _barrierPlacementModeName = "PlacementBarrierMode";
-    private string _turretPlacementModeName = "PlacementTurretMode";
+    private const string _barrierPlacementModeName = "PlacementBarrierMode";
+    private const string _turretPlacementModeName = "PlacementTurretMode";
 
     [Inject]
     private void Construct(PlayerInput playerInput, BarrierPlacementSystem barrierPlacementSystem, 
         TurretPlacementSystem turretPlacementSystem)
     {
+
+        // Переделать так, чтобы в аргументах был List<IPlacmenetSystem>(), а потом из него извлекать нужную мне систему.
         _playerInput = playerInput;
 
         _placementSystems = new Dictionary<string, IPlacementSystem>
