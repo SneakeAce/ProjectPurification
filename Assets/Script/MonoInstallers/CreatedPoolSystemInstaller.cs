@@ -19,17 +19,17 @@ public class CreatedPoolSystemInstaller : MonoInstaller
 
     private void BindConfigs()
     {
-        Container.Bind<CreatedPoolBarrirerConfig>().FromInstance(_poolBarrierConfig).AsSingle().NonLazy();
-        Container.Bind<CreatedPoolBulletConfig>().FromInstance(_poolBulletConfig).AsSingle().NonLazy();
-        Container.Bind<CreatedPoolEnemyConfig>().FromInstance(_poolEnemyConfig).AsSingle().NonLazy();
-        Container.Bind<CreatedPoolTurretConfig>().FromInstance(_poolTurretConfig).AsSingle().NonLazy();
+        Container.Bind<CreatedPoolBarrirerConfig>().FromInstance(_poolBarrierConfig).AsSingle();
+        Container.Bind<CreatedPoolBulletConfig>().FromInstance(_poolBulletConfig).AsSingle();
+        Container.Bind<CreatedPoolEnemyConfig>().FromInstance(_poolEnemyConfig).AsSingle();
+        Container.Bind<CreatedPoolTurretConfig>().FromInstance(_poolTurretConfig).AsSingle();
     }
 
     private void BindCreatedPoolSystems()
     {
-        Container.Bind<CreatedPoolBarriersSystem>().AsTransient().NonLazy();
-        Container.Bind<CreatedPoolBulletsSystem>().AsTransient().NonLazy();
-        Container.Bind<CreatedPoolEnemiesSystem>().AsTransient().NonLazy();
-        Container.Bind<CreatedPoolBulletsSystem>().AsTransient().NonLazy();
+        Container.Bind<CreatedPoolBarriersSystem>().AsTransient();
+        Container.Bind<CreatedPoolBulletsSystem>().AsTransient();
+        Container.Bind<CreatedPoolEnemiesSystem>().AsTransient();
+        Container.Bind<CreatedPoolTurretsSystem>().AsTransient();
     }
 }

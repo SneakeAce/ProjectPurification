@@ -1,0 +1,15 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+[CreateAssetMenu(menuName = "Configs/SpawnPoint/SpawnPointConfig", fileName = "SpawnPointConfig")]
+public class SpawnPointConfig : ScriptableObject
+{
+    [field: SerializeField] public Vector3 PositionPointOnScene { get; private set; }
+    [field: SerializeField] public GameObject SpawnPointPrefab { get; private set; }
+
+    [field: SerializeField] public EnemyType EnemyTypeInSpawner { get; private set; }
+    [field: SerializeField] public float RadiusSpawning { get; private set; }
+    [field: SerializeField] public int MaxEnemyOnScene { get; private set; }
+
+}

@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39dd4baf0a967434da42b721c3a09ed2, type: 3}
+  m_Name: BarrierPlacementSystemConfig
+  m_EditorClassIdentifier: 
+  <PhantomObjectsPrefab>k__BackingField:
+  - {fileID: 6815114409020348138, guid: f2570266737447340a25eccd4e58c7b9, type: 3}
+  - {fileID: 3950779808331749615, guid: 30cea783241bbee4cad3ca84235db40e, type: 3}
+  - {fileID: 7837893150650144234, guid: 3334fe943dc14644ca937587ed6bd75d, type: 3}
+  <ObstaclesLayer>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 49856
+  <ColorBeingPlacedObject>k__BackingField: {r: 0, g: 1, b: 0, a: 0.7058824}
+  <ColorNotBeingPlacedObject>k__BackingField: {r: 1, g: 0, b: 0, a: 0.7058824}
+  <RadiusPlacing>k__BackingField: 10
+  <RotationSpeedObject>k__BackingField: 10
+  <ModeNameInPlayerInput>k__BackingField: PlacementBarrierMode

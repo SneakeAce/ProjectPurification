@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50dbb52cc31d29742bfba5ff340dc242, type: 3}
+  m_Name: LocalEnemySpawnerConfig
+  m_EditorClassIdentifier: 
+  <SpawnerPrefab>k__BackingField: {fileID: 4452526361903758718, guid: 0cdd00d5841e384438a2a9f5468b2cef, type: 3}
+  <PositionSpawner>k__BackingField: {x: -45, y: 0, z: -22}
+  <EnemyLayer>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 256
+  <ObstacleLayer>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 512
+  <GroundLayer>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 1024
+  <RadiusCheckingEnemyAround>k__BackingField: 5
+  <RadiusCheckingObstacleAround>k__BackingField: 5
+  <TimeBetweenSpawn>k__BackingField: 2
+  <EnemyTypeInSpawner>k__BackingField: 0
+  <RadiusSpawn>k__BackingField: 15
+  <MaxEnemyOnSceneInCurrentLocalSpawner>k__BackingField: 10

@@ -18,23 +18,19 @@ public class PlayerInstaller : MonoInstaller
     private void BindPlayerConfig()
     {
         Container.Bind<PlayerConfig>().FromInstance(_playerConfig).AsSingle();
-
-        Debug.Log("Привязали конфиг");
     }
 
     private void BindPlayerComponents()
     {
         Container.Bind<CharacterHealth>().AsSingle().NonLazy();
         Container.Bind<MoveComponent>().AsSingle().NonLazy();
-
-        Debug.Log("Привязали Хп и передвижение");
     }
 
     private void CreatePlayer()
     {
         if (_playerConfig == null)
         {
-            Debug.Log("Конфиг не найден!");
+            Debug.LogWarning("Конфиг не найден!");
             return;
         }
 

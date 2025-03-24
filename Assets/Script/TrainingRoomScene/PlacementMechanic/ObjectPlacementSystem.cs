@@ -25,7 +25,11 @@ public abstract class ObjectPlacementSystem : IPlacementSystem
     protected bool _canShowPhantomObject;
     protected bool _poolObjectSelected;
 
+    protected string _modeNameInPlayerInput;
+
     public bool PlacingJob { get => _placingJob; }
+
+    public string ModeNameInPlayerInput => _modeNameInPlayerInput;
 
     public event Action StopWork;
     public event Action<GameObject> CreatePhantomObject;

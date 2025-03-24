@@ -12,8 +12,12 @@ public class TurretPlacementSystem : ObjectPlacementSystem
     private MeshRenderer[] _phantomObjectMesh;
     private List<Material> _phantomObjectMaterial = new List<Material>();
 
-    public TurretPlacementSystem(ObjectPlacementSystemConfig config, Character character, CreatedPoolTurretsSystem poolTurretsSystem) : base(config, character)
+    public TurretPlacementSystem(TurretPlacementSystemConfig config, Character character, CreatedPoolTurretsSystem poolTurretsSystem) : base(config, character)
     {
+        Debug.Log("TurretPlacementSystem Construct");
+
+        _modeNameInPlayerInput = config.ModeNameInPlayerInput;
+
         _poolTurretsSystem = poolTurretsSystem;
     }
 

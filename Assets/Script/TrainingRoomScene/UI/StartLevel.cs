@@ -7,8 +7,6 @@ public class StartLevel : MonoBehaviour
     [SerializeField] private GameObject _trainingText;
     [SerializeField] private float _timeBetweenStartLevel;
 
-    [SerializeField] private Bootstrap _bootstrap;
-
     private Coroutine _startLevelCoroutine;
 
     // Добавить анимации появления интерфейса игрока и сокрытие интерфейса обучения.
@@ -20,8 +18,6 @@ public class StartLevel : MonoBehaviour
 
     private IEnumerator StartLevelCoroutine()
     {
-        _bootstrap.Initialization();
-
         yield return new WaitForSeconds(_timeBetweenStartLevel);
 
         _playerUI.SetActive(true);

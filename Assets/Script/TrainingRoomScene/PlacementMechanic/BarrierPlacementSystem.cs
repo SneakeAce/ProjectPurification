@@ -10,8 +10,12 @@ public class BarrierPlacementSystem : ObjectPlacementSystem
 
     private Material _phantomObjectMaterial;
 
-    public BarrierPlacementSystem(ObjectPlacementSystemConfig config, Character character, CreatedPoolBarriersSystem poolBarriersSystem) : base(config, character)
+    public BarrierPlacementSystem(BarrierPlacementSystemConfig config, Character character, CreatedPoolBarriersSystem poolBarriersSystem) : base(config, character)
     {
+        Debug.Log("BarrierPlacementSystem Construct");
+
+        _modeNameInPlayerInput = config.ModeNameInPlayerInput;
+
         _poolBarriersSystem = poolBarriersSystem;
     }
 

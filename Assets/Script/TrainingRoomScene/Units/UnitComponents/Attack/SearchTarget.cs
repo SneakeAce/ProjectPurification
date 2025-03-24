@@ -21,7 +21,6 @@ public class SearchTarget : MonoBehaviour
 
     public void StartSearchingTarget()
     {
-        //Debug.Log("StartSearchingTarget");
         if (_searchTargetCoroutine != null)
         {
             StopCoroutine(SearchingTargetJob());
