@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 using Zenject;
 
 public class PlayerInstaller : MonoInstaller
