@@ -26,5 +26,5 @@ MonoBehaviour:
   <RadiusCheckingEnemyAround>k__BackingField: 6
   <RadiusCheckingObstacleAround>k__BackingField: 6
   <TimeBetweenSpawn>k__BackingField: 2
-  <AllowedEnemyType>k__BackingField: 0
-  <MaxEnemyOnScene>k__BackingField: 0
+  <AllowedEnemyType>k__BackingField: -1
+  <MaxEnemyOnScene>k__BackingField: 59

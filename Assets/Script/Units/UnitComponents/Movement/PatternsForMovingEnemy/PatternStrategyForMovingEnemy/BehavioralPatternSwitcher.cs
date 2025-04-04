@@ -75,6 +75,10 @@ public class BehavioralPatternSwitcher : MonoBehaviour
                 _movementFactory = new EnemyMovementStrategyFactory(_spawnPatrolPoints);
                 return moveType;
 
+            case MoveTypes.NoMove:
+                _movementFactory = new EnemyMovementStrategyFactory();
+                return MoveTypes.NoMove;
+
             default:
                 throw new Exception("Случилась ошибка в паттернах. Выбран не существующий");
         }

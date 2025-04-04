@@ -16,8 +16,6 @@ public class LocalEnemySpawner : EnemySpawner
     private int _maxEnemyOnScene;
     private int _currentEnemyOnScene;
 
-    private EnemyType _enemyTypeInSpawner;
-
     private LocalEnemySpawnerConfig _config;
 
     [Inject]
@@ -25,7 +23,7 @@ public class LocalEnemySpawner : EnemySpawner
     {
         _config = config;
 
-        _enemyTypeInSpawner = config.EnemyTypeInSpawner;
+        _allowedEnemyTypeInSpawner = config.AllowedEnemyType;
         _radiusSpawn = config.RadiusSpawn;
         _maxEnemyOnScene = config.MaxEnemyOnSceneInCurrentLocalSpawner;
     }
@@ -162,7 +160,7 @@ public class LocalEnemySpawner : EnemySpawner
 
         foreach(EnemyType enemyType in randomsEnemyTypes)
         {
-            if (enemyType == _enemyTypeInSpawner)
+            if (enemyType == _allowedEnemyTypeInSpawner)
             {
                 return enemyType;
             }

@@ -13,8 +13,6 @@ public abstract class CreatedPoolSystem<T, TEnum>
     public CreatedPoolSystem(CreatedPoolSystemConfig<T> config)
     {
         _monoObjects = new List<T>(config.Objects);
-
-        Initialization();
     }
 
     public Dictionary<TEnum, ObjectPool<T>> PoolDictionary => _poolDictionary;

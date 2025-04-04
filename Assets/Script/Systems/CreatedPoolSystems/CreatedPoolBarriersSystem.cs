@@ -6,6 +6,7 @@ public class CreatedPoolBarriersSystem : CreatedPoolSystem<PlaceableObject, Barr
 {
     public CreatedPoolBarriersSystem(CreatedPoolBarrirerConfig config) : base(config)
     {
+        Initialization();
     }
 
     protected override void Initialization()

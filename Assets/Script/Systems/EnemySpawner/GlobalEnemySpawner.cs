@@ -44,6 +44,7 @@ public class GlobalEnemySpawner : EnemySpawner
 
     public override void Initialization()
     {
+        _allowedEnemyTypeInSpawner = _config.AllowedEnemyType;
         _enemyLayer = _config.EnemyLayer;
         _groundLayer = _config.GroundLayer;
         _obstacleLayer = _config.ObstacleLayer;
@@ -58,6 +59,8 @@ public class GlobalEnemySpawner : EnemySpawner
     public override void SpawnEnemy()
     {
         EnemyCharacter enemy = GetEnemy();
+
+        Debug.Log("Enemy in GlobaleSpawner in SpawnEnemy = " + enemy);
 
         if (enemy == null)
             return;
@@ -131,15 +134,21 @@ public class GlobalEnemySpawner : EnemySpawner
 
         SpawnPoint newSpawnPoint = GetSpawnPoint(enemyTypes, out currentEnemyType);
 
+        Debug.Log("NewSpawnPoint in GlobalSpawner = " + newSpawnPoint);
+
         if (newSpawnPoint == null)
             return null;
 
         Vector3 newPosition = GetSpawnPosition(newSpawnPoint);
 
+        Debug.Log("NewPosition in GlobalSpawner = " + newPosition);
+
         if (newPosition == Vector3.zero)
             return null;
 
         EnemyCharacter enemy = _enemyFactory.Create(newPosition, currentEnemyType, MinRotationValue, MaxRotationValue);
+
+        Debug.Log("Enemy in GlobalSpawner = " + enemy);
 
         if (enemy == null)
             return null;

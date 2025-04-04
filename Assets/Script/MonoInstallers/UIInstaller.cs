@@ -15,11 +15,11 @@ public class UIInstaller : MonoInstaller
 
     private void BindHealthBar()
     {
-        Container.Bind<Bar>().FromInstance(_healthBar).AsTransient().NonLazy();
+        Container.Bind<Bar>().FromInstance(_healthBar).AsTransient();
     }
 
     private void BindBulletBar()
     {
-        Container.Bind<Bar>().FromInstance(_bulletBar).AsTransient().NonLazy();
+        Container.Bind<Bar>().FromInstance(_bulletBar).AsTransient();
     }
 }

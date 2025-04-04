@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Zenject;
-using Random = UnityEngine.Random;
 
 public abstract class EnemySpawner : MonoBehaviour
 {
@@ -20,7 +19,7 @@ public abstract class EnemySpawner : MonoBehaviour
 
     protected bool _isCanWork = false;
 
-    private EnemyType _allowedEnemyTypeInSpawner;
+    protected EnemyType _allowedEnemyTypeInSpawner;
 
     protected IEnemyFactory _enemyFactory;
 
@@ -65,8 +64,10 @@ public abstract class EnemySpawner : MonoBehaviour
             .Where(type => type != EnemyType.None && (_allowedEnemyTypeInSpawner & type) != 0)
             .ToList();
 
+        Debug.Log("EnemySpawner / GetRandomEnemyTypes / availableEnemies = " + availableEnemies.Count);
+
         if (availableEnemies.Count <= 0)
-            return null;
+            return new List<EnemyType>();
 
         return availableEnemies;
     }

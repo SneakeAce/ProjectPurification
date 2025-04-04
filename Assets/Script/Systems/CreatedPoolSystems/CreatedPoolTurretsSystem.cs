@@ -6,6 +6,7 @@ public class CreatedPoolTurretsSystem : CreatedPoolSystem<Turret, TurretType>
 {
     public CreatedPoolTurretsSystem(CreatedPoolTurretConfig config) : base(config)
     {
+        Initialization();
     }
 
     protected override void Initialization()

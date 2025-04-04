@@ -7,8 +7,6 @@ public class EnemyFactory : IEnemyFactory
 
     private CreatedPoolEnemiesSystem _enemiesPools;
 
-    private ObjectPool<EnemyCharacter> _enemyPool;
-
     public EnemyFactory(DiContainer container, CreatedPoolEnemiesSystem enemiesPools)
     {
         _container = container;
@@ -19,6 +17,9 @@ public class EnemyFactory : IEnemyFactory
     public EnemyCharacter Create(Vector3 spawnPosition, EnemyType enemyTypeInSpawner, 
         float minRotationValue, float maxRotationValue)
     {
+        Attack enemyAttack;
+        BehavioralPatternSwitcher patternSwitcher;
+
         ObjectPool<EnemyCharacter> enemyPool = GetPool(enemyTypeInSpawner);
 
         if (enemyPool == null)
@@ -29,7 +30,12 @@ public class EnemyFactory : IEnemyFactory
         if (enemy == null)
             return null;
 
+        EnemyComponents(enemy, out enemyAttack, out patternSwitcher);
+
         _container.Inject(enemy);
+        _container.Inject(patternSwitcher);
+
+        enemy.SetAttackComponent(enemyAttack);
 
         enemy.Initialize();
         enemy.SetPool(enemyPool);
@@ -45,11 +51,14 @@ public class EnemyFactory : IEnemyFactory
         EnemyType enemyTypeSelected = enemyTypeInSpawner;
 
         if (_enemiesPools.PoolDictionary.TryGetValue(enemyTypeSelected, out ObjectPool<EnemyCharacter> poolSelected))
-        {
-            _enemyPool = poolSelected;
             return poolSelected;
-        }
-
+        
         return null;
+    }
+
+    private void EnemyComponents(EnemyCharacter enemy, out Attack enemyAttack, out BehavioralPatternSwitcher patternSwitcher)
+    {
+        enemyAttack = enemy.GetComponentInChildren<Attack>();
+        patternSwitcher = enemy.GetComponentInChildren<BehavioralPatternSwitcher>();
     }
 }

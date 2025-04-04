@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2201584756506868290}
   - component: {fileID: 4519621648041063328}
   m_Layer: 13
-  m_Name: PatrolPoint
+  m_Name: EnemyPatrolPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

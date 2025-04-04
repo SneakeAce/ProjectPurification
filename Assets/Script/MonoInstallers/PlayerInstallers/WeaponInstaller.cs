@@ -14,6 +14,6 @@ public class WeaponInstaller : MonoInstaller
     {
             Container.Bind<WeaponConfig>().FromInstance(_weaponConfig).AsSingle();
 
-            Container.Bind<Weapon>().FromComponentInHierarchy().AsSingle().NonLazy();
+            Container.Bind<Weapon>().FromComponentInHierarchy().AsSingle();
     }
 }

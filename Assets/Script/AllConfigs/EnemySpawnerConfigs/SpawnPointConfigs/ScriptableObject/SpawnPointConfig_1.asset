@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <PositionPointOnScene>k__BackingField: {x: 40.7, y: 0, z: -54.2}
   <SpawnPointPrefab>k__BackingField: {fileID: 3273969058929186199, guid: 81371c92ca7d51f4c8ffe3ad2fde8185, type: 3}
-  <EnemyTypeInSpawner>k__BackingField: -1
+  <EnemyTypeInSpawnPoint>k__BackingField: 2
   <RadiusSpawning>k__BackingField: 10
   <MaxEnemyOnScene>k__BackingField: 4

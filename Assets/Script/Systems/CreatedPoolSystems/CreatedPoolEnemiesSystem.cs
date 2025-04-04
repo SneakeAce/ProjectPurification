@@ -4,12 +4,22 @@ using UnityEngine;
 
 public class CreatedPoolEnemiesSystem : CreatedPoolSystem<EnemyCharacter, EnemyType>
 {
+    private CreatedPoolEnemyConfig _config;
+
     public CreatedPoolEnemiesSystem(CreatedPoolEnemyConfig config) : base(config)
     {
+        _config = config;
+
+        Initialization();
     }
 
     protected override void Initialization()
     {
+        foreach(var config in _config.PoolEnemyConfigs)
+        {
+            Debug.Log("CreatedPoolEnemiesSystem / Init / config EnemyType = " + config.EnemyType + " / config name = " + config.name);
+        }
+
         _poolDictionary = new Dictionary<EnemyType, ObjectPool<EnemyCharacter>>();
 
         StartingCreatePools();
@@ -17,37 +27,19 @@ public class CreatedPoolEnemiesSystem : CreatedPoolSystem<EnemyCharacter, EnemyT
 
     protected override void StartingCreatePools()
     {
-        if (_monoObjects.Count > 0)
+        Debug.Log("_Config == " + _config);
+
+        if (_config.PoolEnemyConfigs.Count > 0)
         {
-            foreach (EnemyCharacter enemyCharacter in _monoObjects)
+            foreach (var config in _config.PoolEnemyConfigs)
             {
-                if (_poolDictionary.ContainsKey(enemyCharacter.EnemyType))
-                {
+                if (_poolDictionary.ContainsKey(config.EnemyType))
                     continue;
-                }
 
-                switch (enemyCharacter.EnemyType)
-                {
-                    case EnemyType.NormalZombie:
-                        ObjectPool<EnemyCharacter> poolNormalZombie = CreatePool(enemyCharacter.EnemyType, enemyCharacter, enemyCharacter.MaxCountOnCurrentScene);
-                        _poolDictionary.Add(enemyCharacter.EnemyType, poolNormalZombie);
-                        break;
+                Debug.Log("Config.EnemyType == " + config.EnemyType);
 
-                    case EnemyType.BigZombie:
-                        ObjectPool<EnemyCharacter> poolBigZombie = CreatePool(enemyCharacter.EnemyType, enemyCharacter, enemyCharacter.MaxCountOnCurrentScene);
-                        _poolDictionary.Add(enemyCharacter.EnemyType, poolBigZombie);
-
-                        break;
-
-                    case EnemyType.SpittingZombie:
-                        ObjectPool<EnemyCharacter> poolSpittingZombie = CreatePool(enemyCharacter.EnemyType, enemyCharacter, enemyCharacter.MaxCountOnCurrentScene);
-                        _poolDictionary.Add(enemyCharacter.EnemyType, poolSpittingZombie);
-
-                        break;
-
-                    default:
-                        throw new ArgumentException("This Enemy type does not exist");
-                }
+                ObjectPool<EnemyCharacter> pool = CreatePool(config.EnemyType, config.EnemyPrefab, config.MaxCountEnemyOnScene);
+                _poolDictionary.Add(config.EnemyType, pool);
             }
         }
     }

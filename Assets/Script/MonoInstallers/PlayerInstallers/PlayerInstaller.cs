@@ -21,8 +21,8 @@ public class PlayerInstaller : MonoInstaller
 
     private void BindPlayerComponents()
     {
-        Container.Bind<CharacterHealth>().AsSingle().NonLazy();
-        Container.Bind<MoveComponent>().AsSingle().NonLazy();
+        Container.Bind<CharacterHealth>().AsSingle();
+        Container.Bind<MoveComponent>().AsSingle();
     }
 
     private void CreatePlayer()
@@ -36,7 +36,7 @@ public class PlayerInstaller : MonoInstaller
         Character character = Container.InstantiatePrefabForComponent<Character>(_playerConfig.PlayerPrefab, 
             _playerConfig.SpawnCoordinate, Quaternion.identity, null);
 
-        Container.BindInterfacesAndSelfTo<Character>().FromInstance(character).AsSingle().NonLazy();
+        Container.BindInterfacesAndSelfTo<Character>().FromInstance(character).AsSingle();
     }
 
 }

@@ -10,7 +10,14 @@ public class EnemySpawnerInstaller : MonoInstaller
     {
         BindConfigs();
 
+        BindEnemyFactory();
+
         CreateAndBindEnemySpawners();
+    }
+
+    private void BindEnemyFactory()
+    {
+        Container.Bind<IEnemyFactory>().To<EnemyFactory>().AsSingle();
     }
 
     private void BindConfigs()

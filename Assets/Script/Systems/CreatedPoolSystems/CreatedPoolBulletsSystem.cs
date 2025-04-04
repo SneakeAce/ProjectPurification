@@ -6,6 +6,7 @@ public class CreatedPoolBulletsSystem : CreatedPoolSystem<Bullet, BulletType>
 {
     public CreatedPoolBulletsSystem(CreatedPoolBulletConfig config) : base(config)
     {
+        Initialization();
     }
 
     protected override void Initialization()

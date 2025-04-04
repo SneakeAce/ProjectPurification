@@ -21,16 +21,15 @@ public class EnemyCharacter : MonoBehaviour, IUnit, IEnemy, IPoolable
     private ObjectPool<EnemyCharacter> _pool;
 
     [Inject]
-    private void Construct(EnemyConfig enemyConfig, EnemyHealth health, Attack attackEnemy)
+    private void Construct(EnemyConfig enemyConfig, EnemyHealth health)
     {
         _enemyConfig = enemyConfig;
+        Debug.Log("EnemyCharacter / Construct / enemyConfig = " + _enemyConfig);
         _health = health;
-        _attackEnemy = attackEnemy;
     }
 
-    public int MaxCountOnCurrentScene => _enemyConfig.ÑharacteristicsEnemy.MaxCountOnCurrentScene;
-    public float MoveSpeed => _enemyConfig.ÑharacteristicsEnemy.MoveSpeed;
-    public EnemyType EnemyType => _enemyConfig.ÑharacteristicsEnemy.EnemyType;
+    public float MoveSpeed => _enemyConfig.CharacteristicsEnemy.MoveSpeed;
+    public EnemyType EnemyType => _enemyConfig.CharacteristicsEnemy.EnemyType;
     public Transform Transform => transform;
     public NavMeshAgent NavMeshAgent => _agent;
     public Animator Animator => _animator;
@@ -38,6 +37,11 @@ public class EnemyCharacter : MonoBehaviour, IUnit, IEnemy, IPoolable
     public EnemyHealth EnemyHealth => _health;
     public Rigidbody Rigidbody => _rigidbody;
     public Collider Collider  => _collider;
+
+    public void SetAttackComponent(Attack attackEnemy)
+    {
+        _attackEnemy = attackEnemy;
+    }
 
     public void Initialize()
     {
