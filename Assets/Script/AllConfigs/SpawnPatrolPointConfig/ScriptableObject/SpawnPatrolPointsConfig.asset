@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7c554fe14f38b42b52f2f5edc1b197, type: 3}
+  m_Name: SpawnPatrolPointsConfig
+  m_EditorClassIdentifier: 
+  <PointPrefab>k__BackingField: {fileID: 5612384273788525706, guid: f080fdb8327649945ab7b781dc20e169, type: 3}
+  <AnothersPointLayer>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 8192
+  <ObstacleLayer>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 49792
+  <MaxPatrolPoints>k__BackingField: 5
+  <MaxRadiusSpawnPoint>k__BackingField: 15
+  <RadiusCheckingAnotherNearestPoint>k__BackingField: 3
+  <RadiusCheckingObstacle>k__BackingField: 3
