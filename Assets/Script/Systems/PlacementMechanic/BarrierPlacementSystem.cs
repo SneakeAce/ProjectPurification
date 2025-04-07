@@ -12,8 +12,6 @@ public class BarrierPlacementSystem : ObjectPlacementSystem
 
     public BarrierPlacementSystem(BarrierPlacementSystemConfig config, Character character, CreatedPoolBarriersSystem poolBarriersSystem) : base(config, character)
     {
-        Debug.Log("BarrierPlacementSystem Construct");
-
         _modeNameInPlayerInput = config.ModeNameInPlayerInput;
 
         _poolBarriersSystem = poolBarriersSystem;
@@ -81,13 +79,13 @@ public class BarrierPlacementSystem : ObjectPlacementSystem
     {
         if (_instancePhantomObject == null)
         {
-            CreateObject();
+            _instancePhantomObject = CreateObject();
 
             _instancePhantomObject.transform.position = _character.transform.position;
             _instancePhantomObject.transform.rotation = Quaternion.identity;
         }
 
-        _phantomObjectMaterial = _instancePhantomObject.GetComponent<MeshRenderer>().material;
+        _phantomObjectMaterial = _instancePhantomObject.GetComponent<MeshRenderer>().sharedMaterial;
 
         _instancePhantomObject.transform.position = PlacingPosition();
 

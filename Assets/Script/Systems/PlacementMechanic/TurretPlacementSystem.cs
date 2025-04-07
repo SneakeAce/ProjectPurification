@@ -54,6 +54,7 @@ public class TurretPlacementSystem : ObjectPlacementSystem
 
     public override void WorkPlacementMode()
     {
+        Debug.Log("TurretPlacementsSystem / WorkPlacementMode");
         if (_poolObjectSelected && _placingJob && _poolObject != null)
         {
             if (_canShowPhantomObject)
@@ -84,7 +85,7 @@ public class TurretPlacementSystem : ObjectPlacementSystem
     {
         if (_instancePhantomObject == null)
         {
-            CreateObject();
+            _instancePhantomObject = CreateObject();
 
             _instancePhantomObject.transform.position = _character.transform.position;
             _instancePhantomObject.transform.rotation = Quaternion.identity;

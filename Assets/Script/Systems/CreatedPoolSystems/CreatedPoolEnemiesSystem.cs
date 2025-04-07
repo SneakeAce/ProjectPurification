@@ -15,11 +15,6 @@ public class CreatedPoolEnemiesSystem : CreatedPoolSystem<EnemyCharacter, EnemyT
 
     protected override void Initialization()
     {
-        foreach(var config in _config.PoolEnemyConfigs)
-        {
-            Debug.Log("CreatedPoolEnemiesSystem / Init / config EnemyType = " + config.EnemyType + " / config name = " + config.name);
-        }
-
         _poolDictionary = new Dictionary<EnemyType, ObjectPool<EnemyCharacter>>();
 
         StartingCreatePools();
@@ -27,8 +22,6 @@ public class CreatedPoolEnemiesSystem : CreatedPoolSystem<EnemyCharacter, EnemyT
 
     protected override void StartingCreatePools()
     {
-        Debug.Log("_Config == " + _config);
-
         if (_config.PoolEnemyConfigs.Count > 0)
         {
             foreach (var config in _config.PoolEnemyConfigs)
@@ -36,9 +29,7 @@ public class CreatedPoolEnemiesSystem : CreatedPoolSystem<EnemyCharacter, EnemyT
                 if (_poolDictionary.ContainsKey(config.EnemyType))
                     continue;
 
-                Debug.Log("Config.EnemyType == " + config.EnemyType);
-
-                ObjectPool<EnemyCharacter> pool = CreatePool(config.EnemyType, config.EnemyPrefab, config.MaxCountEnemyOnScene);
+                ObjectPool<EnemyCharacter> pool = CreatePool(config.EnemyType, config.EnemyPrefab, config.MaxCountCurrentEnemyOnScene);
                 _poolDictionary.Add(config.EnemyType, pool);
             }
         }

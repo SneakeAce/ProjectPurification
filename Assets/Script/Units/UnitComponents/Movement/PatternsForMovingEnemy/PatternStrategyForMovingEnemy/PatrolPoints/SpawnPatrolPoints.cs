@@ -68,14 +68,14 @@ public class SpawnPatrolPoints
             {
                 GameObject instancePatrolPoint = _gameObjectPerformer.CreateObject(_pointPrefab, point, Quaternion.identity);
 
-                Debug.Log("instancePatrolPoint = " + instancePatrolPoint);
+                //Debug.Log("instancePatrolPoint = " + instancePatrolPoint);
                 currentPatrolPoints++;
 
                 _patrolPoints.Add(instancePatrolPoint.transform);
             }
             else
             {
-                Debug.Log("Не удалось создать точку. Вернулось Vector3.zero");
+               // Debug.Log("Не удалось создать точку. Вернулось Vector3.zero");
                 break;
             }
         }

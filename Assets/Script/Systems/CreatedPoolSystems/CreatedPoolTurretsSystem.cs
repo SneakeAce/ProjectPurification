@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class CreatedPoolTurretsSystem : CreatedPoolSystem<Turret, TurretType>
 {
+
+    private CreatedPoolTurretConfig _config;
+
     public CreatedPoolTurretsSystem(CreatedPoolTurretConfig config) : base(config)
     {
+        _config = config;
+
         Initialization();
     }
 
@@ -18,35 +23,15 @@ public class CreatedPoolTurretsSystem : CreatedPoolSystem<Turret, TurretType>
 
     protected override void StartingCreatePools()
     {
-        if (_monoObjects.Count > 0)
+        if (_config.PoolTurretsConfigs.Count > 0)
         {
-            foreach (Turret turretObject in _monoObjects)
+            foreach (var config in _config.PoolTurretsConfigs)
             {
-                if (_poolDictionary.ContainsKey(turretObject.TurretType))
+                if (_poolDictionary.ContainsKey(config.TurretType))
                     continue;
 
-                switch (turretObject.TurretType)
-                {
-                    case TurretType.AutomaticTurret:
-                        ObjectPool<Turret> poolAutomaticTurret = CreatePool(turretObject.TurretType, turretObject, turretObject.MaxCountOnCurrentScene);
-                        _poolDictionary.Add(turretObject.TurretType, poolAutomaticTurret);
-                        break;
-
-                    case TurretType.MachineGunTurret:
-                        ObjectPool<Turret> poolMachineGunTurret = CreatePool(turretObject.TurretType, turretObject, turretObject.MaxCountOnCurrentScene);
-                        _poolDictionary.Add(turretObject.TurretType, poolMachineGunTurret);
-
-                        break;
-
-                    case TurretType.ArmorPiercingTurret:
-                        ObjectPool<Turret> poolArmorPiercingTurret = CreatePool(turretObject.TurretType, turretObject, turretObject.MaxCountOnCurrentScene);
-                        _poolDictionary.Add(turretObject.TurretType, poolArmorPiercingTurret);
-
-                        break;
-
-                    default:
-                        throw new ArgumentException("This turret type does not exist");
-                }
+                ObjectPool<Turret> pool = CreatePool(config.TurretType, config.Prefab, config.MaxCountCurrentTurretOnScene);
+                _poolDictionary.Add(config.TurretType, pool);
             }
         }
     }

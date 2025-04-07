@@ -64,7 +64,7 @@ public abstract class EnemySpawner : MonoBehaviour
             .Where(type => type != EnemyType.None && (_allowedEnemyTypeInSpawner & type) != 0)
             .ToList();
 
-        Debug.Log("EnemySpawner / GetRandomEnemyTypes / availableEnemies = " + availableEnemies.Count);
+        //Debug.Log("EnemySpawner / GetRandomEnemyTypes / availableEnemies = " + availableEnemies.Count);
 
         if (availableEnemies.Count <= 0)
             return new List<EnemyType>();

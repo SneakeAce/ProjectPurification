@@ -8,7 +8,7 @@ public interface IPlacementSystem
     public bool PlacingJob { get; }
 
     public event Action StopWork;
-    public event Action<GameObject> CreatePhantomObject;
+    public event Func<GameObject, GameObject> CreatePhantomObject;
     public event Action<GameObject> DestroyPhantomObject;
 
     void EnterMode(InputAction.CallbackContext context);

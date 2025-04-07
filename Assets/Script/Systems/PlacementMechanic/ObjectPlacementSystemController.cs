@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering.VirtualTexturing;
 using Zenject;
 
 public class ObjectPlacementSystemsController : MonoBehaviour
@@ -54,31 +53,37 @@ public class ObjectPlacementSystemsController : MonoBehaviour
 
         _playerInput.PlacementBarrierMode.TogglePlacementMode.performed -= OnTogglePlacementObjectMode;
         _playerInput.PlacementBarrierMode.ChooseTypeOfBarrirer.performed -= OnChooseTypeOfPlacementObject;
-        _playerInput.PlacementBarrierMode.DeactivatePlacementMode.performed -= OnDeactivatePlacementMode;
 
         _playerInput.PlacementTurretMode.TogglePlacementMode.performed -= OnTogglePlacementObjectMode;
         _playerInput.PlacementTurretMode.ChooseTypeTurret.performed -= OnChooseTypeOfPlacementObject;
-        _playerInput.PlacementTurretMode.DeactivateMode.performed -= OnDeactivatePlacementMode;        
         
         _playerInput.PlacementBarrierMode.TogglePlacementMode.performed += OnTogglePlacementObjectMode;
         _playerInput.PlacementBarrierMode.ChooseTypeOfBarrirer.performed += OnChooseTypeOfPlacementObject;
-        _playerInput.PlacementBarrierMode.DeactivatePlacementMode.performed += OnDeactivatePlacementMode;
 
         _playerInput.PlacementTurretMode.TogglePlacementMode.performed += OnTogglePlacementObjectMode;
         _playerInput.PlacementTurretMode.ChooseTypeTurret.performed += OnChooseTypeOfPlacementObject;
-        _playerInput.PlacementTurretMode.DeactivateMode.performed += OnDeactivatePlacementMode;
     }
 
     private void OnTogglePlacementObjectMode(InputAction.CallbackContext context)
     {
+        Debug.Log("PlacementController / OnTogglePlacementObjectMode");
+
         if (context.action.actionMap.name == _barrierPlacementModeName)
         {
+            _playerInput.PlacementBarrierMode.DeactivatePlacementMode.performed += OnDeactivatePlacementMode;
+
+            Debug.Log("PlacementController / OnTogglePlacementObjectMode / if / barrierPlacementMode");
+
             SetCurrentPlacementSystem(context, _barrierPlacementModeName);
 
             _playerInput.PlacementTurretMode.Disable();
         }
         else if (context.action.actionMap.name == _turretPlacementModeName)
         {
+            _playerInput.PlacementTurretMode.DeactivateMode.performed += OnDeactivatePlacementMode;
+
+            Debug.Log("PlacementController / OnTogglePlacementObjectMode / else if / turretPlacementMode");
+
             SetCurrentPlacementSystem(context, _turretPlacementModeName);
 
             _playerInput.PlacementBarrierMode.Disable();
@@ -90,8 +95,13 @@ public class ObjectPlacementSystemsController : MonoBehaviour
 
     private void SetCurrentPlacementSystem(InputAction.CallbackContext context, string namePlacementSystem)
     {
+        Debug.Log("PlacementController / SetCurrentPlacementSystem / context = " + context.action.name);
+
         if (_placementSystems.TryGetValue(namePlacementSystem, out var newPlacementSystem))
         {
+            Debug.Log("PlacementController / SetCurrentPlacementSystem / if TryGetValue newPlacementSystem = " + newPlacementSystem);
+            Debug.Log("PlacementController / SetCurrentPlacementSystem / if TryGetValue _currentPlacementSystem = " + _currentPlacementSystem);
+
             if (_currentPlacementSystem == newPlacementSystem)
                 return;
 
@@ -101,16 +111,18 @@ public class ObjectPlacementSystemsController : MonoBehaviour
             _currentPlacementSystem?.ExitMode();
 
             _currentPlacementSystem.CreatePhantomObject -= OnCreatePhantomObject;
-            _currentPlacementSystem.CreatePhantomObject -= OnDestroyPhantomObject;
+            _currentPlacementSystem.DestroyPhantomObject -= OnDestroyPhantomObject;
             _currentPlacementSystem.StopWork -= ResetInputActions;
 
             _currentPlacementSystem = newPlacementSystem;
 
             _currentPlacementSystem.CreatePhantomObject += OnCreatePhantomObject;
-            _currentPlacementSystem.CreatePhantomObject += OnDestroyPhantomObject;
+            _currentPlacementSystem.DestroyPhantomObject += OnDestroyPhantomObject;
             _currentPlacementSystem.StopWork += ResetInputActions;
 
             _currentPlacementSystem.EnterMode(context);
+
+            Debug.Log("PlacementController / SetCurrentPlacementSystem / currentPlacementSystem after all code = " + _currentPlacementSystem);
 
             StartWorkPlacementSystemCoroutine();
         }
@@ -149,6 +161,9 @@ public class ObjectPlacementSystemsController : MonoBehaviour
     {
         if (_placementSystems.TryGetValue(namePlacementSystem, out var currentPlacementSystem))
         {
+            Debug.Log("ObjectPlacementSystemsController / DeactivatePlacementMode / _currentPlacmentSystem = " + _currentPlacementSystem);
+            Debug.Log("ObjectPlacementSystemsController / DeactivatePlacementMode / currentPlacementSystem = " + currentPlacementSystem);
+
             if (_currentPlacementSystem != currentPlacementSystem)
                 return;
 
@@ -171,6 +186,7 @@ public class ObjectPlacementSystemsController : MonoBehaviour
     {
         if (_workPlacementSystemCoroutine != null)
         {
+            Debug.Log("ObjectPlacementSystemsController / StopWorkCoroutine");
             StopCoroutine(_workPlacementSystemCoroutine);
             _workPlacementSystemCoroutine = null;
         }
@@ -184,26 +200,27 @@ public class ObjectPlacementSystemsController : MonoBehaviour
 
             yield return null;
         }
-
-        if (_workPlacementSystemCoroutine != null)
-        {
-            StopCoroutine(_workPlacementSystemCoroutine);
-            _workPlacementSystemCoroutine = null;
-        }
     }
 
     private void ResetInputActions()
     {
+        _playerInput.PlacementBarrierMode.DeactivatePlacementMode.performed -= OnDeactivatePlacementMode;
+        _playerInput.PlacementTurretMode.DeactivateMode.performed -= OnDeactivatePlacementMode;
+
+        Debug.Log("ObjectPlacementSystemsController / RestInputActions");
+
         StopWorkPlacementSystemCoroutine();
+
+        _currentPlacementSystem.CreatePhantomObject -= OnCreatePhantomObject;
+        _currentPlacementSystem.DestroyPhantomObject -= OnDestroyPhantomObject;
+        _currentPlacementSystem.StopWork -= ResetInputActions;
 
         _playerInput.UI.Enable();
         _playerInput.PlayerShooting.Enable();
         _playerInput.PlacementTurretMode.Enable();
         _playerInput.PlacementBarrierMode.Enable();
 
-        _currentPlacementSystem.CreatePhantomObject -= OnCreatePhantomObject;
-        _currentPlacementSystem.CreatePhantomObject -= OnDestroyPhantomObject;
-        _currentPlacementSystem.StopWork -= ResetInputActions;
+        _currentPlacementSystem = null;
     }
 
     private void OnDestroyPhantomObject(GameObject phantomObject)
@@ -212,8 +229,10 @@ public class ObjectPlacementSystemsController : MonoBehaviour
             Destroy(phantomObject);
     }
 
-    private void OnCreatePhantomObject(GameObject prefab)
+    private GameObject OnCreatePhantomObject(GameObject prefab)
     {
-        Instantiate(prefab);
+        GameObject instance = Instantiate(prefab);
+
+        return instance;
     }
 }

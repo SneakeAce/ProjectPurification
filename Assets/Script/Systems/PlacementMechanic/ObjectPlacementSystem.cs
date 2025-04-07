@@ -32,7 +32,7 @@ public abstract class ObjectPlacementSystem : IPlacementSystem
     public string ModeNameInPlayerInput => _modeNameInPlayerInput;
 
     public event Action StopWork;
-    public event Action<GameObject> CreatePhantomObject;
+    public event Func<GameObject, GameObject> CreatePhantomObject;
     public event Action<GameObject> DestroyPhantomObject;
 
     protected ObjectPlacementSystem(ObjectPlacementSystemConfig config, Character character)
@@ -62,6 +62,8 @@ public abstract class ObjectPlacementSystem : IPlacementSystem
 
         if (_placingJob)
         {
+            _canShowPhantomObject = true;
+
             Debug.Log($"Called UI Placement System: {this}");
             // вызов UI в игре
         }
@@ -94,9 +96,9 @@ public abstract class ObjectPlacementSystem : IPlacementSystem
 
     public GameObject CreateObject()
     {
-        CreatePhantomObject?.Invoke(_currentPhantomObject);
+        GameObject instance = CreatePhantomObject?.Invoke(_currentPhantomObject);
 
-        return _currentPhantomObject;
+        return instance;
     }
 
     public void DestroyObject()

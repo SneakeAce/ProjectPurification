@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class CreatedPoolBarriersSystem : CreatedPoolSystem<PlaceableObject, BarriersType>
 {
-    public CreatedPoolBarriersSystem(CreatedPoolBarrirerConfig config) : base(config)
+    private CreatedPoolBarrierConfig _config;
+
+    public CreatedPoolBarriersSystem(CreatedPoolBarrierConfig config) : base(config)
     {
+        _config = config;
+
         Initialization();
     }
 
@@ -18,35 +22,15 @@ public class CreatedPoolBarriersSystem : CreatedPoolSystem<PlaceableObject, Barr
 
     protected override void StartingCreatePools()
     {
-        if (_monoObjects.Count > 0)
+        if (_config.PoolBarrierConfigs.Count > 0)
         {
-            foreach (PlaceableObject placeableObject in _monoObjects)
+            foreach (var config in _config.PoolBarrierConfigs)
             {
-                if (_poolDictionary.ContainsKey(placeableObject.BarrierType))
+                if (_poolDictionary.ContainsKey(config.BarrierType))
                     continue;
 
-                switch (placeableObject.BarrierType)
-                {
-                    case BarriersType.WoodBarrier:
-                        ObjectPool<PlaceableObject> poolWoodBarrier = CreatePool(placeableObject.BarrierType, placeableObject, placeableObject.MaxCountOnCurrentScene);
-                        _poolDictionary.Add(placeableObject.BarrierType, poolWoodBarrier);
-                        break;
-
-                    case BarriersType.MetallBarrier:
-                        ObjectPool<PlaceableObject> poolMetallBarrier = CreatePool(placeableObject.BarrierType, placeableObject, placeableObject.MaxCountOnCurrentScene);
-                        _poolDictionary.Add(placeableObject.BarrierType, poolMetallBarrier);
-
-                        break;
-
-                    case BarriersType.ConcreteBarrier:
-                        ObjectPool<PlaceableObject> poolConcreteBarrier = CreatePool(placeableObject.BarrierType, placeableObject, placeableObject.MaxCountOnCurrentScene);
-                        _poolDictionary.Add(placeableObject.BarrierType, poolConcreteBarrier);
-
-                        break;
-
-                    default:
-                        throw new ArgumentException("This barrier type does not exist");
-                }
+                ObjectPool<PlaceableObject> pool = CreatePool(config.BarrierType, config.Prefab, config.MaxCountCurrentBarrierOnScene);
+                _poolDictionary.Add(config.BarrierType, pool);
             }
         }
     }

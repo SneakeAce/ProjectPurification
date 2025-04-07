@@ -60,7 +60,7 @@ public class GlobalEnemySpawner : EnemySpawner
     {
         EnemyCharacter enemy = GetEnemy();
 
-        Debug.Log("Enemy in GlobaleSpawner in SpawnEnemy = " + enemy);
+       // Debug.Log("Enemy in GlobaleSpawner in SpawnEnemy = " + enemy);
 
         if (enemy == null)
             return;
@@ -134,21 +134,21 @@ public class GlobalEnemySpawner : EnemySpawner
 
         SpawnPoint newSpawnPoint = GetSpawnPoint(enemyTypes, out currentEnemyType);
 
-        Debug.Log("NewSpawnPoint in GlobalSpawner = " + newSpawnPoint);
+       // Debug.Log("NewSpawnPoint in GlobalSpawner = " + newSpawnPoint);
 
         if (newSpawnPoint == null)
             return null;
 
         Vector3 newPosition = GetSpawnPosition(newSpawnPoint);
 
-        Debug.Log("NewPosition in GlobalSpawner = " + newPosition);
+      //  Debug.Log("NewPosition in GlobalSpawner = " + newPosition);
 
         if (newPosition == Vector3.zero)
             return null;
 
         EnemyCharacter enemy = _enemyFactory.Create(newPosition, currentEnemyType, MinRotationValue, MaxRotationValue);
 
-        Debug.Log("Enemy in GlobalSpawner = " + enemy);
+       // Debug.Log("Enemy in GlobalSpawner = " + enemy);
 
         if (enemy == null)
             return null;
@@ -197,7 +197,7 @@ public class GlobalEnemySpawner : EnemySpawner
             }
         }
 
-        Debug.LogWarning($"Не удалось найти точку для спауна у {selectedSpawnPoint.name}, возвращаю стандартную позицию.");
+        //Debug.LogWarning($"Не удалось найти точку для спауна у {selectedSpawnPoint.name}, возвращаю стандартную позицию.");
         return selectedSpawnPoint.transform.position;
     }
 }
