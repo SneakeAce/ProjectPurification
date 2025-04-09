@@ -34,7 +34,7 @@ public class PatrolPattern : IBehavioralPattern
 
         _patrolPoints.Clear();
 
-        _patrolPoints = _spawnPatrolPoints.GetPatrolPoints();
+        _patrolPoints = _spawnPatrolPoints.GetPatrolPoints(_movable);
 
         if (_patrolPoints.Count > 0)
             _currentPoint = _patrolPoints[Random.Range(0, _patrolPoints.Count)];
@@ -168,7 +168,7 @@ public class PatrolPattern : IBehavioralPattern
     {
         _patrolPoints.Clear();
 
-        _patrolPoints = _spawnPatrolPoints.GetPatrolPoints();
+        _patrolPoints = _spawnPatrolPoints.GetPatrolPoints(_movable);
     }
 
     private void OnDeleteAllPoints(EnemyHealth enemyHealth)

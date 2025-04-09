@@ -7,6 +7,7 @@ public interface IEnemy
 {
     public EnemyType EnemyType { get; }
     float MoveSpeed { get; }
+    Transform PatrolPointsHolder { get; }
     Transform Transform { get; }
     NavMeshAgent NavMeshAgent { get; }
     Animator Animator { get; }

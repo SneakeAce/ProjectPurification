@@ -21,8 +21,8 @@ public class Rifle : Weapon
         if (bullet == null)
             return;
 
-        bullet.InitializeBullet(_spawnPoint.transform.position, rotate, WeaponConfig.WeaponStatsConfig.RangeShooting, 
-            WeaponConfig.WeaponStatsConfig.Damage, ReturnBulletToPool);
+        bullet.InitializeBullet(_spawnPoint.transform.position, rotate, WeaponConfig.WeaponStatsConfig.BaseRangeShooting, 
+            WeaponConfig.WeaponStatsConfig.BaseDamage, ReturnBulletToPool);
 
         CurrentValueChange();
     }

@@ -60,7 +60,7 @@ public class GlobalEnemySpawner : EnemySpawner
     {
         EnemyCharacter enemy = GetEnemy();
 
-       // Debug.Log("Enemy in GlobaleSpawner in SpawnEnemy = " + enemy);
+        Debug.Log("Enemy in GlobaleSpawner in SpawnEnemy = " + enemy);
 
         if (enemy == null)
             return;
@@ -119,7 +119,7 @@ public class GlobalEnemySpawner : EnemySpawner
 
     private void CreateSpawnPoint(ISpawnPointFactory factory)
     {
-        Transform holder = this.transform.Find(SpawnPointHolder);
+        Transform holder = transform.Find(SpawnPointHolder);
 
         _spawnPoints = factory.Create(holder);
     }
@@ -148,7 +148,7 @@ public class GlobalEnemySpawner : EnemySpawner
 
         EnemyCharacter enemy = _enemyFactory.Create(newPosition, currentEnemyType, MinRotationValue, MaxRotationValue);
 
-       // Debug.Log("Enemy in GlobalSpawner = " + enemy);
+        //Debug.Log("Enemy in GlobalSpawner = " + enemy);
 
         if (enemy == null)
             return null;

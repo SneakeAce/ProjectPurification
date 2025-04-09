@@ -12,6 +12,8 @@ public class PlacementSystemInstaller : MonoInstaller
     {
         BindPlacementSystemsConfigs();
 
+        BindBarrierFactory();
+
         BindPlacementSystems();
 
         BindPlacementSystemsController();
@@ -32,5 +34,10 @@ public class PlacementSystemInstaller : MonoInstaller
     private void BindPlacementSystemsController()
     {
         Container.Bind<ObjectPlacementSystemsController>().FromInstance(_placementSystemsController).AsSingle();
+    }
+
+    private void BindBarrierFactory()
+    {
+        Container.Bind<IBarrierFactory>().To<BarrierFactory>().AsSingle();
     }
 }

@@ -14,7 +14,6 @@ public class Turret : MonoBehaviour
     private TurretWeapon _weapon;
 
     public TurretType TurretType => _turretConfig.ÑharacteristicsTurret.TurretType;
-    public int MaxCountOnCurrentScene => _turretConfig.ÑharacteristicsTurret.MaxCountOnScene;
 
 
 }

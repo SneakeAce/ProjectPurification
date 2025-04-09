@@ -5,7 +5,9 @@ using Zenject;
 public class EnemyCharacter : MonoBehaviour, IUnit, IEnemy, IPoolable
 {
     private const string NameAttackHolder = "AttackHolder";
+    private const string NamePatrolPointHolder = "PatrolPointsHolder";
 
+    private Transform _patrolPointHolder;
     private Transform _holderAttackLogic;
 
     private IBehavioralPattern _behavioralPattern;
@@ -21,15 +23,14 @@ public class EnemyCharacter : MonoBehaviour, IUnit, IEnemy, IPoolable
     private ObjectPool<EnemyCharacter> _pool;
 
     [Inject]
-    private void Construct(EnemyConfig enemyConfig, EnemyHealth health)
+    private void Construct(EnemyHealth health)
     {
-        _enemyConfig = enemyConfig;
-        Debug.Log("EnemyCharacter / Construct / enemyConfig = " + _enemyConfig);
         _health = health;
     }
 
     public float MoveSpeed => _enemyConfig.CharacteristicsEnemy.MoveSpeed;
     public EnemyType EnemyType => _enemyConfig.CharacteristicsEnemy.EnemyType;
+    public Transform PatrolPointsHolder => _patrolPointHolder;
     public Transform Transform => transform;
     public NavMeshAgent NavMeshAgent => _agent;
     public Animator Animator => _animator;
@@ -38,8 +39,11 @@ public class EnemyCharacter : MonoBehaviour, IUnit, IEnemy, IPoolable
     public Rigidbody Rigidbody => _rigidbody;
     public Collider Collider  => _collider;
 
-    public void SetAttackComponent(Attack attackEnemy)
+
+    public void SetEnemyComponents(EnemyConfig config, Attack attackEnemy)
     {
+        _enemyConfig = config;
+
         _attackEnemy = attackEnemy;
     }
 
@@ -50,6 +54,7 @@ public class EnemyCharacter : MonoBehaviour, IUnit, IEnemy, IPoolable
         _animator = GetComponent<Animator>();
         _agent = GetComponent<NavMeshAgent>();
 
+        _patrolPointHolder = transform.Find(NamePatrolPointHolder);
         _holderAttackLogic = transform.Find(NameAttackHolder);
 
         _attackEnemy.Initialization(this, _enemyConfig);

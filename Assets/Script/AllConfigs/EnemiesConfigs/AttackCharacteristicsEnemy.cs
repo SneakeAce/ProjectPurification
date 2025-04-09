@@ -4,6 +4,7 @@ using UnityEngine;
 [Serializable]
 public class AttackCharacteristicsEnemy
 {
+    [field: SerializeField] public EnemyAttackType AttackType { get; private set; }
     [field: SerializeField] public float BaseDamage { get; private set; }
     [field: SerializeField] public float RadiusAttack { get; private set; }
     [field: SerializeField] public float ReloadingTime { get; private set; }

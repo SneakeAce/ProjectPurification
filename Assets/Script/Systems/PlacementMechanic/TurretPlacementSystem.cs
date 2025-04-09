@@ -4,7 +4,9 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class TurretPlacementSystem : ObjectPlacementSystem
-{
+{    
+    // ядекюрэ яхярелс нрякефхбюмхъ рейсыецн йнкхвеярбю пюяонкнфеммшу назейрнб ндмнцн рхою мю яжеме.
+
     private CreatedPoolTurretsSystem _poolTurretsSystem;
 
     private ObjectPool<Turret> _poolObject;

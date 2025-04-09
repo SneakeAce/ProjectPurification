@@ -64,9 +64,9 @@ public abstract class Weapon : MonoBehaviour
         _spawnPoint = _weaponConfig.WeaponStatsConfig.SpawnPointBullets;
         _bulletTypeUsedInCurrentWeapon = _weaponConfig.WeaponStatsConfig.BulletTypeUsed;
 
-        _currentMagazineCapacity = _maxMagazineCapacity = _weaponConfig.WeaponStatsConfig.MaxMagazineCapacity;
+        _currentMagazineCapacity = _maxMagazineCapacity = _weaponConfig.WeaponStatsConfig.BaseMaxMagazineCapacity;
 
-        _startDelayBeforeFiring = _weaponConfig.WeaponStatsConfig.DelayBeforeFiring;
+        _startDelayBeforeFiring = _weaponConfig.WeaponStatsConfig.BaseDelayBeforeFiring;
         _delayBeforeFiring = Mathf.Clamp(_delayBeforeFiring, MinDelayBeforeFiring, _startDelayBeforeFiring);
 
         _isCanWork = true;
@@ -101,7 +101,7 @@ public abstract class Weapon : MonoBehaviour
                 _reloadingWeaponCoroutine = null;
             }
 
-            _reloadingWeaponCoroutine = StartCoroutine(ReloadingJob(WeaponConfig.WeaponStatsConfig.ReloadingTime));
+            _reloadingWeaponCoroutine = StartCoroutine(ReloadingJob(WeaponConfig.WeaponStatsConfig.BaseReloadingTime));
         }
 
         // Ќаписать метод дл€ стрельбы с зажатой клавишей, одиночными встрелами и выстрелами очередью. „ерез Enum и нажатие клавиши

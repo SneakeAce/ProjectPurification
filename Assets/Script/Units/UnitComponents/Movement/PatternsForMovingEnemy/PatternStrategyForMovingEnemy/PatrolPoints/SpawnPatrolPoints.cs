@@ -56,7 +56,7 @@ public class SpawnPatrolPoints
         _destroyPointCoroutine = _coroutinePerformer.StartCoroutine(DestroyPointJob(item));
     }
 
-    public List<Transform> GetPatrolPoints()
+    public List<Transform> GetPatrolPoints(IEnemy enemy)
     {
         _patrolPoints = new List<Transform>();
 
@@ -72,6 +72,8 @@ public class SpawnPatrolPoints
                 currentPatrolPoints++;
 
                 _patrolPoints.Add(instancePatrolPoint.transform);
+
+                instancePatrolPoint.transform.SetParent(enemy.PatrolPointsHolder);
             }
             else
             {
@@ -89,9 +91,6 @@ public class SpawnPatrolPoints
 
         if (item != null)
             _gameObjectPerformer.DestroyObject(item);
-
-        _coroutinePerformer.StopCoroutine(_destroyPointCoroutine);
-        _destroyPointCoroutine = null;
     }
 
     private Vector3 RandomPosition()

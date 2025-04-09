@@ -1,4 +1,4 @@
-public enum ArmorTypes
+public enum ArmorType
 {
     None = 0,
     LightArmor = 1,

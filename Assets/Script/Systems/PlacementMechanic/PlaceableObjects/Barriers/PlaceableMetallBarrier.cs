@@ -4,8 +4,4 @@ using UnityEngine;
 
 public class PlaceableMetallBarrier : PlaceableObject
 {
-    public override void Initialization() 
-    { 
-        base.Initialization();
-    }
 }

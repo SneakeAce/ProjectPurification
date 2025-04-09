@@ -17,3 +17,7 @@ public enum WeaponAttackType
     ExplosiveRangeAttack = 4,
 }
 
+public enum BarrierAttackType
+{
+    PiercingDamage = 0
+}

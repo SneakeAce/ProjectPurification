@@ -7,11 +7,15 @@ public class EnemyFactory : IEnemyFactory
 
     private CreatedPoolEnemiesSystem _enemiesPools;
 
-    public EnemyFactory(DiContainer container, CreatedPoolEnemiesSystem enemiesPools)
+    private ConfigsLibrariesHandler<EnemyConfig, EnemyType> _handlerEnemyConfigs;
+
+    public EnemyFactory(DiContainer container, CreatedPoolEnemiesSystem enemiesPools, ConfigsLibrariesHandler<EnemyConfig, EnemyType> handlerEnemyConfigs)
     {
         _container = container;
 
         _enemiesPools = enemiesPools;
+
+        _handlerEnemyConfigs = handlerEnemyConfigs;
     }
 
     public EnemyCharacter Create(Vector3 spawnPosition, EnemyType enemyTypeInSpawner, 
@@ -27,15 +31,21 @@ public class EnemyFactory : IEnemyFactory
 
         EnemyCharacter enemy = enemyPool.GetPoolObject();
 
+        //Debug.Log("EnemyFactory / create / enemy = " + enemy);
+
         if (enemy == null)
             return null;
 
-        EnemyComponents(enemy, out enemyAttack, out patternSwitcher);
+        EnemyConfig config = GetEnemyConfig(enemyTypeInSpawner);
+
+        //Debug.Log("EnemyFactory / create / enemyCoonfig = " + config);
+
+        GetEnemyComponents(enemy, out enemyAttack, out patternSwitcher);
 
         _container.Inject(enemy);
         _container.Inject(patternSwitcher);
 
-        enemy.SetAttackComponent(enemyAttack);
+        enemy.SetEnemyComponents(config, enemyAttack);
 
         enemy.Initialize();
         enemy.SetPool(enemyPool);
@@ -56,9 +66,19 @@ public class EnemyFactory : IEnemyFactory
         return null;
     }
 
-    private void EnemyComponents(EnemyCharacter enemy, out Attack enemyAttack, out BehavioralPatternSwitcher patternSwitcher)
+    private void GetEnemyComponents(EnemyCharacter enemy, out Attack enemyAttack, out BehavioralPatternSwitcher patternSwitcher)
     {
         enemyAttack = enemy.GetComponentInChildren<Attack>();
         patternSwitcher = enemy.GetComponentInChildren<BehavioralPatternSwitcher>();
+    }
+
+    private EnemyConfig GetEnemyConfig(EnemyType type)
+    {
+        EnemyConfig config = _handlerEnemyConfigs.GetObjectConfig(type);
+
+        if (config == null)
+            return null;
+
+        return config;
     }
 }

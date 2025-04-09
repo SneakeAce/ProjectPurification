@@ -1,16 +1,22 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Zenject;
 
 public class BarrierPlacementSystem : ObjectPlacementSystem
 {
+    // ядекюрэ яхярелс нрякефхбюмхъ рейсыецн йнкхвеярбю пюяонкнфеммшу назейрнб ндмнцн рхою мю яжеме.
+    private LazyInject<BarrierFactory> _lazyFactory;
+    private BarrierFactory _factory;
+
     private CreatedPoolBarriersSystem _poolBarriersSystem;
 
     private ObjectPool<PlaceableObject> _poolObject;
 
     private Material _phantomObjectMaterial;
 
-    public BarrierPlacementSystem(BarrierPlacementSystemConfig config, Character character, CreatedPoolBarriersSystem poolBarriersSystem) : base(config, character)
+    public BarrierPlacementSystem(BarrierPlacementSystemConfig config, Character character, 
+        CreatedPoolBarriersSystem poolBarriersSystem) : base(config, character)
     {
         _modeNameInPlayerInput = config.ModeNameInPlayerInput;
 
@@ -108,11 +114,14 @@ public class BarrierPlacementSystem : ObjectPlacementSystem
 
     public override void PlaceObject()
     {
-        PlaceableObject newObject = _poolObject.GetPoolObject();
+        _factory = _lazyFactory.Value;
+
+        Vector3 spawnPosition = _instancePhantomObject.transform.position;
+        Quaternion rotation = _instancePhantomObject.transform.rotation;
+
+        PlaceableObject newObject = _factory.Create(spawnPosition, BarriersType.WoodBarrier, rotation);
 
         newObject.transform.SetParent(null);
-        newObject.transform.position = _instancePhantomObject.transform.position;
-        newObject.transform.rotation = _instancePhantomObject.transform.rotation;
 
         _phantomObjectMaterial = null;
 
