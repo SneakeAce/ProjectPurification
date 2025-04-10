@@ -16,7 +16,7 @@ public class TurretPlacementSystem : ObjectPlacementSystem
 
     public TurretPlacementSystem(TurretPlacementSystemConfig config, Character character, CreatedPoolTurretsSystem poolTurretsSystem) : base(config, character)
     {
-        Debug.Log("TurretPlacementSystem Construct");
+        //Debug.Log("TurretPlacementSystem Construct");
 
         _modeNameInPlayerInput = config.ModeNameInPlayerInput;
 

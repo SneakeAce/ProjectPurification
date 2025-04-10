@@ -1,56 +1,54 @@
-using System;
+
 using System.Collections;
 using UnityEngine;
 
-public class MoveBullet : MonoBehaviour
+public class MoveBullet : IBulletComponent
 {
-    private float _bulletSpeed;
+    private CoroutinePerformer _coroutinePerformer;
+    //private BulletConfig _config;
 
+    private Rigidbody _bulletRigidbody;
+    private Transform _bulletTransform;
+
+    private float _bulletSpeed;
     private float _distanceFlying;
+
     private Vector3 _startPoint;
 
-    private Bullet _bullet;
-
-    private Coroutine _checkDistanceFlyingCoroutine;
-
-    private Action<Bullet> _returnToPool;
-
-    public void Initialize(Bullet bullet, Vector3 startPoint, float distanceFlying, float bulletSpeed, Action<Bullet> returnToPool)
+    public MoveBullet(BulletConfig config, CoroutinePerformer routinePerformer)
     {
-        _returnToPool = returnToPool;
+        //_config = config;
 
+        _coroutinePerformer = routinePerformer;
+
+        _bulletSpeed = config.BaseBulletSpeed;
+    }
+
+    public void Initialize(Bullet bullet, Vector3 startPoint, float distanceFlying)
+    {
+        _startPoint = startPoint;
         _distanceFlying = distanceFlying;
-        _bulletSpeed = bulletSpeed;
 
-        _startPoint = startPoint; 
-
-        _bullet = bullet;
-
+        _bulletRigidbody = bullet.GetRigidbodyBullet();
+        _bulletTransform = bullet.GetTransformBullet();
+        
         BulletMove();
-
-        _checkDistanceFlyingCoroutine = StartCoroutine(CheckDistanceFlyingJob());
     }
     
     private void BulletMove()
     {
-        _bullet.Rigidbody.velocity = transform.forward * _bulletSpeed;
-    }
+        _coroutinePerformer.StartCoroutine(CheckDistanceFlyingJob());
 
-    private void DeactivateBullet()
-    {
-        _returnToPool?.Invoke(_bullet);
+        _bulletRigidbody.velocity = _bulletTransform.forward * _bulletSpeed;
     }
 
     private IEnumerator CheckDistanceFlyingJob()
     {
-        while (Vector3.Distance(_startPoint, _bullet.transform.position) < _distanceFlying)
+        while (Vector3.Distance(_startPoint, _bulletTransform.position) < _distanceFlying)
         {
             yield return null;
         }
 
-        DeactivateBullet();
-
-        StopCoroutine(_checkDistanceFlyingCoroutine);
-        _checkDistanceFlyingCoroutine = null;
+        // Вызов метода отвечающий за возврат пули в пул.
     }
 }

@@ -1,71 +1,50 @@
-using DG.Tweening;
-using System;
 using UnityEngine;
 using Zenject;
 
 public abstract class Bullet : MonoBehaviour
 {
     private BulletConfig _bulletConfig;
-    private BulletType _bulletType;
 
-    private Rigidbody _rigidbody;
+    private AttackBullet _attackBullet;
     private MoveBullet _moveBullet;
 
-    private int _maxCountOnScene;
-
-    protected float _damage;
-    protected Action<Bullet> _returnToPool;
+    private Rigidbody _rigidbody;
 
     [Inject]
-    private void Consturct(BulletConfig bulletConfig)
+    private void Consturct(AttackBullet attackBullet, MoveBullet moveBullet)
     {
-        _bulletConfig = bulletConfig;
+        _attackBullet = attackBullet;
+        _moveBullet = moveBullet;
 
-        _bulletType = _bulletConfig.BulletType;
-
-        _maxCountOnScene = _bulletConfig.MaxCountOnScene;
-    }
-
-    public Rigidbody Rigidbody { get => _rigidbody; }
-    public BulletType BulletType { get => _bulletType; }
-    public int MaxCountOnScene { get => _maxCountOnScene;}
-
-    public abstract void DamageDeal(EnemyCharacter unit);
-
-    public void InitializeBullet(Vector3 startPoint, Quaternion rotateDirection, float distanceFlying, float bulletDamage, Action<Bullet> returnToPool)
-    {
         _rigidbody = GetComponent<Rigidbody>();
         _moveBullet = GetComponent<MoveBullet>();
+    }
 
+    public Rigidbody GetRigidbodyBullet() => _rigidbody;
+    
+    public Transform GetTransformBullet() => transform;
+
+    public void InitializeBullet(Vector3 startPoint, Quaternion rotateDirection, float distanceFlying)
+    {
+        StartMoveBullet(startPoint, rotateDirection, distanceFlying);
+    }
+
+    public void SetComponents(BulletConfig config)
+    {
+        _bulletConfig = config;
+    }
+
+    private void StartMoveBullet(Vector3 startPoint, Quaternion rotateDirection, float distanceFlying)
+    {
         transform.position = startPoint;
         transform.rotation = rotateDirection;
 
-        _returnToPool = returnToPool;
-
-        _damage = bulletDamage;
-
-        _moveBullet.Initialize(this, startPoint, distanceFlying, _bulletConfig.BulletSpeed, _returnToPool);
+        _moveBullet.Initialize(this, startPoint, distanceFlying);
     }
 
-    private void OnTriggerEnter(Collider collision)
+    private void OnTriggerEnter(Collider collider)
     {
-        //Debug.Log("Collision == " + collision);
-
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
-        {
-            EnemyCharacter target = collision.gameObject.GetComponent<EnemyCharacter>();
-
-            Debug.Log("Bullet enter collision / target = " + target);
-
-            DamageDeal(target);
-
-            DeactivateBullet();
-        }
-    }
-
-    private void DeactivateBullet()
-    {
-        _returnToPool?.Invoke(this);
+        _attackBullet.OnTriggerEnter(collider);
     }
 
 }

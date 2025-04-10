@@ -21,14 +21,14 @@ public abstract class EnemySpawner : MonoBehaviour
 
     protected EnemyType _allowedEnemyTypeInSpawner;
 
-    protected IEnemyFactory _enemyFactory;
+    protected IFactory<EnemyCharacter, EnemyType> _enemyFactory;
 
     protected BehavioralPatternSwitcher _behavioralPattern;
 
     protected Coroutine _spawnEnemyCoroutine;
 
     [Inject]
-    private void Construct(IEnemyFactory enemyFactory)
+    private void Construct(IFactory<EnemyCharacter, EnemyType> enemyFactory)
     {
         _enemyFactory = enemyFactory;
     }

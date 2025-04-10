@@ -6,8 +6,8 @@ using Zenject;
 public class BarrierPlacementSystem : ObjectPlacementSystem
 {
     // ядекюрэ яхярелс нрякефхбюмхъ рейсыецн йнкхвеярбю пюяонкнфеммшу назейрнб ндмнцн рхою мю яжеме.
-    private LazyInject<BarrierFactory> _lazyFactory;
-    private BarrierFactory _factory;
+    private LazyInject<IFactory<PlaceableObject, BarriersType>> _lazyFactory;
+    private IFactory<PlaceableObject, BarriersType> _factory;
 
     private CreatedPoolBarriersSystem _poolBarriersSystem;
 

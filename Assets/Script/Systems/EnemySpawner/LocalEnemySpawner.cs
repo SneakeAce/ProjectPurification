@@ -139,7 +139,9 @@ public class LocalEnemySpawner : EnemySpawner
         if (newPosition == Vector3.zero)
             return null;
 
-        EnemyCharacter enemy = _enemyFactory.Create(newPosition, currentEnemyType, MinRotationValue, MaxRotationValue);
+        Quaternion randomRotation = Quaternion.Euler(MinRotationValue, Random.Range(MinRotationValue, MaxRotationValue), MinRotationValue);
+
+        EnemyCharacter enemy = _enemyFactory.Create(newPosition, currentEnemyType, randomRotation);
 
         if (enemy == null)
             return null;

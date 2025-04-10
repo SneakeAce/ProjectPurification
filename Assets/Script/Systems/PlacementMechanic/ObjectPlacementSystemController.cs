@@ -19,17 +19,11 @@ public class ObjectPlacementSystemsController : MonoBehaviour
     [Inject]
     private void Construct(PlayerInput playerInput, List<IPlacementSystem> placementSystems)
     {
-        // Переделать так, чтобы в аргументах был List<IPlacmenetSystem>(), а потом из него извлекать нужную мне систему.
         _playerInput = playerInput;
 
         foreach(IPlacementSystem system in placementSystems)
         {
             _placementSystems.Add(system.ModeNameInPlayerInput, system);
-        }
-
-        foreach (var key in _placementSystems)
-        {
-            Debug.Log("dictionary key = " + key.Key + " / dictionary value = " + key.Value);
         }
 
         foreach(var dicitonaryKey in _placementSystems)
@@ -49,8 +43,6 @@ public class ObjectPlacementSystemsController : MonoBehaviour
 
     private void StartSetupInputActions()
     {
-        Debug.Log("PlacementController / StartSetupInputActions");
-
         _playerInput.PlacementBarrierMode.TogglePlacementMode.performed -= OnTogglePlacementObjectMode;
         _playerInput.PlacementBarrierMode.ChooseTypeOfBarrirer.performed -= OnChooseTypeOfPlacementObject;
 
@@ -66,13 +58,9 @@ public class ObjectPlacementSystemsController : MonoBehaviour
 
     private void OnTogglePlacementObjectMode(InputAction.CallbackContext context)
     {
-        Debug.Log("PlacementController / OnTogglePlacementObjectMode");
-
         if (context.action.actionMap.name == _barrierPlacementModeName)
         {
             _playerInput.PlacementBarrierMode.DeactivatePlacementMode.performed += OnDeactivatePlacementMode;
-
-            Debug.Log("PlacementController / OnTogglePlacementObjectMode / if / barrierPlacementMode");
 
             SetCurrentPlacementSystem(context, _barrierPlacementModeName);
 
@@ -81,8 +69,6 @@ public class ObjectPlacementSystemsController : MonoBehaviour
         else if (context.action.actionMap.name == _turretPlacementModeName)
         {
             _playerInput.PlacementTurretMode.DeactivateMode.performed += OnDeactivatePlacementMode;
-
-            Debug.Log("PlacementController / OnTogglePlacementObjectMode / else if / turretPlacementMode");
 
             SetCurrentPlacementSystem(context, _turretPlacementModeName);
 
@@ -95,13 +81,8 @@ public class ObjectPlacementSystemsController : MonoBehaviour
 
     private void SetCurrentPlacementSystem(InputAction.CallbackContext context, string namePlacementSystem)
     {
-        Debug.Log("PlacementController / SetCurrentPlacementSystem / context = " + context.action.name);
-
         if (_placementSystems.TryGetValue(namePlacementSystem, out var newPlacementSystem))
         {
-            Debug.Log("PlacementController / SetCurrentPlacementSystem / if TryGetValue newPlacementSystem = " + newPlacementSystem);
-            Debug.Log("PlacementController / SetCurrentPlacementSystem / if TryGetValue _currentPlacementSystem = " + _currentPlacementSystem);
-
             if (_currentPlacementSystem == newPlacementSystem)
                 return;
 
@@ -121,8 +102,6 @@ public class ObjectPlacementSystemsController : MonoBehaviour
             _currentPlacementSystem.StopWork += ResetInputActions;
 
             _currentPlacementSystem.EnterMode(context);
-
-            Debug.Log("PlacementController / SetCurrentPlacementSystem / currentPlacementSystem after all code = " + _currentPlacementSystem);
 
             StartWorkPlacementSystemCoroutine();
         }
@@ -161,9 +140,6 @@ public class ObjectPlacementSystemsController : MonoBehaviour
     {
         if (_placementSystems.TryGetValue(namePlacementSystem, out var currentPlacementSystem))
         {
-            Debug.Log("ObjectPlacementSystemsController / DeactivatePlacementMode / _currentPlacmentSystem = " + _currentPlacementSystem);
-            Debug.Log("ObjectPlacementSystemsController / DeactivatePlacementMode / currentPlacementSystem = " + currentPlacementSystem);
-
             if (_currentPlacementSystem != currentPlacementSystem)
                 return;
 
@@ -186,7 +162,6 @@ public class ObjectPlacementSystemsController : MonoBehaviour
     {
         if (_workPlacementSystemCoroutine != null)
         {
-            Debug.Log("ObjectPlacementSystemsController / StopWorkCoroutine");
             StopCoroutine(_workPlacementSystemCoroutine);
             _workPlacementSystemCoroutine = null;
         }
@@ -206,8 +181,6 @@ public class ObjectPlacementSystemsController : MonoBehaviour
     {
         _playerInput.PlacementBarrierMode.DeactivatePlacementMode.performed -= OnDeactivatePlacementMode;
         _playerInput.PlacementTurretMode.DeactivateMode.performed -= OnDeactivatePlacementMode;
-
-        Debug.Log("ObjectPlacementSystemsController / RestInputActions");
 
         StopWorkPlacementSystemCoroutine();
 

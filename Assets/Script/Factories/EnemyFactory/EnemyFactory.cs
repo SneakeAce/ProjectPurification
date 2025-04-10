@@ -1,7 +1,7 @@
 using UnityEngine;
 using Zenject;
 
-public class EnemyFactory : IEnemyFactory
+public class EnemyFactory : IFactory<EnemyCharacter, EnemyType>
 {
     private DiContainer _container;
 
@@ -19,7 +19,7 @@ public class EnemyFactory : IEnemyFactory
     }
 
     public EnemyCharacter Create(Vector3 spawnPosition, EnemyType enemyTypeInSpawner, 
-        float minRotationValue, float maxRotationValue)
+        Quaternion rotation)
     {
         Attack enemyAttack;
         BehavioralPatternSwitcher patternSwitcher;
@@ -51,7 +51,7 @@ public class EnemyFactory : IEnemyFactory
         enemy.SetPool(enemyPool);
 
         enemy.transform.position = spawnPosition;
-        enemy.transform.rotation = Quaternion.Euler(minRotationValue, Random.Range(minRotationValue, maxRotationValue), minRotationValue);
+        enemy.transform.rotation = rotation;
 
         return enemy;
     }

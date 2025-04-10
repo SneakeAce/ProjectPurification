@@ -1,22 +1,22 @@
 using UnityEngine;
 using Zenject;
 
-public class BarrierFactory : IBarrierFactory
+public class BarrierFactory : IFactory<PlaceableObject, BarriersType>
 {
     private DiContainer _container;
 
-    private CreatedPoolBarriersSystem _enemiesPools;
+    private CreatedPoolBarriersSystem _barrierPools;
 
-    private ConfigsLibrariesHandler<PlaceableObjectConfig, BarriersType> _handlerEnemyConfigs;
+    private ConfigsLibrariesHandler<PlaceableObjectConfig, BarriersType> _handlerBarrrierConfigs;
 
-    public BarrierFactory(DiContainer container, CreatedPoolBarriersSystem enemiesPools, 
+    public BarrierFactory(DiContainer container, CreatedPoolBarriersSystem barrierPools, 
         ConfigsLibrariesHandler<PlaceableObjectConfig, BarriersType> handlerBarrierConfigs)
     {
         _container = container;
 
-        _enemiesPools = enemiesPools;
+        _barrierPools = barrierPools;
 
-        _handlerEnemyConfigs = handlerBarrierConfigs;
+        _handlerBarrrierConfigs = handlerBarrierConfigs;
     }
 
     public PlaceableObject Create(Vector3 spawnPosition, BarriersType barrierType,
@@ -46,9 +46,9 @@ public class BarrierFactory : IBarrierFactory
 
     private ObjectPool<PlaceableObject> GetPool(BarriersType barrierType)
     {
-        BarriersType enemyTypeSelected = barrierType;
+        BarriersType barrierTypeSelected = barrierType;
 
-        if (_enemiesPools.PoolDictionary.TryGetValue(enemyTypeSelected, out ObjectPool<PlaceableObject> poolSelected))
+        if (_barrierPools.PoolDictionary.TryGetValue(barrierTypeSelected, out ObjectPool<PlaceableObject> poolSelected))
             return poolSelected;
 
         return null;
@@ -56,7 +56,7 @@ public class BarrierFactory : IBarrierFactory
 
     private PlaceableObjectConfig GetBarrierConfig(BarriersType type)
     {
-        PlaceableObjectConfig config = _handlerEnemyConfigs.GetObjectConfig(type);
+        PlaceableObjectConfig config = _handlerBarrrierConfigs.GetObjectConfig(type);
 
         if (config == null)
             return null;

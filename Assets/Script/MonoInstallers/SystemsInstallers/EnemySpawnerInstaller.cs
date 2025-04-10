@@ -17,7 +17,7 @@ public class EnemySpawnerInstaller : MonoInstaller
 
     private void BindEnemyFactory()
     {
-        Container.Bind<IEnemyFactory>().To<EnemyFactory>().AsSingle();
+        Container.Bind<IFactory<EnemyCharacter, EnemyType>>().To<EnemyFactory>().AsSingle();
     }
 
     private void BindConfigs()

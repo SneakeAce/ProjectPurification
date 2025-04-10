@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69c3a10909dc6a9459b90ec774b476e6, type: 3}
   m_Name: BulletConfig
   m_EditorClassIdentifier: 
-  <BulletPrefab>k__BackingField: {fileID: 2120314933304376943, guid: 18e95df3b7ac9154991a68b1a2bd7723, type: 3}
   <BulletType>k__BackingField: 1
-  <MaxCountOnScene>k__BackingField: 40
-  <BulletSpeed>k__BackingField: 300
+  <AttackType>k__BackingField: 3
+  <BaseBulletDamage>k__BackingField: 20
+  <BaseBulletSpeed>k__BackingField: 100
+  <EnemyLayer>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 256

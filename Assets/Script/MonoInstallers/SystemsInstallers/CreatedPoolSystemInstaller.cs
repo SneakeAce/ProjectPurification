@@ -26,7 +26,7 @@ public class CreatedPoolSystemInstaller : MonoInstaller
     private void BindCreatedPoolSystems()
     {
         Container.Bind<CreatedPoolBarriersSystem>().AsTransient();
-        Container.Bind<CreatedPoolBulletsSystem>().AsTransient();
+        Container.Bind<CreatedPoolBulletsSystem>().AsTransient().NonLazy();
         Container.Bind<CreatedPoolEnemiesSystem>().AsTransient();
         Container.Bind<CreatedPoolTurretsSystem>().AsTransient();
     }

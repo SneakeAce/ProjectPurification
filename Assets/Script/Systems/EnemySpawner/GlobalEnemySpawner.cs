@@ -60,7 +60,7 @@ public class GlobalEnemySpawner : EnemySpawner
     {
         EnemyCharacter enemy = GetEnemy();
 
-        Debug.Log("Enemy in GlobaleSpawner in SpawnEnemy = " + enemy);
+        //Debug.Log("Enemy in GlobaleSpawner in SpawnEnemy = " + enemy);
 
         if (enemy == null)
             return;
@@ -71,10 +71,11 @@ public class GlobalEnemySpawner : EnemySpawner
 
     public override bool CheckEnemyAroundSpawnPoint(Vector3 spawnPointPosition)
     {
-        Collider[] enemyInRadius = Physics.OverlapSphere(spawnPointPosition, _radiusCheckingEnemyAround, _enemyLayer);
+        Collider[] enemyInRadius = Physics.OverlapSphere(spawnPointPosition, _radiusCheckingEnemyAround);
 
         if (enemyInRadius.Length > 0)
             return false;
+
 
         return true;
     }
@@ -146,7 +147,9 @@ public class GlobalEnemySpawner : EnemySpawner
         if (newPosition == Vector3.zero)
             return null;
 
-        EnemyCharacter enemy = _enemyFactory.Create(newPosition, currentEnemyType, MinRotationValue, MaxRotationValue);
+        Quaternion randomRotation = Quaternion.Euler(MinRotationValue, Random.Range(MinRotationValue, MaxRotationValue), MinRotationValue);
+
+        EnemyCharacter enemy = _enemyFactory.Create(newPosition, currentEnemyType, randomRotation);
 
         //Debug.Log("Enemy in GlobalSpawner = " + enemy);
 

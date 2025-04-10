@@ -38,6 +38,6 @@ public class PlacementSystemInstaller : MonoInstaller
 
     private void BindBarrierFactory()
     {
-        Container.Bind<IBarrierFactory>().To<BarrierFactory>().AsSingle();
+        Container.Bind<IFactory<PlaceableObject, BarriersType>>().To<BarrierFactory>().AsSingle();
     }
 }
