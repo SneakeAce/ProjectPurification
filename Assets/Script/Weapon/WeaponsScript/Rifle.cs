@@ -10,20 +10,23 @@ public class Rifle : Weapon
 
     protected override void Shooting()
     {
-        //Quaternion rotate = Quaternion.Euler(0, _character.transform.eulerAngles.y, 0);
+        Quaternion rotate = Quaternion.Euler(0, _character.transform.eulerAngles.y, 0);
 
-        //_currentMagazineCapacity = _currentMagazineCapacity - ReleasedBulletsOfSingleShootingMode;
+        _currentMagazineCapacity = _currentMagazineCapacity - ReleasedBulletsOfSingleShootingMode;
+        _currentMagazineCapacity = Mathf.Clamp(_currentMagazineCapacity, MinMagazineCapacity, MaxMagazineCapacity);
 
-        //_delayBeforeFiring = _startDelayBeforeFiring;
+        SpawnBullet(rotate);
 
-        ////Bullet bullet = _bulletPool.GetPoolObject();
-
-        //if (bullet == null)
-        //    return;
-
-        //bullet.InitializeBullet(_spawnPointBullet.transform.position, rotate, WeaponConfig.WeaponStatsConfig.BaseRangeShooting);
-
-        //CurrentValueChange();
+        CurrentMagazineValueChange();
     }
 
+    protected override void SpawnBullet(Quaternion rotate)
+    {
+        Bullet bullet = GetBullet(rotate);
+
+        if (bullet == null)
+            return;
+
+        bullet.InitializeBullet(_spawnPointBullet.transform.position, rotate, _baseShootingRange);
+    }
 }

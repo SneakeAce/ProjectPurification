@@ -32,7 +32,7 @@ public class BulletFactory : IFactory<Bullet, BulletType>
         if (bullet == null)
             return null;
 
-        BulletConfig config = GetBarrierConfig(bulletType);
+        BulletConfig config = GetBulletConfig(bulletType);
 
         _container.Inject(bullet);
 
@@ -54,7 +54,7 @@ public class BulletFactory : IFactory<Bullet, BulletType>
         return null;
     }
 
-    private BulletConfig GetBarrierConfig(BulletType type)
+    private BulletConfig GetBulletConfig(BulletType type)
     {
         BulletConfig config = _handlerBulletConfigs.GetObjectConfig(type);
 
