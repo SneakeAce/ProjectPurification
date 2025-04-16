@@ -3,7 +3,8 @@ using System;
 [Flags]
 public enum FiringMode
 {
-    AutomaticFireMode = 0 << 0,
-    BurstFireMode = 1 << 1,
-    SingleFireMode = 2 << 2,
+    None = 0 << 0,
+    AutomaticFireMode = 1 << 1,
+    BurstFireMode = 1 << 2,
+    SingleFireMode = 1 << 4,
 }

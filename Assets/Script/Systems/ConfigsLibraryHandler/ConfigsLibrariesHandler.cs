@@ -17,6 +17,16 @@ public class ConfigsLibrariesHandler<TConfig, TEnum>
         Initialization();
     }
 
+    public TConfig GetObjectConfig(TEnum objectType)
+    {
+        if (_objectConfigsDictionary.ContainsKey(objectType) == false)
+            return null;
+
+        TConfig config = _objectConfigsDictionary[objectType];
+
+        return config;
+    }
+
     private void Initialization()
     {
         _objectConfigsDictionary = new Dictionary<TEnum, TConfig>();
@@ -32,14 +42,5 @@ public class ConfigsLibrariesHandler<TConfig, TEnum>
         }
     }
     
-    public TConfig GetObjectConfig(TEnum objectType)
-    {
-        if (_objectConfigsDictionary.ContainsKey(objectType) == false)
-            return null;
-
-        TConfig config = _objectConfigsDictionary[objectType];
-
-        return config;
-    }
 
 }

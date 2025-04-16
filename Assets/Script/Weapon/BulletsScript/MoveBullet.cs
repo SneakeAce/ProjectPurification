@@ -1,34 +1,35 @@
-
 using System.Collections;
 using UnityEngine;
 
-public class MoveBullet : IBulletComponent
+public class MoveBullet
 {
     private CoroutinePerformer _coroutinePerformer;
     //private BulletConfig _config;
 
     private Rigidbody _bulletRigidbody;
     private Transform _bulletTransform;
+    private Bullet _bullet;
 
     private float _bulletSpeed;
     private float _distanceFlying;
 
     private Vector3 _startPoint;
 
-    public MoveBullet(BulletConfig config, CoroutinePerformer routinePerformer)
+    public MoveBullet(CoroutinePerformer routinePerformer)
     {
         //_config = config;
 
         _coroutinePerformer = routinePerformer;
-
-        _bulletSpeed = config.BaseBulletSpeed;
     }
 
-    public void Initialize(Bullet bullet, Vector3 startPoint, float distanceFlying)
+    public void Initialize(BulletConfig config, Bullet bullet, Vector3 startPoint, float distanceFlying)
     {
+        _bulletSpeed = config.BaseBulletSpeed;
+
         _startPoint = startPoint;
         _distanceFlying = distanceFlying;
 
+        _bullet = bullet;
         _bulletRigidbody = bullet.GetRigidbodyBullet();
         _bulletTransform = bullet.GetTransformBullet();
         
@@ -49,6 +50,7 @@ public class MoveBullet : IBulletComponent
             yield return null;
         }
 
+        _bullet?.ReturnToPool();
         // Вызов метода отвечающий за возврат пули в пул.
     }
 }

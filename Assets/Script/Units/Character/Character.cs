@@ -12,6 +12,8 @@ public class Character : MonoBehaviour, IUnit
     private Collider _collider;
     private Animator _animator;
 
+    private WeaponHolder _weaponHolder;
+
     [Inject]
     private void Construct(PlayerInput playerInput, PlayerConfig playerConfig, CharacterHealth health, MoveComponent moveComponent)
     {
@@ -23,6 +25,8 @@ public class Character : MonoBehaviour, IUnit
         _health = health;
         _moveComponent = moveComponent;
 
+        GetWeaponHolder();
+
         Initialization();
     }
 
@@ -31,6 +35,12 @@ public class Character : MonoBehaviour, IUnit
     public Collider Collider => _collider;
     public Animator Animator => _animator;
     public PlayerConfig PlayerConfig => _playerConfig;
+    public WeaponHolder WeaponHolder => _weaponHolder;
+
+    private void GetWeaponHolder()
+    {
+        _weaponHolder = GetComponentInChildren<WeaponHolder>();
+    }
 
     private void Initialization()
     {

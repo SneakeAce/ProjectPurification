@@ -22,6 +22,8 @@ public class BulletFactory : IFactory<Bullet, BulletType>
     public Bullet Create(Vector3 spawnPosition, BulletType bulletType,
         Quaternion rotation)
     {
+
+        Debug.Log("BulletFactory / Bullet Create ");
         ObjectPool<Bullet> bulletPool = GetPool(bulletType);
 
         if (bulletPool == null)
@@ -37,6 +39,7 @@ public class BulletFactory : IFactory<Bullet, BulletType>
         _container.Inject(bullet);
 
         bullet.SetComponents(config);
+        bullet.SetPool(bulletPool);
 
         bullet.transform.position = spawnPosition;
         bullet.transform.rotation = rotation;

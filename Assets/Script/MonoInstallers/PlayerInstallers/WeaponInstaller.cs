@@ -3,17 +3,34 @@ using Zenject;
 
 public class WeaponInstaller : MonoInstaller
 {
-    [SerializeField] private WeaponConfig _weaponConfig;
+    [SerializeField] private InputForWeaponAttackHandler _inputForWeapon;
+    [SerializeField] private SwitchWeaponHandler _weaponHandler;
 
     public override void InstallBindings()
     {
-        BindWeapon();
+        BindWeaponFactory();
+
+        BindFiringModeStrategies();
+
+        BindInputForWeapon();
     }
 
-    private void BindWeapon()
+    private void BindWeaponFactory()
     {
-            Container.Bind<WeaponConfig>().FromInstance(_weaponConfig).AsSingle();
+        Container.Bind<IWeaponFactory>().To<WeaponFactory>().AsSingle();
+    }
 
-            Container.Bind<Weapon>().FromComponentInHierarchy().AsSingle();
+    private void BindInputForWeapon()
+    {
+        Container.Bind<InputForWeaponAttackHandler>().FromInstance(_inputForWeapon).AsSingle();
+
+        Container.Bind<SwitchWeaponHandler>().FromInstance(_weaponHandler).AsSingle(); // !!!”¡–¿“‹ œŒ“ŒÃ!!!
+    }
+
+    private void BindFiringModeStrategies()
+    {
+        Container.Bind<IFiringModeStrategy>().To<AutoFiringMode>().AsTransient();
+        Container.Bind<IFiringModeStrategy>().To<SingleFiringMode>().AsTransient();
+        Container.Bind<IFiringModeStrategy>().To<BurstFiringMode>().AsTransient();
     }
 }

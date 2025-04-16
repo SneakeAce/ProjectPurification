@@ -1,7 +1,7 @@
 using UnityEngine;
 using Zenject;
 
-public abstract class Bullet : MonoBehaviour
+public abstract class Bullet : MonoBehaviour, IPoolable
 {
     private BulletConfig _bulletConfig;
 
@@ -10,22 +10,38 @@ public abstract class Bullet : MonoBehaviour
 
     private Rigidbody _rigidbody;
 
+    private ObjectPool<Bullet> _pool;
+
     [Inject]
     private void Consturct(AttackBullet attackBullet, MoveBullet moveBullet)
     {
+        Debug.Log("Bullet Construct");
         _attackBullet = attackBullet;
         _moveBullet = moveBullet;
 
         _rigidbody = GetComponent<Rigidbody>();
-        _moveBullet = GetComponent<MoveBullet>();
     }
 
     public Rigidbody GetRigidbodyBullet() => _rigidbody;
     
     public Transform GetTransformBullet() => transform;
 
+    public void SetPool<T>(ObjectPool<T> pool) where T : MonoBehaviour
+    {
+        _pool = pool as ObjectPool<Bullet>;
+    }
+
+    public void ReturnToPool()
+    {
+        _pool?.ReturnPoolObject(this);
+
+        _pool = null;
+    }
+
     public void InitializeBullet(Vector3 startPoint, Quaternion rotateDirection, float distanceFlying)
     {
+        _attackBullet.Initialize(_bulletConfig);
+
         StartMoveBullet(startPoint, rotateDirection, distanceFlying);
     }
 
@@ -39,7 +55,7 @@ public abstract class Bullet : MonoBehaviour
         transform.position = startPoint;
         transform.rotation = rotateDirection;
 
-        _moveBullet.Initialize(this, startPoint, distanceFlying);
+        _moveBullet.Initialize(_bulletConfig, this, startPoint, distanceFlying);
     }
 
     private void OnTriggerEnter(Collider collider)

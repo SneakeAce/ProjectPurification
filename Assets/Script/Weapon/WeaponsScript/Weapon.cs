@@ -7,9 +7,7 @@ using Zenject;
 
 public abstract class Weapon : MonoBehaviour, IWeapon
 {
-    // Переделать класс оружия полностью
-    // Вынести данные в конфиг WeaponConfig
-    // Вынести пул в отдельный скрипт
+    //Сделать спавн оружия и прикрепление его к игроку, чтобы было проще работать с Inject.
 
     protected const int ReleasedBulletsOfSingleShootingMode = 1;
     protected const int MinMagazineCapacity = 0;
@@ -21,7 +19,7 @@ public abstract class Weapon : MonoBehaviour, IWeapon
     protected WeaponConfig _weaponConfig;
     protected InputForWeaponAttackHandler _inputWeaponAttackHandler;
 
-    protected BulletFactory _bulletFactory;
+    protected IFactory<Bullet, BulletType> _bulletFactory;
     protected SpawnPointBullet _spawnPointBullet;
 
     protected Coroutine _reloadingWeaponCoroutine;
@@ -51,23 +49,20 @@ public abstract class Weapon : MonoBehaviour, IWeapon
     private bool _isFiring;
 
     [Inject]
-    private void Construct(PlayerInput playerInput, LazyInject<InputForWeaponAttackHandler> lazyInputWeaponAttackHandler, 
-        LazyInject<WeaponConfig> lazyWeaponConfig, LazyInject<Character> lazyCharacter, LazyInject<BulletFactory> bulletFactory,
-        List<IFiringModeStrategy> firingModeStrategies)
+    private void Construct(PlayerInput playerInput, InputForWeaponAttackHandler inputWeaponAttackHandler, 
+        IFactory<Bullet, BulletType> bulletFactory, List<IFiringModeStrategy> firingModeStrategies)
     {
         _playerInput = playerInput;
-
-        _bulletFactory = bulletFactory.Value;
-        _character = lazyCharacter.Value;
-        _weaponConfig = lazyWeaponConfig.Value;
-        _inputWeaponAttackHandler = lazyInputWeaponAttackHandler.Value;
+        
+        _bulletFactory = bulletFactory;
+        //_character = character;
+        //_weaponConfig = weaponConfig;
+        _inputWeaponAttackHandler = inputWeaponAttackHandler;
 
         foreach(IFiringModeStrategy firingMode in firingModeStrategies)
         {
             _firingModeStrategies.Add(firingMode.FiringMode, firingMode);
         }
-
-        Initialize();
     }
 
     public int MaxMagazineCapacity { get => _maxMagazineCapacity; }
@@ -83,6 +78,19 @@ public abstract class Weapon : MonoBehaviour, IWeapon
     protected abstract IEnumerator PrepareWeaponToShootingJob(); // Для анимации подготовки оружия к стрельбе
     protected abstract void Shooting(); // Для выстрела и анимации выстрела
     protected abstract void SpawnBullet(Quaternion rotate);
+
+    public void SetComponents(WeaponConfig weaponConfig, Character character)
+    {
+        _weaponConfig = weaponConfig;
+
+        Debug.Log("WeaponConfig = " + _weaponConfig);
+
+        _allowedFiringModesInWeapon = _weaponConfig.WeaponStatsConfig.FiringMode;
+
+        _character = character;
+
+        Initialize();
+    }
 
     public void CurrentMagazineValueChange()
     {
@@ -127,8 +135,6 @@ public abstract class Weapon : MonoBehaviour, IWeapon
 
     private List<FiringMode> GetAllowedFiringModes()
     {
-        _allowedFiringModesInWeapon = _weaponConfig.WeaponStatsConfig.FiringMode;
-
         List<FiringMode> firingModes = Enum.GetValues(typeof(FiringMode))
             .Cast<FiringMode>()
             .Where(mode => (mode & _allowedFiringModesInWeapon) != 0)
@@ -238,7 +244,6 @@ public abstract class Weapon : MonoBehaviour, IWeapon
 
     private void SwitchFiringMode()
     {
-        // Switch(Enum FiringMode)
         if (_listFiringModes.Count <= 1)
             return; 
 
@@ -252,11 +257,4 @@ public abstract class Weapon : MonoBehaviour, IWeapon
     {
         UnsubscribingEvents();
     }
-
-    //private void SwitchWeapon()
-    //{
-    //    // Сделать отдельный контроллер для смены оружия. 
-    //    StartCoroutine(PrepareWeaponToShootingJob());
-    //}
-
 }

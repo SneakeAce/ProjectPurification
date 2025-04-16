@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public class AttackBullet : IBulletComponent
+public class AttackBullet
 {
     private float _currentDamage;
     private LayerMask _enemyLayer;
 
-    public AttackBullet(BulletConfig config)
+    public void Initialize(BulletConfig config)
     {
         _currentDamage = config.BaseBulletDamage;
         _enemyLayer = config.EnemyLayer;

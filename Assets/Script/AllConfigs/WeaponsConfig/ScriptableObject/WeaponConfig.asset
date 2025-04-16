@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 945ef85ec52eca3499009e1a83b83be5, type: 3}
   m_Name: WeaponConfig
   m_EditorClassIdentifier: 
+  <Prefab>k__BackingField: {fileID: 6832004892738916143, guid: c0217d4d099535342923673e37c9a96c, type: 3}
+  <WeaponType>k__BackingField: 1
   <WeaponStatsConfig>k__BackingField:
-    <WeaponNames>k__BackingField: 1
+    <FiringMode>k__BackingField: -1
+    <BulletTypeInWeapon>k__BackingField: 1
     <BaseMagazineCapacity>k__BackingField: 30
     <BaseDelayBeforeFiring>k__BackingField: 0.8
-    <BaseRangeShooting>k__BackingField: 9
+    <BaseShootingRange>k__BackingField: 7.5
     <BaseReloadingTime>k__BackingField: 0.8
