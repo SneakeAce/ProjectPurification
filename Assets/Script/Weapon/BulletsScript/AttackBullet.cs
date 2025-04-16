@@ -4,20 +4,22 @@ public class AttackBullet
 {
     private float _currentDamage;
     private LayerMask _enemyLayer;
+    private Bullet _bullet;
 
-    public void Initialize(BulletConfig config)
+    public void Initialize(Bullet bullet, BulletConfig config)
     {
+        _bullet = bullet;
         _currentDamage = config.BaseBulletDamage;
         _enemyLayer = config.EnemyLayer;
     }
 
-    public void OnTriggerEnter(Collider collision)
+    public void OnTriggerEnter(Collider collider)
     {
-        if (((1 << collision.gameObject.layer) & _enemyLayer) != 0)
+        if (((1 << collider.gameObject.layer) & _enemyLayer.value) != 0)
         {
-            IEnemy target = collision.gameObject.GetComponent<IEnemy>();
+            IEnemy target = collider.gameObject.GetComponent<IEnemy>();
 
-            Debug.Log("Bullet enter collision / target = " + target);
+            Debug.Log("Bullet enter collider / target = " + target);
 
             DamageDeal(target);
 
@@ -32,6 +34,6 @@ public class AttackBullet
 
     private void DestroyBullet()
     {
-        // Вызов метода, который вернет пулю в пул.
+        _bullet.ReturnToPool();
     }
 }

@@ -4,57 +4,43 @@ using Zenject;
 public class WeaponFactory : IWeaponFactory
 {
     private DiContainer _container;
-
     private Character _character;
+    private WeaponManager _manager;
 
-    private ConfigsLibrariesHandler<WeaponConfig, WeaponType> _handlerWeaponConfigs;
-
-    private InstantiateAndDestroyGameObjectPerformer _performerGameObject;
-
-    public WeaponFactory(DiContainer container, ConfigsLibrariesHandler<WeaponConfig, WeaponType> handlerWeaponConfigs, 
-        Character character, InstantiateAndDestroyGameObjectPerformer performerGameObject)
+    public void Initialize(DiContainer container, WeaponManager manager, Character character)
     {
         _container = container;
-        _handlerWeaponConfigs = handlerWeaponConfigs;
         _character = character;
-        _performerGameObject = performerGameObject;
+        _manager = manager;
     }
 
-    public Weapon Create()
+    public Weapon Create(WeaponConfig config)
     {
-        WeaponConfig config = GetConfig(WeaponType.RifleAK47); // Временно, потом переделаю
-
-        GameObject instance = _performerGameObject.CreateObject(config.Prefab, config.Prefab.transform.position, config.Prefab.transform.rotation);
+        GameObject instance = _manager.CreateObject(config.Prefab);
 
         Weapon weapon = instance.GetComponentInChildren<Weapon>();
 
         if (weapon == null)
-        {
-            Debug.Log("WeaponFactory / weapon == null (" + weapon + ")");
             return null;
-        }
+
 
         SetParent(instance);
 
-        _container.Inject(weapon);
+        BindAndInjectPerforming(weapon);
 
         weapon.SetComponents(config, _character);
 
         return weapon;
     }
 
-    private WeaponConfig GetConfig(WeaponType type)
-    {
-        WeaponConfig config = _handlerWeaponConfigs.GetObjectConfig(type);
-
-        if (config == null)
-            return null;
-
-        return config;
-    }
-
     private void SetParent(GameObject item)
     {
         item.transform.SetParent(_character.WeaponHolder.transform, false);
+    }
+
+    private void BindAndInjectPerforming(Weapon weapon)
+    {
+        _container.Bind<Weapon>().FromInstance(weapon).AsSingle();
+        _container.Inject(weapon);
     }
 }

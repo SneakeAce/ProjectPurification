@@ -76,7 +76,7 @@ public class ObjectPlacementSystemsController : MonoBehaviour
         }
 
         _playerInput.UI.Disable();
-        _playerInput.PlayerShooting.Disable();
+        _playerInput.PlayerWeapon.Disable();
     }
 
     private void SetCurrentPlacementSystem(InputAction.CallbackContext context, string namePlacementSystem)
@@ -189,7 +189,7 @@ public class ObjectPlacementSystemsController : MonoBehaviour
         _currentPlacementSystem.StopWork -= ResetInputActions;
 
         _playerInput.UI.Enable();
-        _playerInput.PlayerShooting.Enable();
+        _playerInput.PlayerWeapon.Enable();
         _playerInput.PlacementTurretMode.Enable();
         _playerInput.PlacementBarrierMode.Enable();
 

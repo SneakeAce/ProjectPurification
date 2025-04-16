@@ -15,7 +15,7 @@ MonoBehaviour:
   <BulletType>k__BackingField: 1
   <AttackType>k__BackingField: 3
   <BaseBulletDamage>k__BackingField: 20
-  <BaseBulletSpeed>k__BackingField: 100
+  <BaseBulletSpeed>k__BackingField: 20
   <EnemyLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 256

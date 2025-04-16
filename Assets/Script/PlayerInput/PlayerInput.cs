@@ -124,7 +124,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""PlayerShooting"",
+            ""name"": ""PlayerWeapon"",
             ""id"": ""fff08dc3-6ffe-4331-813c-1baf855c5211"",
             ""actions"": [
                 {
@@ -140,6 +140,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""name"": ""SwitchFireMode"",
                     ""type"": ""Button"",
                     ""id"": ""d3f599e9-df26-4887-ac66-c030f9c239fc"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwitchWeapon"",
+                    ""type"": ""Button"",
+                    ""id"": ""65972897-9efd-4995-aded-92b2b08d7078"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -166,6 +175,39 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""SwitchFireMode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""70decde8-8955-4044-b934-1d451b3b7cef"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale"",
+                    ""groups"": """",
+                    ""action"": ""SwitchWeapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""52a02cf6-7535-46dd-9134-ec79e2c0b3fa"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=2)"",
+                    ""groups"": """",
+                    ""action"": ""SwitchWeapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""05d7273d-3318-437c-a481-86fe1bea8ad3"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=3)"",
+                    ""groups"": """",
+                    ""action"": ""SwitchWeapon"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -512,10 +554,11 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         // PlayerMovement
         m_PlayerMovement = asset.FindActionMap("PlayerMovement", throwIfNotFound: true);
         m_PlayerMovement_PlayerMovement = m_PlayerMovement.FindAction("PlayerMovement", throwIfNotFound: true);
-        // PlayerShooting
-        m_PlayerShooting = asset.FindActionMap("PlayerShooting", throwIfNotFound: true);
-        m_PlayerShooting_Shoot = m_PlayerShooting.FindAction("Shoot", throwIfNotFound: true);
-        m_PlayerShooting_SwitchFireMode = m_PlayerShooting.FindAction("SwitchFireMode", throwIfNotFound: true);
+        // PlayerWeapon
+        m_PlayerWeapon = asset.FindActionMap("PlayerWeapon", throwIfNotFound: true);
+        m_PlayerWeapon_Shoot = m_PlayerWeapon.FindAction("Shoot", throwIfNotFound: true);
+        m_PlayerWeapon_SwitchFireMode = m_PlayerWeapon.FindAction("SwitchFireMode", throwIfNotFound: true);
+        m_PlayerWeapon_SwitchWeapon = m_PlayerWeapon.FindAction("SwitchWeapon", throwIfNotFound: true);
         // MousePosition
         m_MousePosition = asset.FindActionMap("MousePosition", throwIfNotFound: true);
         m_MousePosition_MousePosition = m_MousePosition.FindAction("MousePosition", throwIfNotFound: true);
@@ -683,35 +726,40 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     }
     public PlayerMovementActions @PlayerMovement => new PlayerMovementActions(this);
 
-    // PlayerShooting
-    private readonly InputActionMap m_PlayerShooting;
-    private List<IPlayerShootingActions> m_PlayerShootingActionsCallbackInterfaces = new List<IPlayerShootingActions>();
-    private readonly InputAction m_PlayerShooting_Shoot;
-    private readonly InputAction m_PlayerShooting_SwitchFireMode;
-    public struct PlayerShootingActions
+    // PlayerWeapon
+    private readonly InputActionMap m_PlayerWeapon;
+    private List<IPlayerWeaponActions> m_PlayerWeaponActionsCallbackInterfaces = new List<IPlayerWeaponActions>();
+    private readonly InputAction m_PlayerWeapon_Shoot;
+    private readonly InputAction m_PlayerWeapon_SwitchFireMode;
+    private readonly InputAction m_PlayerWeapon_SwitchWeapon;
+    public struct PlayerWeaponActions
     {
         private @PlayerInput m_Wrapper;
-        public PlayerShootingActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Shoot => m_Wrapper.m_PlayerShooting_Shoot;
-        public InputAction @SwitchFireMode => m_Wrapper.m_PlayerShooting_SwitchFireMode;
-        public InputActionMap Get() { return m_Wrapper.m_PlayerShooting; }
+        public PlayerWeaponActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Shoot => m_Wrapper.m_PlayerWeapon_Shoot;
+        public InputAction @SwitchFireMode => m_Wrapper.m_PlayerWeapon_SwitchFireMode;
+        public InputAction @SwitchWeapon => m_Wrapper.m_PlayerWeapon_SwitchWeapon;
+        public InputActionMap Get() { return m_Wrapper.m_PlayerWeapon; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(PlayerShootingActions set) { return set.Get(); }
-        public void AddCallbacks(IPlayerShootingActions instance)
+        public static implicit operator InputActionMap(PlayerWeaponActions set) { return set.Get(); }
+        public void AddCallbacks(IPlayerWeaponActions instance)
         {
-            if (instance == null || m_Wrapper.m_PlayerShootingActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_PlayerShootingActionsCallbackInterfaces.Add(instance);
+            if (instance == null || m_Wrapper.m_PlayerWeaponActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_PlayerWeaponActionsCallbackInterfaces.Add(instance);
             @Shoot.started += instance.OnShoot;
             @Shoot.performed += instance.OnShoot;
             @Shoot.canceled += instance.OnShoot;
             @SwitchFireMode.started += instance.OnSwitchFireMode;
             @SwitchFireMode.performed += instance.OnSwitchFireMode;
             @SwitchFireMode.canceled += instance.OnSwitchFireMode;
+            @SwitchWeapon.started += instance.OnSwitchWeapon;
+            @SwitchWeapon.performed += instance.OnSwitchWeapon;
+            @SwitchWeapon.canceled += instance.OnSwitchWeapon;
         }
 
-        private void UnregisterCallbacks(IPlayerShootingActions instance)
+        private void UnregisterCallbacks(IPlayerWeaponActions instance)
         {
             @Shoot.started -= instance.OnShoot;
             @Shoot.performed -= instance.OnShoot;
@@ -719,23 +767,26 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @SwitchFireMode.started -= instance.OnSwitchFireMode;
             @SwitchFireMode.performed -= instance.OnSwitchFireMode;
             @SwitchFireMode.canceled -= instance.OnSwitchFireMode;
+            @SwitchWeapon.started -= instance.OnSwitchWeapon;
+            @SwitchWeapon.performed -= instance.OnSwitchWeapon;
+            @SwitchWeapon.canceled -= instance.OnSwitchWeapon;
         }
 
-        public void RemoveCallbacks(IPlayerShootingActions instance)
+        public void RemoveCallbacks(IPlayerWeaponActions instance)
         {
-            if (m_Wrapper.m_PlayerShootingActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_PlayerWeaponActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(IPlayerShootingActions instance)
+        public void SetCallbacks(IPlayerWeaponActions instance)
         {
-            foreach (var item in m_Wrapper.m_PlayerShootingActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_PlayerWeaponActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_PlayerShootingActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_PlayerWeaponActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public PlayerShootingActions @PlayerShooting => new PlayerShootingActions(this);
+    public PlayerWeaponActions @PlayerWeapon => new PlayerWeaponActions(this);
 
     // MousePosition
     private readonly InputActionMap m_MousePosition;
@@ -946,10 +997,11 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     {
         void OnPlayerMovement(InputAction.CallbackContext context);
     }
-    public interface IPlayerShootingActions
+    public interface IPlayerWeaponActions
     {
         void OnShoot(InputAction.CallbackContext context);
         void OnSwitchFireMode(InputAction.CallbackContext context);
+        void OnSwitchWeapon(InputAction.CallbackContext context);
     }
     public interface IMousePositionActions
     {

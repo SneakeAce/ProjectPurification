@@ -1,4 +1,7 @@
+using Zenject;
+
 public interface IWeaponFactory
 {
-    Weapon Create();
+    void Initialize(DiContainer container, WeaponManager manager, Character character);
+    Weapon Create(WeaponConfig config);
 }

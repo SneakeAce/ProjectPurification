@@ -40,7 +40,7 @@ public abstract class Bullet : MonoBehaviour, IPoolable
 
     public void InitializeBullet(Vector3 startPoint, Quaternion rotateDirection, float distanceFlying)
     {
-        _attackBullet.Initialize(_bulletConfig);
+        _attackBullet.Initialize(this, _bulletConfig);
 
         StartMoveBullet(startPoint, rotateDirection, distanceFlying);
     }
@@ -60,6 +60,8 @@ public abstract class Bullet : MonoBehaviour, IPoolable
 
     private void OnTriggerEnter(Collider collider)
     {
+        Debug.Log("Bullet / OnTriggerEnter");
+
         _attackBullet.OnTriggerEnter(collider);
     }
 

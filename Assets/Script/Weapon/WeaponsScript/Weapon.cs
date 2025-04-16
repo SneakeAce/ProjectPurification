@@ -7,8 +7,6 @@ using Zenject;
 
 public abstract class Weapon : MonoBehaviour, IWeapon
 {
-    //Сделать спавн оружия и прикрепление его к игроку, чтобы было проще работать с Inject.
-
     protected const int ReleasedBulletsOfSingleShootingMode = 1;
     protected const int MinMagazineCapacity = 0;
     private const float MinDelayBeforeFiring = 0.1f;
@@ -17,7 +15,7 @@ public abstract class Weapon : MonoBehaviour, IWeapon
     protected PlayerInput _playerInput;
 
     protected WeaponConfig _weaponConfig;
-    protected InputForWeaponAttackHandler _inputWeaponAttackHandler;
+    protected InputWeaponHandler _inputWeaponAttackHandler;
 
     protected IFactory<Bullet, BulletType> _bulletFactory;
     protected SpawnPointBullet _spawnPointBullet;
@@ -49,7 +47,7 @@ public abstract class Weapon : MonoBehaviour, IWeapon
     private bool _isFiring;
 
     [Inject]
-    private void Construct(PlayerInput playerInput, InputForWeaponAttackHandler inputWeaponAttackHandler, 
+    private void Construct(PlayerInput playerInput, InputWeaponHandler inputWeaponAttackHandler, 
         IFactory<Bullet, BulletType> bulletFactory, List<IFiringModeStrategy> firingModeStrategies)
     {
         _playerInput = playerInput;

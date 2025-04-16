@@ -14,14 +14,10 @@ public class BulletInstaller : MonoInstaller
     {
         Container.Bind<AttackBullet>().AsTransient();
         Container.Bind<MoveBullet>().AsTransient();
-
-        UnityEngine.Debug.Log("BindBulletComponents");
     }
 
     private void BindBulletFactory()
     {
-        UnityEngine.Debug.Log("BindBulletFactory");
-
         Container.Bind<IFactory<Bullet, BulletType>>().To<BulletFactory>().AsSingle();
     }
 

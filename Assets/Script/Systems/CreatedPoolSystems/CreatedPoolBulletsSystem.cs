@@ -9,8 +9,6 @@ public class CreatedPoolBulletsSystem : CreatedPoolSystem<Bullet, BulletType>
     {
         _config = config;
 
-        Debug.Log("CreatedPoolBulletSystem Construct");
-
         Initialization();
     }
 
@@ -18,14 +16,11 @@ public class CreatedPoolBulletsSystem : CreatedPoolSystem<Bullet, BulletType>
     {
         _poolDictionary = new Dictionary<BulletType, ObjectPool<Bullet>>();
 
-        Debug.Log("CreatedPoolBulletSystem Initialization");
-
         StartingCreatePools();
     }
 
     protected override void StartingCreatePools()
     {
-        Debug.Log("Created Pool Bullets / _configs = " + _config.Objects.Count);
         if (_config.PoolBulletConfigs.Count > 0)
         {
             foreach (var config in _config.PoolBulletConfigs)
