@@ -7,7 +7,7 @@ public class CreatedPoolTurretsSystem : CreatedPoolSystem<Turret, TurretType>
 
     private CreatedPoolTurretConfig _config;
 
-    public CreatedPoolTurretsSystem(CreatedPoolTurretConfig config) : base(config)
+    public CreatedPoolTurretsSystem(CreatedPoolTurretConfig config, ObjectPoolsHolder objectPoolsHolder) : base(config, objectPoolsHolder)
     {
         _config = config;
 
@@ -41,7 +41,7 @@ public class CreatedPoolTurretsSystem : CreatedPoolSystem<Turret, TurretType>
         ObjectPool<Turret> turretObjectPool;
 
         GameObject newHolder = new GameObject(turretType.ToString());
-        newHolder.transform.SetParent(null);
+        newHolder.transform.SetParent(_objectPoolsHolder.transform);
         newHolder.transform.position = Vector3.zero;
 
         if (newHolder != null)

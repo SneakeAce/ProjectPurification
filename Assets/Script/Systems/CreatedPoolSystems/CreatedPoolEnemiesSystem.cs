@@ -6,7 +6,7 @@ public class CreatedPoolEnemiesSystem : CreatedPoolSystem<EnemyCharacter, EnemyT
 {
     private CreatedPoolEnemyConfig _config;
 
-    public CreatedPoolEnemiesSystem(CreatedPoolEnemyConfig config) : base(config)
+    public CreatedPoolEnemiesSystem(CreatedPoolEnemyConfig config, ObjectPoolsHolder objectPoolsHolder) : base(config, objectPoolsHolder)
     {
         _config = config;
 
@@ -40,7 +40,7 @@ public class CreatedPoolEnemiesSystem : CreatedPoolSystem<EnemyCharacter, EnemyT
         ObjectPool<EnemyCharacter> enemyObjectsPool;
 
         GameObject newHolder = new GameObject(enemyType.ToString());
-        newHolder.transform.SetParent(null);
+        newHolder.transform.SetParent(_objectPoolsHolder.transform);
         newHolder.transform.position = Vector3.zero;
 
         if (newHolder != null)

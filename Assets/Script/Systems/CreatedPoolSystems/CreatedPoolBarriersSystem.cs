@@ -5,7 +5,7 @@ public class CreatedPoolBarriersSystem : CreatedPoolSystem<PlaceableObject, Barr
 {
     private CreatedPoolBarrierConfig _config;
 
-    public CreatedPoolBarriersSystem(CreatedPoolBarrierConfig config) : base(config)
+    public CreatedPoolBarriersSystem(CreatedPoolBarrierConfig config, ObjectPoolsHolder objectPoolsHolder) : base(config, objectPoolsHolder)
     {
         _config = config;
 
@@ -39,7 +39,7 @@ public class CreatedPoolBarriersSystem : CreatedPoolSystem<PlaceableObject, Barr
         ObjectPool<PlaceableObject> placeableObjectPool;
 
         GameObject newHolder = new GameObject(barrierType.ToString());
-        newHolder.transform.SetParent(null);
+        newHolder.transform.SetParent(_objectPoolsHolder.transform);
         newHolder.transform.position = Vector3.zero;
 
         if (newHolder != null)

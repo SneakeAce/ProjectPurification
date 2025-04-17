@@ -5,7 +5,7 @@ public class CreatedPoolBulletsSystem : CreatedPoolSystem<Bullet, BulletType>
 {
     private CreatedPoolBulletConfig _config;
 
-    public CreatedPoolBulletsSystem(CreatedPoolBulletConfig config) : base(config)
+    public CreatedPoolBulletsSystem(CreatedPoolBulletConfig config, ObjectPoolsHolder objectPoolsHolder) : base(config, objectPoolsHolder)
     {
         _config = config;
 
@@ -40,7 +40,7 @@ public class CreatedPoolBulletsSystem : CreatedPoolSystem<Bullet, BulletType>
         ObjectPool<Bullet> bulletObjectPool;
 
         GameObject newHolder = new GameObject(bulletType.ToString());
-        newHolder.transform.SetParent(null);
+        newHolder.transform.SetParent(_objectPoolsHolder.transform);
         newHolder.transform.position = Vector3.zero;
 
         if (newHolder != null)

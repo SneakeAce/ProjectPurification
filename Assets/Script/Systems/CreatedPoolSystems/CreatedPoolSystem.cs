@@ -6,12 +6,16 @@ public abstract class CreatedPoolSystem<T, TEnum>
     where T : MonoBehaviour 
     where TEnum : Enum
 {
+    protected ObjectPoolsHolder _objectPoolsHolder;
+
     protected List<T> _monoObjects;
 
     protected Dictionary<TEnum, ObjectPool<T>> _poolDictionary;
 
-    public CreatedPoolSystem(CreatedPoolSystemConfig<T> config)
+    public CreatedPoolSystem(CreatedPoolSystemConfig<T> config, ObjectPoolsHolder objectPoolsHolder)
     {
+        _objectPoolsHolder = objectPoolsHolder;
+
         _monoObjects = new List<T>(config.Objects);
     }
 
