@@ -1,19 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public interface IEnemy
+public interface IEnemy : IEntity
 {
     public EnemyType EnemyType { get; }
     float MoveSpeed { get; }
     Transform PatrolPointsHolder { get; }
-    Transform Transform { get; }
     NavMeshAgent NavMeshAgent { get; }
-    Animator Animator { get; }
-    Rigidbody Rigidbody { get; }
-    Collider Collider { get; }
+
+    BehavioralPatternSwitcher BehavioralPatternSwitcher { get; }
     EnemyCharacter CharacterEnemy { get; }
     EnemyHealth EnemyHealth { get; }
-
 }

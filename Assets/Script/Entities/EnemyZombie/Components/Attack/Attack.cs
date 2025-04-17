@@ -5,7 +5,7 @@ public abstract class Attack : MonoBehaviour
 {
     protected LayerMask _targetLayer;
     protected EnemyCharacter _enemyCharacter;
-    protected Character _target;
+    protected ICharacter _target;
 
     protected float _baseDamage;
     protected float _reloadingTime;

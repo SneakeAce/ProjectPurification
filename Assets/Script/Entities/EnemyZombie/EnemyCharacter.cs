@@ -14,6 +14,8 @@ public class EnemyCharacter : MonoBehaviour, IEnemy, IPoolable
     private EnemyConfig _enemyConfig;
     private EnemyHealth _health;
     private Attack _attackEnemy;
+    private BehavioralPatternSwitcher _patternSwitcher;
+    private EnemySearchTargetSystem _searchTargetSystem;
 
     private NavMeshAgent _agent;
     private Rigidbody _rigidbody;
@@ -23,13 +25,15 @@ public class EnemyCharacter : MonoBehaviour, IEnemy, IPoolable
     private ObjectPool<EnemyCharacter> _pool;
 
     [Inject]
-    private void Construct(EnemyHealth health)
+    private void Construct(EnemyHealth health, EnemySearchTargetSystem searchTargetSystem)
     {
         _health = health;
+        _searchTargetSystem = searchTargetSystem;
     }
 
     public float MoveSpeed => _enemyConfig.CharacteristicsEnemy.MoveSpeed;
     public EnemyType EnemyType => _enemyConfig.CharacteristicsEnemy.EnemyType;
+    public BehavioralPatternSwitcher BehavioralPatternSwitcher => _patternSwitcher;
     public Transform PatrolPointsHolder => _patrolPointHolder;
     public Transform Transform => transform;
     public NavMeshAgent NavMeshAgent => _agent;
@@ -38,7 +42,6 @@ public class EnemyCharacter : MonoBehaviour, IEnemy, IPoolable
     public EnemyHealth EnemyHealth => _health;
     public Rigidbody Rigidbody => _rigidbody;
     public Collider Collider  => _collider;
-
 
     public void SetEnemyComponents(EnemyConfig config, Attack attackEnemy)
     {
@@ -54,10 +57,14 @@ public class EnemyCharacter : MonoBehaviour, IEnemy, IPoolable
         _animator = GetComponent<Animator>();
         _agent = GetComponent<NavMeshAgent>();
 
+        _patternSwitcher = GetComponentInChildren<BehavioralPatternSwitcher>();
+
         _patrolPointHolder = transform.Find(NamePatrolPointHolder);
         _holderAttackLogic = transform.Find(NameAttackHolder);
 
         _attackEnemy.Initialization(this, _enemyConfig);
+
+        _searchTargetSystem.Start(this);
 
         EnemyHealth.Initialize(this, _enemyConfig);
     }

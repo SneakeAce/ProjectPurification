@@ -20,9 +20,9 @@ public class NoMovePattern : IBehavioralPattern
 
     private Quaternion _rotate;
 
-    public NoMovePattern(IEnemy movable, BehavioralPatternSwitcher switchBehavioral)
+    public NoMovePattern(IEnemy movable)
     {
-        _switchBehavioral = switchBehavioral;
+        _switchBehavioral = movable.BehavioralPatternSwitcher;
         _movable = movable;
     }
 

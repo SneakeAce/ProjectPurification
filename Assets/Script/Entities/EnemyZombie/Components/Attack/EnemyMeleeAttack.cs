@@ -3,7 +3,7 @@ using UnityEngine;
 
 public abstract class EnemyMeleeAttack : Attack
 {
-    public abstract void Attack(Character character);
+    public abstract void Attack(ICharacter character);
 
     public override IEnumerator ReloadingJob(float time)
     {

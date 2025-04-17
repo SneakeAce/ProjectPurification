@@ -1,91 +1,41 @@
 using System.Collections;
 using UnityEngine;
-using Zenject;
 
-public abstract class SearchTargetSystem : MonoBehaviour
+public abstract class SearchTargetSystem
 {
-    private float _maxRadiusSearching;
-    private LayerMask _targetLayerMask;
+    protected float _radiusForStartSearching;
+    protected float _radiusSearching;
 
-    private BehavioralPatternSwitcher _patternSwitcher;
+    protected LayerMask _targetLayerMask;
 
-    private Character _target;
-    private Coroutine _searchTargetCoroutine;
-    private Coroutine _trackingTargetCoroutine;
+    protected CoroutinePerformer _coroutinePerformer;
 
-    [Inject]
-    private void Construct(SearchTargetSystemConfig config)
+    protected Coroutine _searchTargetCoroutine;
+    protected Coroutine _trackingTargetCoroutine;
+
+    public SearchTargetSystem(SearchTargetSystemConfig config, CoroutinePerformer coroutinePerformer)
     {
-        _maxRadiusSearching = config.MaxRadiusSearching;
+        _radiusSearching = config.RadiusSearching;
         _targetLayerMask = config.TargetLayerMask;
+
+        _coroutinePerformer = coroutinePerformer;
     }
 
-    public void StartSearchingTarget()
+    protected abstract IEnumerator SearchingTargetJob();
+    protected abstract IEnumerator TrackingTargetJob();
+
+    protected abstract void TargetFound();
+    protected abstract void TargetDisapperead();
+
+    protected void StartSearchingTarget()
     {
         if (_searchTargetCoroutine != null)
         {
-            StopCoroutine(_searchTargetCoroutine);
+            _coroutinePerformer.StopCoroutine(_searchTargetCoroutine);
             _searchTargetCoroutine = null;
         }
 
-        _searchTargetCoroutine = StartCoroutine(SearchingTargetJob());
+        _searchTargetCoroutine = _coroutinePerformer.StartCoroutine(SearchingTargetJob());
     }
 
-    private IEnumerator SearchingTargetJob()
-    {
-        while (_target == null)
-        {
-            Collider[] targets = Physics.OverlapSphere(transform.position, _maxRadiusSearching, _targetLayerMask);
-
-            foreach (Collider target in targets)
-            {
-                _target = target.gameObject.GetComponent<Character>();
-            }
-
-            yield return null;
-        }
-
-        TargetFound();
-    }
-
-    private IEnumerator TrackingTargetJob()
-    {
-        while (_target != null)
-        {
-            if (Vector3.Distance(transform.position, _target.transform.position) > _maxRadiusSearching)
-            {
-                _target = null;
-            }
-
-            yield return null;
-        }
-
-        TargetDisapperead();
-    }
-
-    private void TargetFound()
-    {
-        _patternSwitcher.SetBehavioralPattern(MoveTypes.MoveToTarget, _target);
-
-        if (_trackingTargetCoroutine != null)
-        {
-            StopCoroutine(_trackingTargetCoroutine);
-            _trackingTargetCoroutine = null;
-        }
-
-        _trackingTargetCoroutine = StartCoroutine(TrackingTargetJob());
-    }
-
-    private void TargetDisapperead()
-    {
-        _patternSwitcher.SetBehavioralPattern(MoveTypes.NoMove);
-
-        if (_searchTargetCoroutine != null)
-        {
-            StopCoroutine(_searchTargetCoroutine);
-            _searchTargetCoroutine = null;
-        }
-
-        _searchTargetCoroutine = StartCoroutine(SearchingTargetJob());
-    }
 }

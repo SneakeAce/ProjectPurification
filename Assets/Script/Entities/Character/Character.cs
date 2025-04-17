@@ -1,7 +1,7 @@
 using UnityEngine;
 using Zenject;
 
-public class Character : MonoBehaviour
+public class Character : MonoBehaviour, ICharacter
 {
     private PlayerInput _playerInput;
     private PlayerConfig _playerConfig;
@@ -30,12 +30,14 @@ public class Character : MonoBehaviour
         Initialization();
     }
 
+    public Transform Transform => this.transform;
     public PlayerInput PlayerInput => _playerInput;
     public Rigidbody Rigidbody => _rigidbody;
     public Collider Collider => _collider;
     public Animator Animator => _animator;
     public PlayerConfig PlayerConfig => _playerConfig;
     public WeaponHolder WeaponHolder => _weaponHolder;
+    public CharacterHealth CharacterHealth => _health;
 
     private void GetWeaponHolder()
     {

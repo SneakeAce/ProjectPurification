@@ -1860,6 +1860,10 @@ PrefabInstance:
       value: John_Character Variant
       objectReference: {fileID: 0}
     - target: {fileID: 8164196713827416722, guid: ec4498dddbd2d274d956b33f68f079e6, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8164196713827416722, guid: ec4498dddbd2d274d956b33f68f079e6, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}

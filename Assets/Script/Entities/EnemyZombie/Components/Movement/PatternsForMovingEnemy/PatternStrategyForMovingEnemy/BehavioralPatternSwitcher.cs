@@ -12,7 +12,6 @@ public class BehavioralPatternSwitcher : MonoBehaviour
     private EnemyCharacter _enemyCharacter;
 
     private EnemyMovementStrategyFactory _movementFactory;
-    private BehavioralPatternSwitcher _switchBehavioralPattern;
 
     private MoveTypes _currentMoveTypes;
     private List<MoveTypes> _moveTypes = new List<MoveTypes>();
@@ -25,8 +24,6 @@ public class BehavioralPatternSwitcher : MonoBehaviour
 
     public void SetBehavioralPattern(IEnemy enemy)
     {
-        _switchBehavioralPattern = this;
-
         if (_enemyCharacter == null)
             _enemyCharacter = enemy.CharacterEnemy;
 
@@ -43,7 +40,8 @@ public class BehavioralPatternSwitcher : MonoBehaviour
         }
         else
         {
-            _movementFactory = new EnemyMovementStrategyFactory(_target);
+            Debug.Log("SetBehavioralPattern / MoveToTarget / target == " + target);
+            _movementFactory = new EnemyMovementStrategyFactory(target);
 
             SetMoveType(moveType);
         }
@@ -53,7 +51,7 @@ public class BehavioralPatternSwitcher : MonoBehaviour
     {
         _currentMoveTypes = moveType;
 
-        _enemyCharacter.SetBehavioralPattern(_movementFactory.Get(_currentMoveTypes, _enemyCharacter, _switchBehavioralPattern));
+        _enemyCharacter.SetBehavioralPattern(_movementFactory.Get(_currentMoveTypes, _enemyCharacter));
     }
 
     private MoveTypes GetRandomMoveType()

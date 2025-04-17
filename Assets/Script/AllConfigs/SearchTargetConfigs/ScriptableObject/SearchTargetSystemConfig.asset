@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c5a63258eeb3ab4bb0cd3897f44b2f5, type: 3}
   m_Name: SearchTargetSystemConfig
   m_EditorClassIdentifier: 
-  <MaxRadiusSearching>k__BackingField: 0
+  <RadiusForStartSearching>k__BackingField: 0
+  <RadiusSearching>k__BackingField: 15
   <TargetLayerMask>k__BackingField:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64

@@ -23,9 +23,9 @@ public class PatrolPattern : IBehavioralPattern
     private bool _isMoving;
     private bool _hasPointReached;
 
-    public PatrolPattern(IEnemy movable, SpawnPatrolPoints spawnPatrolPoints, BehavioralPatternSwitcher switchBehavioral)
+    public PatrolPattern(IEnemy movable, SpawnPatrolPoints spawnPatrolPoints)
     {
-        _switchBehavioral = switchBehavioral;
+        _switchBehavioral = movable.BehavioralPatternSwitcher;
 
         _movable = movable;
         _movable.NavMeshAgent.stoppingDistance = 0;
