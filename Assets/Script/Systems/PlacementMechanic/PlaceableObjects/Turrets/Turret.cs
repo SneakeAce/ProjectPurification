@@ -13,7 +13,7 @@ public class Turret : MonoBehaviour
 
     private TurretWeapon _weapon;
 
-    public TurretType TurretType => _turretConfig.ÑharacteristicsTurret.TurretType;
+    public TurretType TurretType => _turretConfig.MainCharacteristics.TurretType;
 
 
 }
