@@ -1,7 +1,7 @@
 using UnityEngine;
 using Zenject;
 
-public class Character : MonoBehaviour, IUnit
+public class Character : MonoBehaviour
 {
     private PlayerInput _playerInput;
     private PlayerConfig _playerConfig;

@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
 
-public class EnemyCharacter : MonoBehaviour, IUnit, IEnemy, IPoolable
+public class EnemyCharacter : MonoBehaviour, IEnemy, IPoolable
 {
     private const string NameAttackHolder = "AttackHolder";
     private const string NamePatrolPointHolder = "PatrolPointsHolder";

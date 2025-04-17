@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using Zenject;
 
-public class SearchTargetSystem : MonoBehaviour
+public abstract class SearchTargetSystem : MonoBehaviour
 {
     private float _maxRadiusSearching;
     private LayerMask _targetLayerMask;
