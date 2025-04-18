@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class MoveToTargetPattern : IBehavioralPattern
 {
-    private Character _target;
+    private ICharacter _target;
     private IEnemy _movable;
 
     private const float MinDistanceToTarget = 0.12f; 
 
-    public MoveToTargetPattern(IEnemy movable, Character target)
+    public MoveToTargetPattern(IEnemy movable, ICharacter target)
     {
         _movable = movable;
         _target = target;
@@ -42,7 +42,7 @@ public class MoveToTargetPattern : IBehavioralPattern
             StopMove();
             return;
         }
-        else if (Vector3.Distance(_movable.Transform.position, _target.transform.position) > _movable.NavMeshAgent.stoppingDistance && _movable.NavMeshAgent.isStopped)
+        else if (Vector3.Distance(_movable.Transform.position, _target.Transform.position) > _movable.NavMeshAgent.stoppingDistance && _movable.NavMeshAgent.isStopped)
         {
             StartMove();
         }
@@ -50,7 +50,7 @@ public class MoveToTargetPattern : IBehavioralPattern
         if (_movable.NavMeshAgent.isStopped)
             return;
 
-        _movable.NavMeshAgent.SetDestination(_target.transform.position);
+        _movable.NavMeshAgent.SetDestination(_target.Transform.position);
 
         _movable.Animator.SetBool("IsRunning", true);
     }

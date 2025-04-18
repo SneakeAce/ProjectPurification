@@ -4,9 +4,11 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class TurretPlacementSystem : ObjectPlacementSystem
-{    
+{
     // ядекюрэ яхярелс нрякефхбюмхъ рейсыецн йнкхвеярбю пюяонкнфеммшу назейрнб ндмнцн рхою мю яжеме.
+    private TurretType _currentTurretType;
 
+    private IFactory<Turret, TurretType> _factory;
     private CreatedPoolTurretsSystem _poolTurretsSystem;
 
     private ObjectPool<Turret> _poolObject;
@@ -14,13 +16,15 @@ public class TurretPlacementSystem : ObjectPlacementSystem
     private MeshRenderer[] _phantomObjectMesh;
     private List<Material> _phantomObjectMaterial = new List<Material>();
 
-    public TurretPlacementSystem(TurretPlacementSystemConfig config, Character character, CreatedPoolTurretsSystem poolTurretsSystem) : base(config, character)
+    public TurretPlacementSystem(TurretPlacementSystemConfig config, Character character, 
+        CreatedPoolTurretsSystem poolTurretsSystem, IFactory<Turret, TurretType> factory) : base(config, character)
     {
         //Debug.Log("TurretPlacementSystem Construct");
 
         _modeNameInPlayerInput = config.ModeNameInPlayerInput;
 
         _poolTurretsSystem = poolTurretsSystem;
+        _factory = factory;
     }
 
     public override void ChooseTypePlacingObject(InputAction.CallbackContext context)
@@ -40,6 +44,8 @@ public class TurretPlacementSystem : ObjectPlacementSystem
 
                         if (_poolTurretsSystem.PoolDictionary.TryGetValue(selectedType, out ObjectPool<Turret> poolSelected))
                         {
+                            _currentTurretType = selectedType;
+
                             _poolObject = poolSelected;
 
                             _currentPhantomObject = SelectedPhantomObject(selectedTurretIndex);
@@ -56,7 +62,7 @@ public class TurretPlacementSystem : ObjectPlacementSystem
 
     public override void WorkPlacementMode()
     {
-        Debug.Log("TurretPlacementsSystem / WorkPlacementMode");
+        //Debug.Log("TurretPlacementsSystem / WorkPlacementMode");
         if (_poolObjectSelected && _placingJob && _poolObject != null)
         {
             if (_canShowPhantomObject)
@@ -124,11 +130,12 @@ public class TurretPlacementSystem : ObjectPlacementSystem
 
     public override void PlaceObject()
     {
-        Turret newObject = _poolObject.GetPoolObject();
+        Vector3 spawnPosition = _instancePhantomObject.transform.position;
+        Quaternion rotation = _instancePhantomObject.transform.rotation;
+
+        Turret newObject = _factory.Create(spawnPosition, _currentTurretType, rotation);
 
         newObject.transform.SetParent(null);
-        newObject.transform.position = _instancePhantomObject.transform.position;
-        newObject.transform.rotation = _instancePhantomObject.transform.rotation;
 
         _phantomObjectMaterial.Clear();
         Array.Clear(_phantomObjectMesh, 0, _phantomObjectMesh.Length);

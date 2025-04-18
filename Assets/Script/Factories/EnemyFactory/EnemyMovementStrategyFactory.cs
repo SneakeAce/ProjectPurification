@@ -3,14 +3,14 @@ using System.Diagnostics;
 
 public class EnemyMovementStrategyFactory
 {
-    private Character _target;
+    private ICharacter _target;
     private SpawnPatrolPoints _spawnPatrolPoints;
 
     public EnemyMovementStrategyFactory()
     {
     }
 
-    public EnemyMovementStrategyFactory(Character target)
+    public EnemyMovementStrategyFactory(ICharacter target)
     {
         _target = target;
         UnityEngine.Debug.Log("EnemyMovementStrategyFactory Contruct / target = " + target);

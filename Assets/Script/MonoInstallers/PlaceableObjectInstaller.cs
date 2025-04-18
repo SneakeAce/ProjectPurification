@@ -9,11 +9,17 @@ public class PlaceableObjectInstaller : MonoInstaller
 
     public override void InstallBindings()
     {
-        
+        BindConfig();
     }
 
     private void BindConfig()
     {
-
+        Container.Bind<PlaceableObjectConfig>().FromInstance(_config).AsTransient();
     }
+
+    private void BindHealth()
+    {
+        Container.Bind<PlaceableObjectHealth>().AsTransient();
+    }
+
 }

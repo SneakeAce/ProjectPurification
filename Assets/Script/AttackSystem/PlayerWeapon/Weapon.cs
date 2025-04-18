@@ -9,7 +9,7 @@ public abstract class Weapon : MonoBehaviour, IWeapon
 {
     protected const int ReleasedBulletsOfSingleShootingMode = 1;
     protected const int MinMagazineCapacity = 0;
-    private const float MinDelayBeforeFiring = 0.1f;
+    protected const float MinRotationByXYZ = 0;
 
     protected Character _character;
     protected PlayerInput _playerInput;
@@ -33,6 +33,8 @@ public abstract class Weapon : MonoBehaviour, IWeapon
 
     protected bool _isReloading;
 
+    private const float MinDelayBeforeFiring = 0.1f;
+
     private int _currentFiringModeIndex;
 
     private Dictionary<FiringMode, IFiringModeStrategy> _firingModeStrategies = new Dictionary<FiringMode, IFiringModeStrategy>();
@@ -53,8 +55,7 @@ public abstract class Weapon : MonoBehaviour, IWeapon
         _playerInput = playerInput;
         
         _bulletFactory = bulletFactory;
-        //_character = character;
-        //_weaponConfig = weaponConfig;
+
         _inputWeaponAttackHandler = inputWeaponAttackHandler;
 
         foreach(IFiringModeStrategy firingMode in firingModeStrategies)
@@ -80,8 +81,6 @@ public abstract class Weapon : MonoBehaviour, IWeapon
     public void SetComponents(WeaponConfig weaponConfig, Character character)
     {
         _weaponConfig = weaponConfig;
-
-        Debug.Log("WeaponConfig = " + _weaponConfig);
 
         _allowedFiringModesInWeapon = _weaponConfig.WeaponStatsConfig.FiringMode;
 

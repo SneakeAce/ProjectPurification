@@ -6,7 +6,9 @@ using Zenject;
 public class BarrierPlacementSystem : ObjectPlacementSystem
 {
     // ядекюрэ яхярелс нрякефхбюмхъ рейсыецн йнкхвеярбю пюяонкнфеммшу назейрнб ндмнцн рхою мю яжеме.
-    private LazyInject<IFactory<PlaceableObject, BarriersType>> _lazyFactory;
+    //private LazyInject<<IFactory<PlaceableObject, BarriersType>> _lazyFactory;
+
+    private BarriersType _currentBarrierType;
     private IFactory<PlaceableObject, BarriersType> _factory;
 
     private CreatedPoolBarriersSystem _poolBarriersSystem;
@@ -16,8 +18,10 @@ public class BarrierPlacementSystem : ObjectPlacementSystem
     private Material _phantomObjectMaterial;
 
     public BarrierPlacementSystem(BarrierPlacementSystemConfig config, Character character, 
-        CreatedPoolBarriersSystem poolBarriersSystem) : base(config, character)
+        CreatedPoolBarriersSystem poolBarriersSystem, IFactory<PlaceableObject, BarriersType> factory) : base(config, character)
     {
+        _factory = factory;
+
         _modeNameInPlayerInput = config.ModeNameInPlayerInput;
 
         _poolBarriersSystem = poolBarriersSystem;
@@ -40,6 +44,8 @@ public class BarrierPlacementSystem : ObjectPlacementSystem
 
                         if (_poolBarriersSystem.PoolDictionary.TryGetValue(selectedType, out ObjectPool<PlaceableObject> poolSelected))
                         {
+                            _currentBarrierType = selectedType;
+
                             _poolObject = poolSelected;
 
                             _currentPhantomObject = SelectedPhantomObject(selectedBarrierIndex);
@@ -114,12 +120,12 @@ public class BarrierPlacementSystem : ObjectPlacementSystem
 
     public override void PlaceObject()
     {
-        _factory = _lazyFactory.Value;
+        //_factory = _lazyFactory.Value;
 
         Vector3 spawnPosition = _instancePhantomObject.transform.position;
         Quaternion rotation = _instancePhantomObject.transform.rotation;
 
-        PlaceableObject newObject = _factory.Create(spawnPosition, BarriersType.WoodBarrier, rotation);
+        PlaceableObject newObject = _factory.Create(spawnPosition, _currentBarrierType, rotation);
 
         newObject.transform.SetParent(null);
 

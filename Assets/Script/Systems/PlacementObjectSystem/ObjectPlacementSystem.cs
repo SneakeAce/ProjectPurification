@@ -64,7 +64,7 @@ public abstract class ObjectPlacementSystem : IPlacementSystem
         {
             _canShowPhantomObject = true;
 
-            Debug.Log($"Called UI Placement System: {this}");
+           // Debug.Log($"Called UI Placement System: {this}");
             // вызов UI в игре
         }
         else

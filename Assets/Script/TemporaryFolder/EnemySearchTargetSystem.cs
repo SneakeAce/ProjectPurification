@@ -5,28 +5,31 @@ public class EnemySearchTargetSystem : SearchTargetSystem
 {
     //Сделать систему приоритетов для врага: Игрок, База, Барьеры, Турели.
 
-    private const int MaxTargetInBuffer = 1;
+    private const int MaxTargetsInBuffer = 1;
 
     private const float MinDelayToCheck = 0.2f;
     private const float MaxDelayToCheck = 1.0f;
 
-    protected IEnemy _character;
+    protected IEnemy _enemy;
 
     private Collider[] _bufferTargets;
 
     private BehavioralPatternSwitcher _patternSwitcher;
 
-    private Character _target;
+    private ICharacter _target;
 
-    public EnemySearchTargetSystem(SearchTargetSystemConfig config, CoroutinePerformer coroutinePerformer) : base(config, coroutinePerformer)
+    public EnemySearchTargetSystem(EnemySearchTargetConfig config, 
+        CoroutinePerformer coroutinePerformer) : base(coroutinePerformer)
     {
+        _radiusSearching = config.RadiusSearching;
+        _targetLayerMask = config.TargetLayerMask;
     }
 
-    public void Start(IEnemy character)
+    public void Start(IEnemy enemy)
     {
-        _character = character;
-        _patternSwitcher = character.BehavioralPatternSwitcher;
-        _bufferTargets = new Collider[MaxTargetInBuffer];
+        _enemy = enemy;
+        _patternSwitcher = enemy.BehavioralPatternSwitcher;
+        _bufferTargets = new Collider[MaxTargetsInBuffer];
 
         _searchTargetCoroutine = _coroutinePerformer.StartCoroutine(SearchingTargetJob());
     }
@@ -37,14 +40,17 @@ public class EnemySearchTargetSystem : SearchTargetSystem
         {
             yield return new WaitForSeconds(Random.Range(MinDelayToCheck, MaxDelayToCheck));
 
-            int targets = Physics.OverlapSphereNonAlloc(_character.Transform.position, _radiusSearching,
-                _bufferTargets, _targetLayerMask);
+            int targets = Physics.OverlapSphereNonAlloc(
+                _enemy.Transform.position, 
+                _radiusSearching,
+                _bufferTargets, 
+                _targetLayerMask);
 
             for (int i = 0; i < targets; i++)
             {
                 Collider target = _bufferTargets[i];
 
-                _target = target.gameObject.GetComponent<Character>();
+                _target = target.gameObject.GetComponentInParent<ICharacter>();
                 Debug.Log("_target = " + _target);
             }
 
@@ -54,11 +60,11 @@ public class EnemySearchTargetSystem : SearchTargetSystem
         TargetFound();
     }
 
-    protected override IEnumerator TrackingTargetJob()
+    protected override IEnumerator CheckDistanceToTargetJob()
     {
         while (_target != null)
         {
-            float sqrDistance = (_target.transform.position - _character.Transform.position).sqrMagnitude;
+            float sqrDistance = (_target.Transform.position - _enemy.Transform.position).sqrMagnitude;
 
             if (sqrDistance > _radiusSearching * _radiusSearching)
                 _target = null;
@@ -71,20 +77,20 @@ public class EnemySearchTargetSystem : SearchTargetSystem
         TargetDisapperead();
     }
 
-    protected override void TargetFound()
+    private void TargetFound()
     {
         _patternSwitcher.SetBehavioralPattern(MoveTypes.MoveToTarget, _target);
 
-        if (_trackingTargetCoroutine != null)
+        if (_checkDistanceToTargetCoroutine != null)
         {
-            _coroutinePerformer.StopCoroutine(_trackingTargetCoroutine);
-            _trackingTargetCoroutine = null;
+            _coroutinePerformer.StopCoroutine(_checkDistanceToTargetCoroutine);
+            _checkDistanceToTargetCoroutine = null;
         }
 
-        _trackingTargetCoroutine = _coroutinePerformer.StartCoroutine(TrackingTargetJob());
+        _checkDistanceToTargetCoroutine = _coroutinePerformer.StartCoroutine(CheckDistanceToTargetJob());
     }
 
-    protected override void TargetDisapperead()
+    private void TargetDisapperead()
     {
         Debug.Log("TargetDisapperead");
         _patternSwitcher.SetBehavioralPattern(MoveTypes.NoMove);

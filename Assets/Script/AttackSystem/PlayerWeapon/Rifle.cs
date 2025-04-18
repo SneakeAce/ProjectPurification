@@ -10,7 +10,7 @@ public class Rifle : Weapon
 
     protected override void Shooting()
     {
-        Quaternion rotate = Quaternion.Euler(0, _character.transform.eulerAngles.y, 0);
+        Quaternion rotate = Quaternion.Euler(MinRotationByXYZ, _character.transform.eulerAngles.y, MinRotationByXYZ);
 
         _currentMagazineCapacity = _currentMagazineCapacity - ReleasedBulletsOfSingleShootingMode;
         _currentMagazineCapacity = Mathf.Clamp(_currentMagazineCapacity, MinMagazineCapacity, MaxMagazineCapacity);
