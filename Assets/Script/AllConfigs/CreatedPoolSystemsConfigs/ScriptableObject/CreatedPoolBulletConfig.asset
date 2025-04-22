@@ -16,3 +16,4 @@ MonoBehaviour:
   - {fileID: 2120314933304376943, guid: 18e95df3b7ac9154991a68b1a2bd7723, type: 3}
   <PoolBulletConfigs>k__BackingField:
   - {fileID: 11400000, guid: 91e9db1f31f494641b96cd76ebe3b74e, type: 2}
+  - {fileID: 11400000, guid: 11d7058a7fd9de54dbfbda5272be0870, type: 2}

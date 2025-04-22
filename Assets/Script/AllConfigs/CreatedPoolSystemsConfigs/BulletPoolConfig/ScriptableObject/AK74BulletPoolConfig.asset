@@ -9,13 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69c3a10909dc6a9459b90ec774b476e6, type: 3}
-  m_Name: BulletConfig
+  m_Script: {fileID: 11500000, guid: 00118e3ae38c13a4b9e892b2931ed33c, type: 3}
+  m_Name: AK74BulletPoolConfig
   m_EditorClassIdentifier: 
   <BulletType>k__BackingField: 1
-  <AttackType>k__BackingField: 3
-  <BaseBulletDamage>k__BackingField: 20
-  <BaseBulletSpeed>k__BackingField: 20
-  <EnemyLayer>k__BackingField:
-    serializedVersion: 2
-    m_Bits: 256
+  <Prefab>k__BackingField: {fileID: 2120314933304376943, guid: 18e95df3b7ac9154991a68b1a2bd7723, type: 3}
+  <MaxCountCurrentBulletOnScene>k__BackingField: 35

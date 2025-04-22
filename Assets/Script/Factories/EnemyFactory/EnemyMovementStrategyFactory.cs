@@ -13,7 +13,6 @@ public class EnemyMovementStrategyFactory
     public EnemyMovementStrategyFactory(ICharacter target)
     {
         _target = target;
-        UnityEngine.Debug.Log("EnemyMovementStrategyFactory Contruct / target = " + target);
     }
 
     public EnemyMovementStrategyFactory(SpawnPatrolPoints spawnPatrolPoints)

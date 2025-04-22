@@ -1,7 +1,8 @@
 using System.Collections;
 using UnityEngine;
+using Zenject;
 
-public abstract class TurretAttack
+public abstract class TurretWeapon : MonoBehaviour
 {
     //Добавить GameObject'ы пушек и тела турели для реализации поворота в сторону врага.
 
@@ -14,31 +15,35 @@ public abstract class TurretAttack
     protected float _baseDistanceFlyingBullet;
     protected LayerMask _targetLayer;
 
+    protected int _currentSpawnPointBulletIndex = 0;
+
     protected bool _isCanAttack = false;
 
     protected IEnemy _currentTarget;
 
     protected IFactory<Bullet, BulletType> _bulletFactory;
-    protected SpawnPointBullet _spawnPointBullet;
 
-    protected CoroutinePerformer _coroutinePerformer;
+    protected SpawnPointBullet[] _spawnPointsBullet;
+    protected SpawnPointBullet _curretSpawnPointBullet;
+
+    protected GameObject _bodyTurret;
 
     protected Coroutine _attackCoroutine;
     protected Coroutine _rotateToTargetCoroutine;
-
-    public TurretAttack(IFactory<Bullet, BulletType> bulletFactory, CoroutinePerformer performer)
-    {
-        _bulletFactory = bulletFactory;
-        _coroutinePerformer = performer;
-    }
 
     protected abstract void SpawnBullet();
 
     protected abstract IEnumerator AttackJob();
     protected abstract IEnumerator RotateToTarget();
 
-    public void Initialize(TurretConfig config)
+    public virtual void Initialize(TurretConfig config, IFactory<Bullet, BulletType> bulletFactory)
     {
+        _bulletFactory = bulletFactory;
+
+        _bodyTurret = this.gameObject;
+
+        _spawnPointsBullet = GetComponentsInChildren<SpawnPointBullet>();
+
         SetAttackProperties(config);
     }
 
@@ -49,11 +54,26 @@ public abstract class TurretAttack
 
         if (_rotateToTargetCoroutine != null)
         {
-            _coroutinePerformer.StopCoroutine(_rotateToTargetCoroutine);
+            StopCoroutine(_rotateToTargetCoroutine);
             _rotateToTargetCoroutine = null;
         }
 
-        _rotateToTargetCoroutine = _coroutinePerformer.StartCoroutine(RotateToTarget());
+        _rotateToTargetCoroutine = StartCoroutine(RotateToTarget());
+    }
+
+    protected SpawnPointBullet GetSpawnPointBullet()
+    {
+        if (_currentSpawnPointBulletIndex > 1)
+            _currentSpawnPointBulletIndex = 0;
+
+        SpawnPointBullet spawnPoint = _spawnPointsBullet[_currentSpawnPointBulletIndex];
+
+        if (spawnPoint == null)
+            return null;
+
+        _currentSpawnPointBulletIndex++;
+
+        return spawnPoint;
     }
 
     private void SetAttackProperties(TurretConfig config)

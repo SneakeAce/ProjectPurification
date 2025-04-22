@@ -6,11 +6,11 @@ using Zenject;
 public class Turret : MonoBehaviour, ITurret
 {
     private TurretConfig _turretConfig;
-    private AutomaticTurretAttack _turretAttack;
     private TurretHealth _turretHealth;
     private TurretSearchTargetSystem _searchTargetSystem;
+    private TurretWeapon _turretWeapon;
 
-    public TurretAttack TurretAttack => _turretAttack;
+    protected IFactory<Bullet, BulletType> _bulletFactory;
 
     public Transform Transform => transform;
 
@@ -20,13 +20,17 @@ public class Turret : MonoBehaviour, ITurret
 
     public Collider Collider => throw new System.NotImplementedException();
 
+    public TurretWeapon TurretAttack => _turretWeapon;
+
     [Inject]
-    private void Construct(AutomaticTurretAttack turretAttack, TurretSearchTargetSystem searchTargetSystem)
+    private void Construct(TurretSearchTargetSystem turretSearchTargetSystem, IFactory<Bullet, BulletType> bulletFactory)
     {
-        _turretAttack = turretAttack;
-        _searchTargetSystem = searchTargetSystem;
+        _searchTargetSystem = turretSearchTargetSystem;
+        _bulletFactory = bulletFactory;
 
+        _turretWeapon = GetComponentInChildren<TurretWeapon>();
 
+        _searchTargetSystem.Start(this);
     }
 
     public void SetComponents(TurretConfig turretConfig)
@@ -38,9 +42,8 @@ public class Turret : MonoBehaviour, ITurret
 
     private void Initialize()
     {
-        _searchTargetSystem.Start(this);
+        _turretWeapon.Initialize(_turretConfig, _bulletFactory);
 
-        _turretAttack.Initialize(_turretConfig);
         //_turretHealth;
     }
 

@@ -51,7 +51,7 @@ public class EnemySearchTargetSystem : SearchTargetSystem
                 Collider target = _bufferTargets[i];
 
                 _target = target.gameObject.GetComponentInParent<ICharacter>();
-                Debug.Log("_target = " + _target);
+
             }
 
             yield return new WaitForSeconds(MinDelayToCheck);
@@ -69,7 +69,7 @@ public class EnemySearchTargetSystem : SearchTargetSystem
             if (sqrDistance > _radiusSearching * _radiusSearching)
                 _target = null;
 
-            Debug.Log("TrackingTargetJob");
+            Debug.Log("EnemySearch / TrackingTargetJob");
 
             yield return new WaitForSeconds(MinDelayToCheck);
         }

@@ -1,19 +1,18 @@
 using System.Collections;
 using UnityEngine;
 
-public class AutomaticTurretAttack : TurretAttack
+public class AutomaticTurretWeapon : TurretWeapon
 {
     private const float MultiplierAttackSpeed = 0.6f;
 
     private float _currentAttackSpeed;
 
-    public AutomaticTurretAttack(IFactory<Bullet, BulletType> bulletFactory, 
-        CoroutinePerformer performer) : base(bulletFactory, performer)
+    public override void Initialize(TurretConfig config, IFactory<Bullet, BulletType> bulletFactory)
     {
+        base.Initialize(config, bulletFactory);
 
         _currentAttackSpeed = _baseReloadingTime * MultiplierAttackSpeed;
     }
-
 
     protected override IEnumerator RotateToTarget()
     {
@@ -31,11 +30,11 @@ public class AutomaticTurretAttack : TurretAttack
 
         if (_attackCoroutine != null)
         {
-            _coroutinePerformer.StopCoroutine(_attackCoroutine);
+            StopCoroutine(_attackCoroutine);
             _attackCoroutine = null;
         }
 
-        _attackCoroutine = _coroutinePerformer.StartCoroutine(AttackJob());
+        _attackCoroutine = StartCoroutine(AttackJob());
     }
 
     protected override IEnumerator AttackJob()
@@ -52,11 +51,15 @@ public class AutomaticTurretAttack : TurretAttack
 
     protected override void SpawnBullet()
     {
-        Bullet bullet = _bulletFactory.Create(_spawnPointBullet.transform.position, _bulletType, Quaternion.identity);
+        SpawnPointBullet spawnPoint = GetSpawnPointBullet();
+
+        Bullet bullet = _bulletFactory.Create(spawnPoint.transform.position, _bulletType, Quaternion.identity);
 
         if (bullet == null)
             return;
 
-        bullet.InitializeBullet(_spawnPointBullet.transform.position, Quaternion.identity, _baseDistanceFlyingBullet);
+        bullet.InitializeBullet(spawnPoint.transform.position, Quaternion.identity, _baseDistanceFlyingBullet);
     }
+
+    
 }

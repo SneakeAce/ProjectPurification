@@ -23,7 +23,6 @@ public class WeaponFactory : IWeaponFactory
         if (weapon == null)
             return null;
 
-
         SetParent(instance);
 
         BindAndInjectPerforming(weapon);

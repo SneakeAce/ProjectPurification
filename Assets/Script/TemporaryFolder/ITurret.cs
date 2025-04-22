@@ -1,4 +1,4 @@
 public interface ITurret : IEntity
 {
-    TurretAttack TurretAttack { get; }
+    TurretWeapon TurretAttack { get; }
 }

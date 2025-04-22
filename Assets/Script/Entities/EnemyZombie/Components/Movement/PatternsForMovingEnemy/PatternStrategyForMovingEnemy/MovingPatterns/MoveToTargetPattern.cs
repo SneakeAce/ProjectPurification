@@ -12,8 +12,6 @@ public class MoveToTargetPattern : IBehavioralPattern
         _movable = movable;
         _target = target;
 
-        Debug.Log("MoveToTargetPattern Construct / target = " + _target);
-
         _movable.NavMeshAgent.stoppingDistance = 1.5f;
     }
 

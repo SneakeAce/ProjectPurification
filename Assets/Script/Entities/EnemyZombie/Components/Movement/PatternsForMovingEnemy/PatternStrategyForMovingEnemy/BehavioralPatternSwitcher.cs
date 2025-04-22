@@ -40,7 +40,6 @@ public class BehavioralPatternSwitcher : MonoBehaviour
         }
         else
         {
-            Debug.Log("SetBehavioralPattern / MoveToTarget / target == " + target);
             _movementFactory = new EnemyMovementStrategyFactory(target);
 
             SetMoveType(moveType);
