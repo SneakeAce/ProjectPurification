@@ -100,10 +100,8 @@ public class GlobalEnemySpawner : EnemySpawner
         return true;
     }
 
-    public override void OnReturnEnemyToPool(EnemyHealth enemyHealth)
+    public override void OnReturnEnemyToPool(IEnemy enemy)
     {
-        EnemyCharacter enemy = enemyHealth.Enemy;
-
         foreach (SpawnPoint point in _spawnPoints)
         {
             if ((point.EnemyTypeInSpawnPoint & enemy.EnemyType) != 0)
@@ -113,9 +111,9 @@ public class GlobalEnemySpawner : EnemySpawner
             }
         }
 
-        enemy.ReturnToPool(enemyHealth);
+        enemy.CharacterEnemy.ReturnToPool(enemy);
 
-        enemyHealth.UnitDead -= OnReturnEnemyToPool;
+        enemy.CharacterEnemy.EnemyHealth.UnitDead -= OnReturnEnemyToPool;
     }
 
     private void CreateSpawnPoint(ISpawnPointFactory factory)

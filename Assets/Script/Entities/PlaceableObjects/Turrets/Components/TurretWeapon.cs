@@ -1,27 +1,33 @@
 using System.Collections;
 using UnityEngine;
-using Zenject;
 
 public abstract class TurretWeapon : MonoBehaviour
 {
     //Добавить GameObject'ы пушек и тела турели для реализации поворота в сторону врага.
 
-    protected const float MinDelayForCalculateRotate = 0.1f;
+    protected const float MinValueByXYZ = 0;
+    protected const float MinAngleBetweenObjects = 0.1f;
+    protected const float PredictionFactor = 4.5f;
 
     protected AttackType _attackType;
     protected BulletType _bulletType;
     protected float _baseDamage;
     protected float _baseReloadingTime;
     protected float _baseDistanceFlyingBullet;
+    protected float _baseRotationSpeed;
+    protected float _minAttackRange;
     protected LayerMask _targetLayer;
 
     protected int _currentSpawnPointBulletIndex = 0;
+    protected float _sqrMinAttackRange;
 
-    protected bool _isCanAttack = false;
+    protected bool _isWork = false;
+    protected bool _isRotatedToTarget = false;
 
     protected IEnemy _currentTarget;
 
     protected IFactory<Bullet, BulletType> _bulletFactory;
+    protected TurretSearchTargetSystem _searchTargetSystem;
 
     protected SpawnPointBullet[] _spawnPointsBullet;
     protected SpawnPointBullet _curretSpawnPointBullet;
@@ -30,26 +36,35 @@ public abstract class TurretWeapon : MonoBehaviour
 
     protected Coroutine _attackCoroutine;
     protected Coroutine _rotateToTargetCoroutine;
+    protected Coroutine _returnTurretToDefaultRotationCoroutine;
+
+    protected Quaternion _defaultTurretRotation;
 
     protected abstract void SpawnBullet();
 
     protected abstract IEnumerator AttackJob();
     protected abstract IEnumerator RotateToTarget();
 
-    public virtual void Initialize(TurretConfig config, IFactory<Bullet, BulletType> bulletFactory)
+    public virtual void Initialize(ITurret currentTurret, TurretSearchTargetSystem turretSearchTargetSystem, 
+        TurretConfig config, IFactory<Bullet, BulletType> bulletFactory)
     {
+        _searchTargetSystem = turretSearchTargetSystem;
+        _searchTargetSystem.Start(currentTurret, config);
+
         _bulletFactory = bulletFactory;
 
         _bodyTurret = this.gameObject;
 
-        _spawnPointsBullet = GetComponentsInChildren<SpawnPointBullet>();
+        _spawnPointsBullet = GetComponentsInChildren<SpawnPointBullet>(); 
 
         SetAttackProperties(config);
+
+        _defaultTurretRotation = transform.parent.rotation;
     }
 
     public void SetTarget(IEnemy target)
     {
-        _isCanAttack = false;
+        _isWork = true;
         _currentTarget = target;
 
         if (_rotateToTargetCoroutine != null)
@@ -59,6 +74,45 @@ public abstract class TurretWeapon : MonoBehaviour
         }
 
         _rotateToTargetCoroutine = StartCoroutine(RotateToTarget());
+
+        if (_attackCoroutine != null)
+        {
+            StopCoroutine(_attackCoroutine);
+            _attackCoroutine = null;
+        }
+
+        _attackCoroutine = StartCoroutine(AttackJob());
+    }
+
+    public void ResetTarget(IEnemy target)
+    {
+        _isWork = false;
+        _currentTarget = target;
+
+        if (_returnTurretToDefaultRotationCoroutine != null)
+        {
+            StopCoroutine(_returnTurretToDefaultRotationCoroutine);
+            _returnTurretToDefaultRotationCoroutine = null;
+        }
+
+        _returnTurretToDefaultRotationCoroutine = StartCoroutine(ReturnTurretToDefaultRotation());
+    }
+
+    protected IEnumerator ReturnTurretToDefaultRotation()
+    {
+        float divider = 3f;
+        float angleBetweenTargetAndTurret = Quaternion.Angle(_bodyTurret.transform.rotation, _defaultTurretRotation);
+
+        while (angleBetweenTargetAndTurret > MinAngleBetweenObjects && _currentTarget == null)
+        {
+            float rotationSpeed = (Time.deltaTime * _baseRotationSpeed) / divider;
+
+            Quaternion rotate = Quaternion.Slerp(_bodyTurret.transform.rotation, _defaultTurretRotation, rotationSpeed);
+
+            _bodyTurret.transform.rotation = rotate;
+
+            yield return null;
+        }
     }
 
     protected SpawnPointBullet GetSpawnPointBullet()
@@ -76,6 +130,16 @@ public abstract class TurretWeapon : MonoBehaviour
         return spawnPoint;
     }
 
+    protected Vector3 GetPredictionTargetPosition(IEnemy target, float predictionFactor)
+    {
+        Vector3 targetPos = target.Transform.position;
+        Vector3 targetVelocity = target.Rigidbody.velocity;
+
+        Debug.Log("TargetVelocity = " + targetVelocity);
+
+        return targetPos + targetVelocity * predictionFactor;
+    }
+
     private void SetAttackProperties(TurretConfig config)
     {
         _attackType = config.AttackCharacteristics.AttackType;
@@ -84,6 +148,10 @@ public abstract class TurretWeapon : MonoBehaviour
         _baseDamage = config.AttackCharacteristics.BaseDamage;
         _baseReloadingTime = config.AttackCharacteristics.BaseDelayBeforeFiring;
         _baseDistanceFlyingBullet = config.AttackCharacteristics.BaseAttackRange;
+        _baseRotationSpeed = config.AttackCharacteristics.BaseRotationSpeed;
+        _minAttackRange = config.AttackCharacteristics.MinimumAttackRange;
+
+        _sqrMinAttackRange = _minAttackRange * _minAttackRange;
 
         _targetLayer = config.AttackCharacteristics.TargetLayer;
     }

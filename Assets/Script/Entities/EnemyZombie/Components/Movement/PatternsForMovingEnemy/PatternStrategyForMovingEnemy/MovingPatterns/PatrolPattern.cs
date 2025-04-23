@@ -171,7 +171,7 @@ public class PatrolPattern : IBehavioralPattern
         _patrolPoints = _spawnPatrolPoints.GetPatrolPoints(_movable);
     }
 
-    private void OnDeleteAllPoints(EnemyHealth enemyHealth)
+    private void OnDeleteAllPoints(IEnemy enemy)
     {
         if (_patrolPoints.Count > 0)
         {
@@ -187,7 +187,7 @@ public class PatrolPattern : IBehavioralPattern
             _patrolPoints.Clear();
         }
 
-        if (enemyHealth.IsAlive == false)
-            enemyHealth.UnitDead -= OnDeleteAllPoints;
+        if (enemy.CharacterEnemy.EnemyHealth.IsAlive == false)
+            enemy.CharacterEnemy.EnemyHealth.UnitDead -= OnDeleteAllPoints;
     }
 }

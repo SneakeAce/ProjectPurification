@@ -23,7 +23,7 @@ public class BulletFactory : IFactory<Bullet, BulletType>
         Quaternion rotation)
     {
 
-        Debug.Log("BulletFactory / Bullet Create ");
+        //Debug.Log("BulletFactory / Bullet Create ");
         ObjectPool<Bullet> bulletPool = GetPool(bulletType);
 
         if (bulletPool == null)

@@ -10,5 +10,4 @@ public interface IEnemy : IEntity
 
     BehavioralPatternSwitcher BehavioralPatternSwitcher { get; }
     EnemyCharacter CharacterEnemy { get; }
-    EnemyHealth EnemyHealth { get; }
 }

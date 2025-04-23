@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
@@ -29,8 +27,6 @@ public class Turret : MonoBehaviour, ITurret
         _bulletFactory = bulletFactory;
 
         _turretWeapon = GetComponentInChildren<TurretWeapon>();
-
-        _searchTargetSystem.Start(this);
     }
 
     public void SetComponents(TurretConfig turretConfig)
@@ -42,7 +38,7 @@ public class Turret : MonoBehaviour, ITurret
 
     private void Initialize()
     {
-        _turretWeapon.Initialize(_turretConfig, _bulletFactory);
+        _turretWeapon.Initialize(this, _searchTargetSystem, _turretConfig, _bulletFactory);
 
         //_turretHealth;
     }

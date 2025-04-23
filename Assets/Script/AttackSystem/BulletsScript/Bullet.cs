@@ -15,7 +15,7 @@ public abstract class Bullet : MonoBehaviour, IPoolable
     [Inject]
     private void Consturct(AttackBullet attackBullet, MoveBullet moveBullet)
     {
-        Debug.Log("Bullet Construct");
+        //Debug.Log("Bullet Construct");
         _attackBullet = attackBullet;
         _moveBullet = moveBullet;
 
@@ -60,7 +60,7 @@ public abstract class Bullet : MonoBehaviour, IPoolable
 
     private void OnTriggerEnter(Collider collider)
     {
-        Debug.Log("Bullet / OnTriggerEnter");
+        //Debug.Log("Bullet / OnTriggerEnter");
 
         _attackBullet.OnTriggerEnter(collider);
     }

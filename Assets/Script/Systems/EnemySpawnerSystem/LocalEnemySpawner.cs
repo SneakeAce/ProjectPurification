@@ -116,15 +116,13 @@ public class LocalEnemySpawner : EnemySpawner
         return true;
     }
 
-    public override void OnReturnEnemyToPool(EnemyHealth enemyHealth)
+    public override void OnReturnEnemyToPool(IEnemy enemy)
     {
-        EnemyCharacter enemy = enemyHealth.Enemy;
-
         _currentEnemyOnScene = _currentEnemyOnScene - ReducingValue;
 
-        enemy.ReturnToPool(enemyHealth);
+        enemy.CharacterEnemy.ReturnToPool(enemy);
 
-        enemyHealth.UnitDead -= OnReturnEnemyToPool;
+        enemy.CharacterEnemy.EnemyHealth.UnitDead -= OnReturnEnemyToPool;
     }
 
     private EnemyCharacter GetEnemy()

@@ -37,7 +37,7 @@ public abstract class EnemySpawner : MonoBehaviour
     public abstract bool CheckEnemyAroundSpawnPoint(Vector3 spawnPointPosition);
     public abstract bool CheckObstacleAroundSpawnPoint(Vector3 spawnPointPosition);
     public abstract bool CheckGroundUnderSpawnPoint(Vector3 spawnPointPosition);
-    public abstract void OnReturnEnemyToPool(EnemyHealth enemyHealth);
+    public abstract void OnReturnEnemyToPool(IEnemy enemy);
     public abstract IEnumerator SpawnEnemyCoroutine();
 
     private void Start()

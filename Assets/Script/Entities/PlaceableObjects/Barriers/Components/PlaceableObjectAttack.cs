@@ -47,7 +47,7 @@ public class PlaceableObjectAttack
             return;
 
         // Поменять на DamageData.
-        enemyTarget.EnemyHealth.DamageTaken(_currentDamage);
+        enemyTarget.CharacterEnemy.EnemyHealth.DamageTaken(_currentDamage);
     }
 
 }

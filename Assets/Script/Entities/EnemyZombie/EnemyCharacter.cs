@@ -74,11 +74,11 @@ public class EnemyCharacter : MonoBehaviour, IEnemy, IPoolable
         _pool = pool as ObjectPool<EnemyCharacter>;
     }
 
-    public void ReturnToPool(EnemyHealth enemyHealth)
+    public void ReturnToPool(IEnemy enemy)
     {
         _pool?.ReturnPoolObject(this);
 
-        enemyHealth.CurrentValue = 0;
+        enemy.CharacterEnemy.EnemyHealth.CurrentValue = 0;
         _pool = null;
     }
 

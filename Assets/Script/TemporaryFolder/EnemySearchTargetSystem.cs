@@ -69,7 +69,7 @@ public class EnemySearchTargetSystem : SearchTargetSystem
             if (sqrDistance > _radiusSearching * _radiusSearching)
                 _target = null;
 
-            Debug.Log("EnemySearch / TrackingTargetJob");
+           // Debug.Log("EnemySearch / TrackingTargetJob");
 
             yield return new WaitForSeconds(MinDelayToCheck);
         }
@@ -92,7 +92,7 @@ public class EnemySearchTargetSystem : SearchTargetSystem
 
     private void TargetDisapperead()
     {
-        Debug.Log("TargetDisapperead");
+        //Debug.Log("TargetDisapperead");
         _patternSwitcher.SetBehavioralPattern(MoveTypes.NoMove);
 
         if (_searchTargetCoroutine != null)

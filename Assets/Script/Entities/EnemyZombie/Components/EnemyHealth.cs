@@ -15,7 +15,7 @@ public class EnemyHealth
     public bool IsAlive => _isAlive;
 
 
-    public event Action<EnemyHealth> UnitDead;
+    public event Action<IEnemy> UnitDead;
 
     public void Initialize(EnemyCharacter enemy, EnemyConfig enemyConfig)
     {
@@ -35,7 +35,7 @@ public class EnemyHealth
         {
             _isAlive = false;
 
-            UnitDead?.Invoke(this);
+            UnitDead?.Invoke(_enemy);
         }
     }
 

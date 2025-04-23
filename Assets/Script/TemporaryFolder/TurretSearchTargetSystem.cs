@@ -5,31 +5,34 @@ public class TurretSearchTargetSystem : SearchTargetSystem
 {
     private const int MaxTargetsInBuffer = 16;
 
-    private const float MaxRadiusToAttack = 8f;
     private const float MinDelayToCheck = 0.2f;
     private const float MaxDelayToCheck = 1.0f;
 
     private float _sqrMaxRadiusToAttack;
+    private float _maxRadiusToAttack;
 
     private Collider[] _bufferTargets;
 
     private ITurret _turret;
 
     private IEnemy _nearestTarget;
+    private IEnemy _subscribedEnemy;
 
-    public TurretSearchTargetSystem(TurretSearchTargetConfig config, 
-        CoroutinePerformer coroutinePerformer) : base(coroutinePerformer)
+    public TurretSearchTargetSystem(CoroutinePerformer coroutinePerformer) : base(coroutinePerformer)
     {
-        _radiusSearching = config.RadiusSearching;
-        _targetLayerMask = config.TargetLayerMask;
     }
 
-    public void Start(ITurret turret)
+    public void Start(ITurret turret, TurretConfig currentTurretConfig)
     {
         _turret = turret;
+
+        _radiusSearching = currentTurretConfig.AttackCharacteristics.BaseRadiusSearching;
+        _targetLayerMask = currentTurretConfig.AttackCharacteristics.TargetLayer;
+        _maxRadiusToAttack = currentTurretConfig.AttackCharacteristics.BaseAttackRange;
+
         _bufferTargets = new Collider[MaxTargetsInBuffer];
 
-        _sqrMaxRadiusToAttack = MaxRadiusToAttack * MaxRadiusToAttack;
+        _sqrMaxRadiusToAttack = _maxRadiusToAttack * _maxRadiusToAttack;
 
         _searchTargetCoroutine = _coroutinePerformer.StartCoroutine(SearchingTargetJob());
     }
@@ -106,6 +109,9 @@ public class TurretSearchTargetSystem : SearchTargetSystem
 
     private void TargetFound()
     {
+        _subscribedEnemy = _nearestTarget;
+        _subscribedEnemy.CharacterEnemy.EnemyHealth.UnitDead += OnTargetDead;
+
         _turret.TurretAttack.SetTarget(_nearestTarget);
 
         if (_checkDistanceToTargetCoroutine != null)
@@ -119,7 +125,13 @@ public class TurretSearchTargetSystem : SearchTargetSystem
 
     private void TargetDisapperead()
     {
-        _turret.TurretAttack.SetTarget(null);
+        _turret.TurretAttack.ResetTarget(null);
+
+        if (_subscribedEnemy != null)
+        {
+            _subscribedEnemy.CharacterEnemy.EnemyHealth.UnitDead -= OnTargetDead;
+            _subscribedEnemy = null;
+        }
 
         if (_searchTargetCoroutine != null)
         {
@@ -128,5 +140,11 @@ public class TurretSearchTargetSystem : SearchTargetSystem
         }
 
         _searchTargetCoroutine = _coroutinePerformer.StartCoroutine(SearchingTargetJob());
+    }
+
+    private void OnTargetDead(IEnemy enemy)
+    {
+        if (_nearestTarget == enemy)
+            _nearestTarget = null;
     }
 }

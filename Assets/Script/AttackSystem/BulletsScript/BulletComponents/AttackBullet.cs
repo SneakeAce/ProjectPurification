@@ -29,7 +29,7 @@ public class AttackBullet
 
     private void DamageDeal(IEnemy target)
     {
-        target.EnemyHealth.DamageTaken(_currentDamage);
+        target.CharacterEnemy.EnemyHealth.DamageTaken(_currentDamage);
     }
 
     private void DestroyBullet()

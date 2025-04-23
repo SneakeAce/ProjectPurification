@@ -32,14 +32,14 @@ public class TurretFactory : IFactory<Turret, TurretType>
         if (turret == null)
             return null;
 
-        TurretConfig config = GetBarrierConfig(barrierType);
+        TurretConfig config = GetTurretConfig(barrierType);
+
+        turret.transform.position = spawnPosition;
+        turret.transform.rotation = rotation;
 
         _container.Inject(turret);
 
         turret.SetComponents(config);
-
-        turret.transform.position = spawnPosition;
-        turret.transform.rotation = rotation;
 
         return turret;
     }
@@ -54,7 +54,7 @@ public class TurretFactory : IFactory<Turret, TurretType>
         return null;
     }
 
-    private TurretConfig GetBarrierConfig(TurretType type)
+    private TurretConfig GetTurretConfig(TurretType type)
     {
         TurretConfig config = _handlerTurretConfigs.GetObjectConfig(type);
 
