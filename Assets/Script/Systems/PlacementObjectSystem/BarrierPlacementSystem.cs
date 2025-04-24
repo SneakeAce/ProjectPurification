@@ -9,7 +9,7 @@ public class BarrierPlacementSystem : ObjectPlacementSystem
     //private LazyInject<<IFactory<PlaceableObject, BarriersType>> _lazyFactory;
 
     private BarriersType _currentBarrierType;
-    private IFactory<PlaceableObject, BarriersType> _factory;
+    private IFactory<PlaceableObject, PlaceableObjectConfig, BarriersType> _factory;
 
     private CreatedPoolBarriersSystem _poolBarriersSystem;
 
@@ -18,7 +18,7 @@ public class BarrierPlacementSystem : ObjectPlacementSystem
     private Material _phantomObjectMaterial;
 
     public BarrierPlacementSystem(BarrierPlacementSystemConfig config, Character character, 
-        CreatedPoolBarriersSystem poolBarriersSystem, IFactory<PlaceableObject, BarriersType> factory) : base(config, character)
+        CreatedPoolBarriersSystem poolBarriersSystem, IFactory<PlaceableObject, PlaceableObjectConfig, BarriersType> factory) : base(config, character)
     {
         _factory = factory;
 

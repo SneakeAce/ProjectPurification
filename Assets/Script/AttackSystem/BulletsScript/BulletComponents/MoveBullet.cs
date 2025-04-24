@@ -17,8 +17,6 @@ public class MoveBullet
 
     public MoveBullet(CoroutinePerformer routinePerformer)
     {
-        //_config = config;
-
         _coroutinePerformer = routinePerformer;
     }
 

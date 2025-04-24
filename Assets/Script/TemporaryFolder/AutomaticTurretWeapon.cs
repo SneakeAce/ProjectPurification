@@ -3,33 +3,40 @@ using UnityEngine;
 
 public class AutomaticTurretWeapon : TurretWeapon
 {
-    private const float MultiplierAttackSpeed = 0.6f;
+    private const float MultiplierAttackSpeed = 0.6f; // Перенести в систему апгрейдов и DamageData.
 
     private float _currentAttackSpeed;
 
     public override void Initialize(ITurret currentTurret, TurretSearchTargetSystem turretSearchTargetSystem, 
-        TurretConfig config, IFactory<Bullet, BulletType> bulletFactory)
+        TurretConfig config, IFactory<Bullet, BulletConfig, BulletType> bulletFactory)
     {
         base.Initialize(currentTurret, turretSearchTargetSystem, config, bulletFactory);
 
         _currentAttackSpeed = _baseReloadingTime * MultiplierAttackSpeed;
     }
 
-    protected override IEnumerator RotateToTarget()
+    protected override IEnumerator RotateToTargetJob()
     {
         while (_isWork == true)
         {
             if (_currentTarget == null)
                 break;
             
-            Vector3 predictionTargetPosition = GetPredictionTargetPosition(_currentTarget, PredictionFactor);
+            Vector3 predictionTargetPosition = GetPredictionTargetPosition(_currentTarget);
+
+            if (predictionTargetPosition == Vector3.zero)
+            {
+                yield return null;
+                continue;
+            }
+
             Vector3 direction = predictionTargetPosition - _bodyTurret.transform.position;
 
             Quaternion lookRotation = Quaternion.LookRotation(direction);
 
             float angleBetweenTargetAndTurret = Quaternion.Angle(_bodyTurret.transform.rotation, lookRotation);
 
-            if (angleBetweenTargetAndTurret > MinAngleBetweenObjects) // убрать магическое число!
+            if (angleBetweenTargetAndTurret > MinAngleBetweenObjects)
             {
                 float rotationSpeed = Time.deltaTime * _baseRotationSpeed;
 
@@ -47,6 +54,9 @@ public class AutomaticTurretWeapon : TurretWeapon
     {
         while (_currentTarget != null)
         {
+            if (_currentTarget == null)
+                yield break;
+
             float sqrDistanceToTarget = (_currentTarget.Transform.position - _bodyTurret.transform.position).sqrMagnitude;
 
             if (sqrDistanceToTarget < _sqrMinAttackRange)
@@ -54,8 +64,6 @@ public class AutomaticTurretWeapon : TurretWeapon
                 yield return null;
                 continue;
             }
-
-            Debug.Log("TurretWeapon / target == " + _currentTarget);
 
             yield return new WaitForSeconds(_currentAttackSpeed);
 
@@ -67,10 +75,15 @@ public class AutomaticTurretWeapon : TurretWeapon
     {
         SpawnPointBullet spawnPoint = GetSpawnPointBullet();
 
-        Quaternion rotationBullet = Quaternion.Euler(
-            MinValueByXYZ, 
-            spawnPoint.transform.eulerAngles.y, 
-            MinValueByXYZ);
+        if (spawnPoint == null)
+            return;
+
+        Vector3 predictionTargetPosition = GetPredictionTargetPosition(_currentTarget);
+        predictionTargetPosition.y = spawnPoint.transform.position.y;
+
+        Vector3 directionToTarget = (predictionTargetPosition - spawnPoint.transform.position).normalized;
+
+        Quaternion rotationBullet = Quaternion.LookRotation(directionToTarget);
 
         Bullet bullet = _bulletFactory.Create(spawnPoint.transform.position, _bulletType, rotationBullet);
 

@@ -18,7 +18,7 @@ public class BulletInstaller : MonoInstaller
 
     private void BindBulletFactory()
     {
-        Container.Bind<IFactory<Bullet, BulletType>>().To<BulletFactory>().AsSingle();
+        Container.Bind<IFactory<Bullet, BulletConfig, BulletType>>().To<BulletFactory>().AsSingle();
     }
 
 }

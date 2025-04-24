@@ -38,8 +38,8 @@ public class PlacementSystemInstaller : MonoInstaller
 
     private void BindFactories()
     {
-        Container.Bind<IFactory<PlaceableObject, BarriersType>>().To<BarrierFactory>().AsSingle();
+        Container.Bind<IFactory<PlaceableObject, PlaceableObjectConfig, BarriersType>>().To<BarrierFactory>().AsSingle();
 
-        Container.Bind<IFactory<Turret, TurretType>>().To<TurretFactory>().AsSingle();
+        Container.Bind<IFactory<Turret, TurretConfig, TurretType>>().To<TurretFactory>().AsSingle();
     }
 }

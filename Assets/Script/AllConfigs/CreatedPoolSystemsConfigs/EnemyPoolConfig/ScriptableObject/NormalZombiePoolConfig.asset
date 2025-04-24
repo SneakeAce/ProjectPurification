@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <EnemyType>k__BackingField: 2
   <EnemyPrefab>k__BackingField: {fileID: 6103294326399873054, guid: 25079d9b574cccc47acbcd1b80c75284, type: 3}
-  <MaxCountCurrentEnemyOnScene>k__BackingField: 20
+  <MaxCountCurrentEnemyOnScene>k__BackingField: 12

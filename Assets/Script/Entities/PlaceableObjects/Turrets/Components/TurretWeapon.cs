@@ -3,11 +3,8 @@ using UnityEngine;
 
 public abstract class TurretWeapon : MonoBehaviour
 {
-    //Добавить GameObject'ы пушек и тела турели для реализации поворота в сторону врага.
-
     protected const float MinValueByXYZ = 0;
     protected const float MinAngleBetweenObjects = 0.1f;
-    protected const float PredictionFactor = 4.5f;
 
     protected AttackType _attackType;
     protected BulletType _bulletType;
@@ -26,7 +23,7 @@ public abstract class TurretWeapon : MonoBehaviour
 
     protected IEnemy _currentTarget;
 
-    protected IFactory<Bullet, BulletType> _bulletFactory;
+    protected IFactory<Bullet, BulletConfig, BulletType> _bulletFactory;
     protected TurretSearchTargetSystem _searchTargetSystem;
 
     protected SpawnPointBullet[] _spawnPointsBullet;
@@ -43,10 +40,10 @@ public abstract class TurretWeapon : MonoBehaviour
     protected abstract void SpawnBullet();
 
     protected abstract IEnumerator AttackJob();
-    protected abstract IEnumerator RotateToTarget();
+    protected abstract IEnumerator RotateToTargetJob();
 
     public virtual void Initialize(ITurret currentTurret, TurretSearchTargetSystem turretSearchTargetSystem, 
-        TurretConfig config, IFactory<Bullet, BulletType> bulletFactory)
+        TurretConfig config, IFactory<Bullet, BulletConfig, BulletType> bulletFactory)
     {
         _searchTargetSystem = turretSearchTargetSystem;
         _searchTargetSystem.Start(currentTurret, config);
@@ -73,7 +70,7 @@ public abstract class TurretWeapon : MonoBehaviour
             _rotateToTargetCoroutine = null;
         }
 
-        _rotateToTargetCoroutine = StartCoroutine(RotateToTarget());
+        _rotateToTargetCoroutine = StartCoroutine(RotateToTargetJob());
 
         if (_attackCoroutine != null)
         {
@@ -130,14 +127,21 @@ public abstract class TurretWeapon : MonoBehaviour
         return spawnPoint;
     }
 
-    protected Vector3 GetPredictionTargetPosition(IEnemy target, float predictionFactor)
+    protected Vector3 GetPredictionTargetPosition(IEnemy target)
     {
+        if (target == null)
+            return Vector3.zero;
+
+        BulletConfig bulletConfig = _bulletFactory.GetObjectConfig(_bulletType);
+        float bulletSpeed = bulletConfig.BaseBulletSpeed;
+
         Vector3 targetPos = target.Transform.position;
         Vector3 targetVelocity = target.Rigidbody.velocity;
 
-        Debug.Log("TargetVelocity = " + targetVelocity);
+        float distanceToTarget = Vector3.Distance(_bodyTurret.transform.position, targetPos);
+        float timeToTarget = distanceToTarget / bulletSpeed;
 
-        return targetPos + targetVelocity * predictionFactor;
+        return targetPos + targetVelocity * timeToTarget;
     }
 
     private void SetAttackProperties(TurretConfig config)

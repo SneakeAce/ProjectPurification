@@ -1,7 +1,7 @@
 using UnityEngine;
 using Zenject;
 
-public class TurretFactory : IFactory<Turret, TurretType>
+public class TurretFactory : IFactory<Turret, TurretConfig, TurretType>
 {
     private DiContainer _container;
 
@@ -32,7 +32,7 @@ public class TurretFactory : IFactory<Turret, TurretType>
         if (turret == null)
             return null;
 
-        TurretConfig config = GetTurretConfig(barrierType);
+        TurretConfig config = GetObjectConfig(barrierType);
 
         turret.transform.position = spawnPosition;
         turret.transform.rotation = rotation;
@@ -42,6 +42,16 @@ public class TurretFactory : IFactory<Turret, TurretType>
         turret.SetComponents(config);
 
         return turret;
+    }
+
+    public TurretConfig GetObjectConfig(TurretType type)
+    {
+        TurretConfig config = _handlerTurretConfigs.GetObjectConfig(type);
+
+        if (config == null)
+            return null;
+
+        return config;
     }
 
     private ObjectPool<Turret> GetPool(TurretType turretType)
@@ -54,14 +64,5 @@ public class TurretFactory : IFactory<Turret, TurretType>
         return null;
     }
 
-    private TurretConfig GetTurretConfig(TurretType type)
-    {
-        TurretConfig config = _handlerTurretConfigs.GetObjectConfig(type);
-
-        if (config == null)
-            return null;
-
-        return config;
-    }
 
 }

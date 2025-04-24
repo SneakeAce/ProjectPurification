@@ -38,6 +38,9 @@ public class EnemySearchTargetSystem : SearchTargetSystem
     {
         while (_target == null)
         {
+            if (_enemy.Transform.gameObject.activeSelf == false)
+                yield break;
+
             yield return new WaitForSeconds(Random.Range(MinDelayToCheck, MaxDelayToCheck));
 
             int targets = Physics.OverlapSphereNonAlloc(
@@ -64,6 +67,8 @@ public class EnemySearchTargetSystem : SearchTargetSystem
     {
         while (_target != null)
         {
+            if (_enemy.Transform.gameObject.activeSelf == false)
+                yield break;
             float sqrDistance = (_target.Transform.position - _enemy.Transform.position).sqrMagnitude;
 
             if (sqrDistance > _radiusSearching * _radiusSearching)

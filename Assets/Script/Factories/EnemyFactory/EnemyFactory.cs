@@ -1,7 +1,7 @@
 using UnityEngine;
 using Zenject;
 
-public class EnemyFactory : IFactory<EnemyCharacter, EnemyType>
+public class EnemyFactory : IFactory<EnemyCharacter, EnemyConfig, EnemyType>
 {
     private DiContainer _container;
 
@@ -31,14 +31,10 @@ public class EnemyFactory : IFactory<EnemyCharacter, EnemyType>
 
         EnemyCharacter enemy = enemyPool.GetPoolObject();
 
-        //Debug.Log("EnemyFactory / create / enemy = " + enemy);
-
         if (enemy == null)
             return null;
 
-        EnemyConfig config = GetEnemyConfig(enemyTypeInSpawner);
-
-        //Debug.Log("EnemyFactory / create / enemyCoonfig = " + config);
+        EnemyConfig config = GetObjectConfig(enemyTypeInSpawner);
 
         GetEnemyComponents(enemy, out enemyAttack, out patternSwitcher);
 
@@ -54,6 +50,16 @@ public class EnemyFactory : IFactory<EnemyCharacter, EnemyType>
         enemy.transform.rotation = rotation;
 
         return enemy;
+    }
+
+    public EnemyConfig GetObjectConfig(EnemyType type)
+    {
+        EnemyConfig config = _handlerEnemyConfigs.GetObjectConfig(type);
+
+        if (config == null)
+            return null;
+
+        return config;
     }
 
     private ObjectPool<EnemyCharacter> GetPool(EnemyType enemyTypeInSpawner)
@@ -72,13 +78,4 @@ public class EnemyFactory : IFactory<EnemyCharacter, EnemyType>
         patternSwitcher = enemy.GetComponentInChildren<BehavioralPatternSwitcher>();
     }
 
-    private EnemyConfig GetEnemyConfig(EnemyType type)
-    {
-        EnemyConfig config = _handlerEnemyConfigs.GetObjectConfig(type);
-
-        if (config == null)
-            return null;
-
-        return config;
-    }
 }

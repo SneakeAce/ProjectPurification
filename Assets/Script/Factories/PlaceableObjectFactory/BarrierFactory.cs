@@ -1,7 +1,7 @@
 using UnityEngine;
 using Zenject;
 
-public class BarrierFactory : IFactory<PlaceableObject, BarriersType>
+public class BarrierFactory : IFactory<PlaceableObject, PlaceableObjectConfig, BarriersType>
 {
     private DiContainer _container;
 
@@ -32,7 +32,7 @@ public class BarrierFactory : IFactory<PlaceableObject, BarriersType>
         if (placeableObject == null)
             return null;
 
-        PlaceableObjectConfig config = GetBarrierConfig(barrierType);
+        PlaceableObjectConfig config = GetObjectConfig(barrierType);
 
         _container.Inject(placeableObject);
 
@@ -42,6 +42,16 @@ public class BarrierFactory : IFactory<PlaceableObject, BarriersType>
         placeableObject.transform.rotation = rotation;
 
         return placeableObject;
+    }
+
+    public PlaceableObjectConfig GetObjectConfig(BarriersType type)
+    {
+        PlaceableObjectConfig config = _handlerBarrrierConfigs.GetObjectConfig(type);
+
+        if (config == null)
+            return null;
+
+        return config;
     }
 
     private ObjectPool<PlaceableObject> GetPool(BarriersType barrierType)
@@ -54,13 +64,4 @@ public class BarrierFactory : IFactory<PlaceableObject, BarriersType>
         return null;
     }
 
-    private PlaceableObjectConfig GetBarrierConfig(BarriersType type)
-    {
-        PlaceableObjectConfig config = _handlerBarrrierConfigs.GetObjectConfig(type);
-
-        if (config == null)
-            return null;
-
-        return config;
-    }
 }

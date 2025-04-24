@@ -16,4 +16,4 @@ MonoBehaviour:
   <SpawnPointPrefab>k__BackingField: {fileID: 3273969058929186199, guid: dab1129de638bb4458ed9e04364010b2, type: 3}
   <EnemyTypeInSpawnPoint>k__BackingField: 2
   <RadiusSpawning>k__BackingField: 10
-  <MaxEnemyOnScene>k__BackingField: 4
+  <MaxEnemyOnScene>k__BackingField: 0

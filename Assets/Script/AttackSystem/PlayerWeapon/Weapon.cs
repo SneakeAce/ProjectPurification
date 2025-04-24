@@ -17,7 +17,7 @@ public abstract class Weapon : MonoBehaviour, IWeapon
     protected WeaponConfig _weaponConfig;
     protected InputWeaponHandler _inputWeaponAttackHandler;
 
-    protected IFactory<Bullet, BulletType> _bulletFactory;
+    protected IFactory<Bullet, BulletConfig, BulletType> _bulletFactory;
     protected SpawnPointBullet _spawnPointBullet;
 
     protected Coroutine _reloadingWeaponCoroutine;
@@ -50,7 +50,7 @@ public abstract class Weapon : MonoBehaviour, IWeapon
 
     [Inject]
     private void Construct(PlayerInput playerInput, InputWeaponHandler inputWeaponAttackHandler, 
-        IFactory<Bullet, BulletType> bulletFactory, List<IFiringModeStrategy> firingModeStrategies)
+        IFactory<Bullet, BulletConfig, BulletType> bulletFactory, List<IFiringModeStrategy> firingModeStrategies)
     {
         _playerInput = playerInput;
         

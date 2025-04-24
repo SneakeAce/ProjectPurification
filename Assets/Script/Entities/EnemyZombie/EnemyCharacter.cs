@@ -95,7 +95,15 @@ public class EnemyCharacter : MonoBehaviour, IEnemy, IPoolable
 
         _behavioralPattern = behavioralPattern;
 
-        _behavioralPattern.StartMove();
+        _behavioralPattern?.StartMove();
+    }
+
+    private void OnDisable()
+    {
+        Debug.Log("EnemyCharacter / OnDisable");
+
+        if (_behavioralPattern != null)
+            _behavioralPattern = null;
     }
 
     private void Update()

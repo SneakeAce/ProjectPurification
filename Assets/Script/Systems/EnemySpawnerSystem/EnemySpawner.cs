@@ -21,14 +21,14 @@ public abstract class EnemySpawner : MonoBehaviour
 
     protected EnemyType _allowedEnemyTypeInSpawner;
 
-    protected IFactory<EnemyCharacter, EnemyType> _enemyFactory;
+    protected IFactory<EnemyCharacter, EnemyConfig, EnemyType> _enemyFactory;
 
     protected BehavioralPatternSwitcher _behavioralPattern;
 
     protected Coroutine _spawnEnemyCoroutine;
 
     [Inject]
-    private void Construct(IFactory<EnemyCharacter, EnemyType> enemyFactory)
+    private void Construct(IFactory<EnemyCharacter, EnemyConfig, EnemyType> enemyFactory)
     {
         _enemyFactory = enemyFactory;
     }
@@ -63,8 +63,6 @@ public abstract class EnemySpawner : MonoBehaviour
             .Cast<EnemyType>()
             .Where(type => type != EnemyType.None && (_allowedEnemyTypeInSpawner & type) != 0)
             .ToList();
-
-        //Debug.Log("EnemySpawner / GetRandomEnemyTypes / availableEnemies = " + availableEnemies.Count);
 
         if (availableEnemies.Count <= 0)
             return new List<EnemyType>();

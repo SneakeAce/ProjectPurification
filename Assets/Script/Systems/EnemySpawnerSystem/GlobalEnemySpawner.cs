@@ -10,7 +10,6 @@ public class GlobalEnemySpawner : EnemySpawner
 {
     private const string SpawnPointHolder = "SpawnPointsHolder";
 
-    private const int MinRandomRangeValue = 0;
     private const int AdditionalValue = 1;
     private const int ReducingValue = 1;
 
@@ -19,7 +18,6 @@ public class GlobalEnemySpawner : EnemySpawner
 
     private List<SpawnPoint> _spawnPoints;
 
-    private ObjectPool<EnemyCharacter> _selectedEnemyPool;
     private GlobalEnemySpawnerConfig _config;
 
     [Inject]
@@ -60,8 +58,6 @@ public class GlobalEnemySpawner : EnemySpawner
     {
         EnemyCharacter enemy = GetEnemy();
 
-        //Debug.Log("Enemy in GlobaleSpawner in SpawnEnemy = " + enemy);
-
         if (enemy == null)
             return;
 
@@ -71,7 +67,7 @@ public class GlobalEnemySpawner : EnemySpawner
 
     public override bool CheckEnemyAroundSpawnPoint(Vector3 spawnPointPosition)
     {
-        Collider[] enemyInRadius = Physics.OverlapSphere(spawnPointPosition, _radiusCheckingEnemyAround);
+        Collider[] enemyInRadius = Physics.OverlapSphere(spawnPointPosition, _radiusCheckingEnemyAround, _enemyLayer);
 
         if (enemyInRadius.Length > 0)
             return false;
@@ -133,14 +129,10 @@ public class GlobalEnemySpawner : EnemySpawner
 
         SpawnPoint newSpawnPoint = GetSpawnPoint(enemyTypes, out currentEnemyType);
 
-       // Debug.Log("NewSpawnPoint in GlobalSpawner = " + newSpawnPoint);
-
-        if (newSpawnPoint == null)
+        if (newSpawnPoint == null || newSpawnPoint.CurrentEnemyOnScene >= newSpawnPoint.MaxEnemyOnScene)
             return null;
 
         Vector3 newPosition = GetSpawnPosition(newSpawnPoint);
-
-      //  Debug.Log("NewPosition in GlobalSpawner = " + newPosition);
 
         if (newPosition == Vector3.zero)
             return null;
@@ -148,8 +140,6 @@ public class GlobalEnemySpawner : EnemySpawner
         Quaternion randomRotation = Quaternion.Euler(MinRotationValue, Random.Range(MinRotationValue, MaxRotationValue), MinRotationValue);
 
         EnemyCharacter enemy = _enemyFactory.Create(newPosition, currentEnemyType, randomRotation);
-
-        //Debug.Log("Enemy in GlobalSpawner = " + enemy);
 
         if (enemy == null)
             return null;
@@ -198,7 +188,6 @@ public class GlobalEnemySpawner : EnemySpawner
             }
         }
 
-        //Debug.LogWarning($"Не удалось найти точку для спауна у {selectedSpawnPoint.name}, возвращаю стандартную позицию.");
         return selectedSpawnPoint.transform.position;
     }
 }

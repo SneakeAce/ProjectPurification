@@ -8,7 +8,7 @@ public class TurretPlacementSystem : ObjectPlacementSystem
     // ядекюрэ яхярелс нрякефхбюмхъ рейсыецн йнкхвеярбю пюяонкнфеммшу назейрнб ндмнцн рхою мю яжеме.
     private TurretType _currentTurretType;
 
-    private IFactory<Turret, TurretType> _factory;
+    private IFactory<Turret,TurretConfig, TurretType> _factory;
     private CreatedPoolTurretsSystem _poolTurretsSystem;
 
     private ObjectPool<Turret> _poolObject;
@@ -17,7 +17,7 @@ public class TurretPlacementSystem : ObjectPlacementSystem
     private List<Material> _phantomObjectMaterial = new List<Material>();
 
     public TurretPlacementSystem(TurretPlacementSystemConfig config, Character character, 
-        CreatedPoolTurretsSystem poolTurretsSystem, IFactory<Turret, TurretType> factory) : base(config, character)
+        CreatedPoolTurretsSystem poolTurretsSystem, IFactory<Turret, TurretConfig, TurretType> factory) : base(config, character)
     {
         //Debug.Log("TurretPlacementSystem Construct");
 

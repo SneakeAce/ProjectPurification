@@ -8,7 +8,7 @@ public class Turret : MonoBehaviour, ITurret
     private TurretSearchTargetSystem _searchTargetSystem;
     private TurretWeapon _turretWeapon;
 
-    protected IFactory<Bullet, BulletType> _bulletFactory;
+    protected IFactory<Bullet, BulletConfig, BulletType> _bulletFactory;
 
     public Transform Transform => transform;
 
@@ -21,7 +21,7 @@ public class Turret : MonoBehaviour, ITurret
     public TurretWeapon TurretAttack => _turretWeapon;
 
     [Inject]
-    private void Construct(TurretSearchTargetSystem turretSearchTargetSystem, IFactory<Bullet, BulletType> bulletFactory)
+    private void Construct(TurretSearchTargetSystem turretSearchTargetSystem, IFactory<Bullet, BulletConfig, BulletType> bulletFactory)
     {
         _searchTargetSystem = turretSearchTargetSystem;
         _bulletFactory = bulletFactory;

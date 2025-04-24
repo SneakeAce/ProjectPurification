@@ -1,7 +1,7 @@
 using UnityEngine;
 using Zenject;
 
-public class BulletFactory : IFactory<Bullet, BulletType>
+public class BulletFactory : IFactory<Bullet, BulletConfig, BulletType>
 {
     private DiContainer _container;
 
@@ -34,7 +34,7 @@ public class BulletFactory : IFactory<Bullet, BulletType>
         if (bullet == null)
             return null;
 
-        BulletConfig config = GetBulletConfig(bulletType);
+        BulletConfig config = GetObjectConfig(bulletType);
 
         _container.Inject(bullet);
 
@@ -47,6 +47,16 @@ public class BulletFactory : IFactory<Bullet, BulletType>
         return bullet;
     }
 
+    public BulletConfig GetObjectConfig(BulletType type)
+    {
+        BulletConfig config = _handlerBulletConfigs.GetObjectConfig(type);
+
+        if (config == null)
+            return null;
+
+        return config;
+    }
+
     private ObjectPool<Bullet> GetPool(BulletType bulletType)
     {
         BulletType bulletTypeSelected = bulletType;
@@ -55,16 +65,6 @@ public class BulletFactory : IFactory<Bullet, BulletType>
             return poolSelected;
 
         return null;
-    }
-
-    private BulletConfig GetBulletConfig(BulletType type)
-    {
-        BulletConfig config = _handlerBulletConfigs.GetObjectConfig(type);
-
-        if (config == null)
-            return null;
-
-        return config;
     }
 }
 
