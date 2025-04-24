@@ -4,19 +4,30 @@ using UnityEngine;
 
 public class TurretHealth : IDamageable
 {
-    public TurretHealth()
+
+    private ArmorData _armorData;
+    private DamageCalculator _damageCalculator;
+
+    public TurretHealth(TurretConfig config, DamageCalculator damageCalculator)
     {
+        _armorData = new ArmorData(ArmorType.LightArmor, config.ArmorCharacteristics.ArmorFactor);
+
+        _damageCalculator = damageCalculator;
     }
 
-    public bool TryTakeDamage(float damage)
+    public void TakeDamage(DamageData damage)
     {
-        return true;
-    }
+        float finalDamage = _damageCalculator.CalculateDamage(damage, _armorData);
 
-    public void TakeDamage(float damage)
-    {
-        if (TryTakeDamage(damage) == false)
+        if (finalDamage <= 0)
             return;
+
+        ApplyDamage(finalDamage);
+    }
+
+    public void ApplyDamage(float damage)
+    {
+        
 
 
     }
