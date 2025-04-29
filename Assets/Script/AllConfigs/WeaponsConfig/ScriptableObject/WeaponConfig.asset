@@ -12,13 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 945ef85ec52eca3499009e1a83b83be5, type: 3}
   m_Name: WeaponConfig
   m_EditorClassIdentifier: 
+  <Prefab>k__BackingField: {fileID: 6832004892738916143, guid: c0217d4d099535342923673e37c9a96c, type: 3}
+  <WeaponType>k__BackingField: 1
   <WeaponStatsConfig>k__BackingField:
-    <WeaponNames>k__BackingField: 1
-    <WeaponAttackType>k__BackingField: 0
-    <BulletTypeUsed>k__BackingField: 1
-    <SpawnPointBullets>k__BackingField: {fileID: 1064093971724667088, guid: b46abf120f522754c9a37bc82c2a0a48, type: 3}
-    <MaxMagazineCapacity>k__BackingField: 30
-    <Damage>k__BackingField: 20
-    <DelayBeforeFiring>k__BackingField: 0.8
-    <RangeShooting>k__BackingField: 6.8
-    <ReloadingTime>k__BackingField: 0.9
+    <FiringMode>k__BackingField: -1
+    <BulletTypeInWeapon>k__BackingField: 1
+    <BaseMagazineCapacity>k__BackingField: 30
+    <BaseDelayBeforeFiring>k__BackingField: 0.8
+    <BaseShootingRange>k__BackingField: 7.5
+    <BaseReloadingTime>k__BackingField: 0.8

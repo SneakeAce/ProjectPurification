@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d880d134acddf245a5cc63c62d9e7c7, type: 3}
   m_Name: ConcreteBarrier
   m_EditorClassIdentifier: 
-  <SpecificationsBarrier>k__BackingField:
-    <BarrierType>k__BackingField: 2
+  "<\u0421haracteristicsBarrier>k__BackingField":
+    <BarrierType>k__BackingField: 0
     <MaxCountOnCurrentScene>k__BackingField: 20
     <MaxEndurance>k__BackingField: 200

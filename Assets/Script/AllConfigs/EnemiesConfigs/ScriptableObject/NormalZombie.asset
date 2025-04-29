@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: NormalZombie
   m_EditorClassIdentifier: 
   <CharacteristicsEnemy>k__BackingField:
-    <EnemyPrefab>k__BackingField: {fileID: 6103294326399873054, guid: 25079d9b574cccc47acbcd1b80c75284, type: 3}
     <EnemyType>k__BackingField: 2
-    <MoveSpeed>k__BackingField: 0
+    <MoveSpeed>k__BackingField: 2
   <AttackCharacteristicsEnemy>k__BackingField:
+    <AttackType>k__BackingField: 0
     <BaseDamage>k__BackingField: 5
     <RadiusAttack>k__BackingField: 2
     <ReloadingTime>k__BackingField: 2

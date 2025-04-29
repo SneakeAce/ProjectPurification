@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00118e3ae38c13a4b9e892b2931ed33c, type: 3}
+  m_Name: AutomaticTurretBulletPoolConfig
+  m_EditorClassIdentifier: 
+  <BulletType>k__BackingField: 3
+  <Prefab>k__BackingField: {fileID: 8784050274174984388, guid: 6a4a918cebee5e849a8a39fba97cd753, type: 3}
+  <MaxCountCurrentBulletOnScene>k__BackingField: 30

@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: BarrierPlacementSystemConfig
   m_EditorClassIdentifier: 
   <PhantomObjectsPrefab>k__BackingField:
-  - {fileID: 6815114409020348138, guid: f2570266737447340a25eccd4e58c7b9, type: 3}
-  - {fileID: 3950779808331749615, guid: 30cea783241bbee4cad3ca84235db40e, type: 3}
   - {fileID: 7837893150650144234, guid: 3334fe943dc14644ca937587ed6bd75d, type: 3}
+  - {fileID: 3950779808331749615, guid: 30cea783241bbee4cad3ca84235db40e, type: 3}
+  - {fileID: 6815114409020348138, guid: f2570266737447340a25eccd4e58c7b9, type: 3}
   <ObstaclesLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 49856

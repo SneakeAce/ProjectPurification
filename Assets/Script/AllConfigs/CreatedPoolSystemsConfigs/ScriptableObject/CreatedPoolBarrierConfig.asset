@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: CreatedPoolBarrierConfig
   m_EditorClassIdentifier: 
   <Objects>k__BackingField:
-  - {fileID: 1481353816718212800, guid: 135e6993397804a4a83772dd128b1121, type: 3}
-  - {fileID: 3366252404372129345, guid: 29aa46b1ee49fda49a570b357097e3db, type: 3}
   - {fileID: -8225543304826416428, guid: fb739f406104bce47a23ebab591e7a8f, type: 3}
+  <PoolBarrierConfigs>k__BackingField:
+  - {fileID: 11400000, guid: 0aa4aa21bfb22d342901c0722a8ce80b, type: 2}

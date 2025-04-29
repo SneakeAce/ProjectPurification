@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BarLookAtCamera : MonoBehaviour
 {
-    [SerializeField] private IUnit _character;
+    [SerializeField] private Character _character;
     [SerializeField] private GameObject _healthBar;
     [SerializeField] private Camera _camera;
 

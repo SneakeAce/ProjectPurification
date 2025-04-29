@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Objects>k__BackingField:
   - {fileID: 6810960184554847928, guid: e4c232cacc014bf4c86cff742ecd9f01, type: 3}
+  <PoolTurretsConfigs>k__BackingField:
+  - {fileID: 11400000, guid: e765da1af4814f1498497ed6f5ba3391, type: 2}

@@ -28,4 +28,4 @@ MonoBehaviour:
   <TimeBetweenSpawn>k__BackingField: 2
   <AllowedEnemyType>k__BackingField: -1
   <RadiusSpawn>k__BackingField: 15
-  <MaxEnemyOnSceneInCurrentLocalSpawner>k__BackingField: 10
+  <MaxEnemyOnSceneInCurrentLocalSpawner>k__BackingField: 0

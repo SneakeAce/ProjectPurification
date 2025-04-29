@@ -12,9 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb6b30a0dbf6d4849a1d984d40887607, type: 3}
   m_Name: AutomaticTurret
   m_EditorClassIdentifier: 
-  <SpecificationTurret>k__BackingField:
+  <MainCharacteristics>k__BackingField:
     <TurretType>k__BackingField: 0
-    <FireRate>k__BackingField: 1
-    <Damage>k__BackingField: 5
     <MaxEndurance>k__BackingField: 100
-    <MaxCountOnScene>k__BackingField: 5
+  <AttackCharacteristics>k__BackingField:
+    <AttackType>k__BackingField: 3
+    <BulletType>k__BackingField: 3
+    <BaseDamage>k__BackingField: 10
+    <BaseDelayBeforeFiring>k__BackingField: 0.2
+    <BaseRotationSpeed>k__BackingField: 12
+    <BaseRadiusSearching>k__BackingField: 20
+    <BaseAttackRange>k__BackingField: 15
+    <MinimumAttackRange>k__BackingField: 6
+    <TargetLayer>k__BackingField:
+      serializedVersion: 2
+      m_Bits: 256
