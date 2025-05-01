@@ -5,4 +5,5 @@ public enum ArmorType
     ReinforcedArmor = 2,
     HeavyArmor = 3,
     FleshArmor = 4,
+    HeavyFleshArmor = 5,
 }

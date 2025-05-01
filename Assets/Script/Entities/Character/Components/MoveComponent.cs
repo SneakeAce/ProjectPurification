@@ -18,13 +18,13 @@ public class MoveComponent
 
     private bool _isCanWork = false;
 
-    public void Initialization(Character character)
+    public MoveComponent(Character character, PlayerConfig config)
     {
         _character = character;
         _playerInput = _character.PlayerInput;
 
-        _speed = _character.PlayerConfig.Speed;
-        _includeLayer = _character.PlayerConfig.IncludeLayerForMovement;
+        _speed = config.Speed;
+        _includeLayer = config.IncludeLayerForMovement;
 
         _isCanWork = true;
     }

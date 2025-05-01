@@ -1,15 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public struct ArmorData
+public readonly struct ArmorData
 {
-    public ArmorData(ArmorType armorType, float armorFactor)
+    private const float DefaultMinArmorValue = 0f;
+    private const float DefaultMaxArmorValue = 100f;
+
+    public ArmorData(ArmorType armorType, float armorValue)
     {
         ArmorType = armorType;
-        ArmorFactor = armorFactor;
+        ArmorValue = armorValue;
     }
 
     public ArmorType ArmorType { get; }
-    public float ArmorFactor { get; }
+    public float ArmorValue { get; }
+    public float MinArmorValue => DefaultMinArmorValue;
+    public float MaxArmorValue => DefaultMaxArmorValue;
 }

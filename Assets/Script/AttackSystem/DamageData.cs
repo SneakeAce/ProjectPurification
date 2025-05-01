@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public struct DamageData
+public readonly struct DamageData
 {
     public DamageData(AttackType attackType, float damage)
     {
@@ -12,5 +8,4 @@ public struct DamageData
 
     public AttackType AttackType { get; }
     public float Damage { get; }
-
 }

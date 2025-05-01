@@ -76,4 +76,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _coroutinePerformerPrefab: {fileID: 1371283235056473639, guid: 78f79b677c5704c4db59a17731b85226, type: 3}
   _objectPerformer: {fileID: 7664152438581526518, guid: a7fb64f86ab69914b88df9f3f26be9bb, type: 3}
-  _objectPoolsHolder: {fileID: 8443998769259882616, guid: 236db66fd0bc2ef4e87f8bd32fbc937e, type: 3}
+  _damageMatrixCsvFile: {fileID: 4900000, guid: 4ec7f9c96bef9b94dac4250cbf5a5154, type: 3}

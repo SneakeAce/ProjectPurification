@@ -9,6 +9,14 @@ public class CharacterHealth
 
     private Character _character;
 
+    public CharacterHealth(Character character, PlayerConfig config)
+    {
+        _character = character;
+
+        _maxValue = config.MaxHealth;
+        _currentValue = _maxValue;
+    }
+
     public float MaxValue { get => _maxValue; set => _maxValue = value; }
     public float CurrentValue { get => _currentValue; set => _currentValue = value; }
 
@@ -16,11 +24,6 @@ public class CharacterHealth
     public event Action<float> CurrentValueChanged;
     public event Action<Character> OnDead;
 
-    public void Initialization(Character character)
-    {
-        _character = character;
-        _currentValue = _maxValue = _character.PlayerConfig.MaxHealth; 
-    }
 
     public void DamageTaken(float damage)
     {

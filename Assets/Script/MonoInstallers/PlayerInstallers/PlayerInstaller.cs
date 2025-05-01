@@ -8,19 +8,13 @@ public class PlayerInstaller : MonoInstaller
     public override void InstallBindings()
     {
         BindPlayerConfig();
-        BindPlayerComponents();
+
         CreatePlayer();
     }
 
     private void BindPlayerConfig()
     {
         Container.Bind<PlayerConfig>().FromInstance(_playerConfig).AsSingle();
-    }
-
-    private void BindPlayerComponents()
-    {
-        Container.Bind<CharacterHealth>().AsSingle();
-        Container.Bind<MoveComponent>().AsSingle();
     }
 
     private void CreatePlayer()

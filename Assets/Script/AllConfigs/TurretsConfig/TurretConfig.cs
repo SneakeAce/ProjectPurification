@@ -5,7 +5,7 @@ public class TurretConfig : ScriptableObject, IConfigWithType<TurretType>
 {
     [field: SerializeField] public CharacteristicsTurret MainCharacteristics { get; private set; }
     [field: SerializeField] public AttackCharacteristicsTurret AttackCharacteristics { get; private set; }
-    [field: SerializeField] public ArmorCharacteristicsTurret ArmorCharacteristics { get; private set; }
+    [field: SerializeField] public TurretDefenseAttributes TurretDefenseAttributes { get; private set; }
 
     public TurretType ConfigType => MainCharacteristics.TurretType;
 }

@@ -1,4 +1,7 @@
+using UnityEngine;
+
 public interface ITurret : IEntity
 {
-    TurretWeapon TurretAttack { get; }
+    AutomaticTurretWeapon TurretWeapon { get; }
+    GameObject BodyTurret { get; }
 }

@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public abstract class TurretWeapon : MonoBehaviour
+public abstract class TurretWeapon
 {
     protected const float MinValueByXYZ = 0;
     protected const float MinAngleBetweenObjects = 0.1f;
@@ -17,9 +17,12 @@ public abstract class TurretWeapon : MonoBehaviour
 
     protected int _currentSpawnPointBulletIndex = 0;
     protected float _sqrMinAttackRange;
+    protected float _currentAttackSpeed;
 
     protected bool _isWork = false;
     protected bool _isRotatedToTarget = false;
+
+    protected ITurret _currentTurret;
 
     protected IEnemy _currentTarget;
 
@@ -27,10 +30,11 @@ public abstract class TurretWeapon : MonoBehaviour
     protected TurretSearchTargetSystem _searchTargetSystem;
 
     protected SpawnPointBullet[] _spawnPointsBullet;
-    protected SpawnPointBullet _curretSpawnPointBullet;
+    protected SpawnPointBullet _currentSpawnPointBullet;
 
     protected GameObject _bodyTurret;
 
+    protected CoroutinePerformer _coroutinePerformer;
     protected Coroutine _attackCoroutine;
     protected Coroutine _rotateToTargetCoroutine;
     protected Coroutine _returnTurretToDefaultRotationCoroutine;
@@ -42,21 +46,24 @@ public abstract class TurretWeapon : MonoBehaviour
     protected abstract IEnumerator AttackJob();
     protected abstract IEnumerator RotateToTargetJob();
 
-    public virtual void Initialize(ITurret currentTurret, TurretSearchTargetSystem turretSearchTargetSystem, 
-        TurretConfig config, IFactory<Bullet, BulletConfig, BulletType> bulletFactory)
+    public TurretWeapon(ITurret currentTurret, TurretConfig config,
+        TurretSearchTargetSystem turretSearchTargetSystem, IFactory<Bullet, BulletConfig, BulletType> bulletFactory, 
+        CoroutinePerformer coroutinePerformer, GameObject bodyTurret)
     {
+        _currentTurret = currentTurret;
+        _coroutinePerformer = coroutinePerformer;
+
+        _bodyTurret = bodyTurret;
+
+        _spawnPointsBullet = bodyTurret.GetComponentsInChildren<SpawnPointBullet>();
+        _defaultTurretRotation = currentTurret.Transform.rotation;
+
         _searchTargetSystem = turretSearchTargetSystem;
-        _searchTargetSystem.Start(currentTurret, config);
+        _searchTargetSystem.Start(_currentTurret, config);
 
         _bulletFactory = bulletFactory;
 
-        _bodyTurret = this.gameObject;
-
-        _spawnPointsBullet = GetComponentsInChildren<SpawnPointBullet>(); 
-
         SetAttackProperties(config);
-
-        _defaultTurretRotation = transform.parent.rotation;
     }
 
     public void SetTarget(IEnemy target)
@@ -66,19 +73,19 @@ public abstract class TurretWeapon : MonoBehaviour
 
         if (_rotateToTargetCoroutine != null)
         {
-            StopCoroutine(_rotateToTargetCoroutine);
+            _coroutinePerformer.StopCoroutine(_rotateToTargetCoroutine);
             _rotateToTargetCoroutine = null;
         }
 
-        _rotateToTargetCoroutine = StartCoroutine(RotateToTargetJob());
+        _rotateToTargetCoroutine = _coroutinePerformer.StartCoroutine(RotateToTargetJob());
 
         if (_attackCoroutine != null)
         {
-            StopCoroutine(_attackCoroutine);
+            _coroutinePerformer.StopCoroutine(_attackCoroutine);
             _attackCoroutine = null;
         }
 
-        _attackCoroutine = StartCoroutine(AttackJob());
+        _attackCoroutine = _coroutinePerformer.StartCoroutine(AttackJob());
     }
 
     public void ResetTarget(IEnemy target)
@@ -88,11 +95,11 @@ public abstract class TurretWeapon : MonoBehaviour
 
         if (_returnTurretToDefaultRotationCoroutine != null)
         {
-            StopCoroutine(_returnTurretToDefaultRotationCoroutine);
+            _coroutinePerformer.StopCoroutine(_returnTurretToDefaultRotationCoroutine);
             _returnTurretToDefaultRotationCoroutine = null;
         }
 
-        _returnTurretToDefaultRotationCoroutine = StartCoroutine(ReturnTurretToDefaultRotation());
+        _returnTurretToDefaultRotationCoroutine = _coroutinePerformer.StartCoroutine(ReturnTurretToDefaultRotation());
     }
 
     protected IEnumerator ReturnTurretToDefaultRotation()
@@ -136,7 +143,7 @@ public abstract class TurretWeapon : MonoBehaviour
         float bulletSpeed = bulletConfig.BaseBulletSpeed;
 
         Vector3 targetPos = target.Transform.position;
-        Vector3 targetVelocity = target.Rigidbody.velocity;
+        Vector3 targetVelocity = target.NavMeshAgent.velocity;
 
         float distanceToTarget = Vector3.Distance(_bodyTurret.transform.position, targetPos);
         float timeToTarget = distanceToTarget / bulletSpeed;
@@ -158,6 +165,8 @@ public abstract class TurretWeapon : MonoBehaviour
         _sqrMinAttackRange = _minAttackRange * _minAttackRange;
 
         _targetLayer = config.AttackCharacteristics.TargetLayer;
+
+        _currentAttackSpeed = _baseReloadingTime;
     }
 
 }

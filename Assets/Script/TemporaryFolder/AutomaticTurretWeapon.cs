@@ -5,14 +5,11 @@ public class AutomaticTurretWeapon : TurretWeapon
 {
     private const float MultiplierAttackSpeed = 0.6f; // Перенести в систему апгрейдов и DamageData.
 
-    private float _currentAttackSpeed;
-
-    public override void Initialize(ITurret currentTurret, TurretSearchTargetSystem turretSearchTargetSystem, 
-        TurretConfig config, IFactory<Bullet, BulletConfig, BulletType> bulletFactory)
+    public AutomaticTurretWeapon(ITurret currentTurret, TurretConfig config, 
+        TurretSearchTargetSystem turretSearchTargetSystem, IFactory<Bullet, BulletConfig, BulletType> bulletFactory, 
+        CoroutinePerformer coroutinePerformer, GameObject bodyTurret) : base(currentTurret, 
+            config, turretSearchTargetSystem, bulletFactory, coroutinePerformer, bodyTurret)
     {
-        base.Initialize(currentTurret, turretSearchTargetSystem, config, bulletFactory);
-
-        _currentAttackSpeed = _baseReloadingTime * MultiplierAttackSpeed;
     }
 
     protected override IEnumerator RotateToTargetJob()
@@ -97,15 +94,14 @@ public class AutomaticTurretWeapon : TurretWeapon
     {
         if (_rotateToTargetCoroutine != null)
         {
-            StopCoroutine(_rotateToTargetCoroutine);
+            _coroutinePerformer.StopCoroutine(_rotateToTargetCoroutine);
             _rotateToTargetCoroutine = null;
         }
 
         if (_attackCoroutine != null)
         {
-            StopCoroutine(_attackCoroutine);
+            _coroutinePerformer.StopCoroutine(_attackCoroutine);
             _attackCoroutine = null;
         }
     }
-
 }
