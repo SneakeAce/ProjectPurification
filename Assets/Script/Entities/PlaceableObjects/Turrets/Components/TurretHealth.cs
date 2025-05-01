@@ -1,35 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System;
+using System.Diagnostics;
 
-public class TurretHealth : IDamageable
+public class TurretHealth : EntityHealth
 {
+    public override event Action UnitDead;
+    public override event Action<float> CurrentValueChanged;
+    public override event Action<float> MaxValueChanged;
 
-    private ArmorData _armorData;
-    private DamageCalculator _damageCalculator;
-
-    public TurretHealth(TurretConfig config, DamageCalculator damageCalculator)
+    public TurretHealth(IDamageCalculator damageCalculator) : base(damageCalculator)
     {
-        _armorData = new ArmorData(ArmorType.LightArmor, config.ArmorCharacteristics.ArmorFactor);
-
-        _damageCalculator = damageCalculator;
     }
 
-    public void TakeDamage(DamageData damage)
+    protected override void ApplyDamage(float damage)
     {
-        float finalDamage = _damageCalculator.CalculateDamage(damage, _armorData);
+        _currentHealth -= damage;
 
-        if (finalDamage <= 0)
-            return;
+        UnityEngine.Debug.Log("CurrentHealth Turret == " + _currentHealth);
 
-        ApplyDamage(finalDamage);
+        if (_currentHealth <= 0) 
+        { 
+            UnitDead?.Invoke();
+            UnityEngine.Debug.Log("turret is Dead");
+        }
     }
-
-    public void ApplyDamage(float damage)
-    {
-        
-
-
-    }
-
 }

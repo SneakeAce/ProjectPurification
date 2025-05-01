@@ -12,14 +12,14 @@ public enum AttackType
 
     RangeAttack = 3,
     StrengthRangeAttack = 4,
-    AcidRangeAttack = 5,
-    ExplosiveAttackRange = 6,
 
     #endregion
 
     #region SpecialtyTypeAttack
 
-    ArmorPiercingAttack = 7,
+    AcidRangeAttack = 5,
+    ExplosiveAttackRange = 6,
+    ArmorPiercingRangeAttack = 7,
     FieryAttack = 8,
 
     #endregion

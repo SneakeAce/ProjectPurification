@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <MainCharacteristics>k__BackingField:
     <TurretType>k__BackingField: 0
-    <MaxEndurance>k__BackingField: 100
   <AttackCharacteristics>k__BackingField:
     <AttackType>k__BackingField: 3
     <BulletType>k__BackingField: 3
@@ -27,3 +26,7 @@ MonoBehaviour:
     <TargetLayer>k__BackingField:
       serializedVersion: 2
       m_Bits: 256
+  <TurretDefenseAttributes>k__BackingField:
+    <ArmorType>k__BackingField: 1
+    <ArmorFactor>k__BackingField: 76.6
+    <BaseEndurance>k__BackingField: 100

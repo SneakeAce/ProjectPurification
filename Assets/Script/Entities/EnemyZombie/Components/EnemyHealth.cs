@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 
 public class EnemyHealth
 {
@@ -29,6 +30,7 @@ public class EnemyHealth
 
     public void DamageTaken(float damage)
     {
+        UnityEngine.Debug.Log("EnemyHealth / DamageTaken / damage = " + damage);
         _currentValue -= damage;
 
         if (_currentValue <= 0)

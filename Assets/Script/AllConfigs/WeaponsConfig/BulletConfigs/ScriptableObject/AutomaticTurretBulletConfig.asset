@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <BulletType>k__BackingField: 3
   <AttackType>k__BackingField: 3
-  <BaseBulletDamage>k__BackingField: 5
-  <BaseBulletSpeed>k__BackingField: 40
+  <BaseBulletDamage>k__BackingField: 0.5
+  <BaseBulletSpeed>k__BackingField: 60
   <EnemyLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 256

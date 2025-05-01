@@ -112,7 +112,7 @@ public class TurretSearchTargetSystem : SearchTargetSystem
         _subscribedEnemy = _nearestTarget;
         _subscribedEnemy.CharacterEnemy.EnemyHealth.UnitDead += OnTargetDead;
 
-        _turret.TurretAttack.SetTarget(_nearestTarget);
+        _turret.TurretWeapon.SetTarget(_nearestTarget);
 
         if (_checkDistanceToTargetCoroutine != null)
         {
@@ -125,7 +125,7 @@ public class TurretSearchTargetSystem : SearchTargetSystem
 
     private void TargetDisapperead()
     {
-        _turret.TurretAttack.ResetTarget(null);
+        _turret.TurretWeapon.ResetTarget(null);
 
         if (_subscribedEnemy != null)
         {
