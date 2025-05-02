@@ -29,6 +29,8 @@ public class MoveBullet
 
         _bullet = bullet;
         _bulletRigidbody = bullet.GetRigidbodyBullet();
+        Debug.Log("BulletRigidbody = " + _bulletRigidbody);
+
         _bulletTransform = bullet.GetTransformBullet();
         
         BulletMove();
@@ -49,6 +51,5 @@ public class MoveBullet
         }
 
         _bullet?.ReturnToPool();
-        // Вызов метода отвечающий за возврат пули в пул.
     }
 }

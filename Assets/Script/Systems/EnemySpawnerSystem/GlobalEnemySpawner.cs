@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +15,7 @@ public class GlobalEnemySpawner : EnemySpawner
     private const float MinRotationValue = 0f;
     private const float MaxRotationValue = 360f;
 
-    private List<SpawnPoint> _spawnPoints;
+    private List<SpawnPointForSpawner> _spawnPoints;
 
     private GlobalEnemySpawnerConfig _config;
 
@@ -98,7 +97,7 @@ public class GlobalEnemySpawner : EnemySpawner
 
     public override void OnReturnEnemyToPool(IEnemy enemy)
     {
-        foreach (SpawnPoint point in _spawnPoints)
+        foreach (SpawnPointForSpawner point in _spawnPoints)
         {
             if ((point.EnemyTypeInSpawnPoint & enemy.EnemyType) != 0)
             {
@@ -127,7 +126,7 @@ public class GlobalEnemySpawner : EnemySpawner
         if (enemyTypes.Count <= 0)
             return null;
 
-        SpawnPoint newSpawnPoint = GetSpawnPoint(enemyTypes, out currentEnemyType);
+        SpawnPointForSpawner newSpawnPoint = GetSpawnPoint(enemyTypes, out currentEnemyType);
 
         if (newSpawnPoint == null || newSpawnPoint.CurrentEnemyOnScene >= newSpawnPoint.MaxEnemyOnScene)
             return null;
@@ -151,28 +150,28 @@ public class GlobalEnemySpawner : EnemySpawner
         return enemy;
     }
 
-    private SpawnPoint GetSpawnPoint(List<EnemyType> enemyTypes, out EnemyType currentEnemyType)
+    private SpawnPointForSpawner GetSpawnPoint(List<EnemyType> enemyTypes, out EnemyType currentEnemyType)
     {
         currentEnemyType = EnemyType.None;
 
         if (_spawnPoints.Count <= 0)
             return null;
 
-        List<SpawnPoint> validSpawnPoints = _spawnPoints
+        List<SpawnPointForSpawner> validSpawnPoints = _spawnPoints
             .Where(spawnPoint => enemyTypes.Any(enemyType => (spawnPoint.EnemyTypeInSpawnPoint & enemyType) != 0)) // Сравниваем типы врагов и добавляем в список
             .ToList();
 
         if (validSpawnPoints.Count <= 0)
             return null;
 
-        SpawnPoint currentSpawnPoint = validSpawnPoints[Random.Range(0, validSpawnPoints.Count)];
+        SpawnPointForSpawner currentSpawnPoint = validSpawnPoints[Random.Range(0, validSpawnPoints.Count)];
 
         currentEnemyType = enemyTypes.FirstOrDefault(enemyType => (currentSpawnPoint.EnemyTypeInSpawnPoint & enemyType) != 0);
 
         return currentSpawnPoint;
     }
 
-    private Vector3 GetSpawnPosition(SpawnPoint selectedSpawnPoint)
+    private Vector3 GetSpawnPosition(SpawnPointForSpawner selectedSpawnPoint)
     {
         if (_spawnPoints.Count == 0)
             return Vector3.zero;

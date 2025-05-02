@@ -9,6 +9,11 @@ public class EnemyHealth
     private bool _isAlive;
     private EnemyCharacter _enemy;
 
+    public EnemyHealth(EnemyCharacter enemy, EnemyConfig enemyConfig)
+    {
+        Initialize(enemy, enemyConfig);
+    }
+
     public float MaxValue { get => _maxValue; set => _maxValue = value; }
     public float CurrentValue { get => _currentValue; set => _currentValue = value; }
 
@@ -18,7 +23,7 @@ public class EnemyHealth
 
     public event Action<IEnemy> UnitDead;
 
-    public void Initialize(EnemyCharacter enemy, EnemyConfig enemyConfig)
+    private void Initialize(EnemyCharacter enemy, EnemyConfig enemyConfig)
     {
         _maxValue = enemyConfig.HealthCharacteristicsEnemy.BaseHealth;
         _currentValue = _maxValue;

@@ -13,9 +13,8 @@ public class EnemyCharacter : MonoBehaviour, IEnemy, IPoolable
     private IBehavioralPattern _behavioralPattern;
     private EnemyConfig _enemyConfig;
     private EnemyHealth _health;
-    private Attack _attackEnemy;
+    private EnemyAttack _attackEnemy;
     private BehavioralPatternSwitcher _patternSwitcher;
-    private EnemySearchTargetSystem _searchTargetSystem;
 
     private NavMeshAgent _agent;
     private Rigidbody _rigidbody;
@@ -23,13 +22,6 @@ public class EnemyCharacter : MonoBehaviour, IEnemy, IPoolable
     private Animator _animator;
 
     private ObjectPool<EnemyCharacter> _pool;
-
-    [Inject]
-    private void Construct(EnemyHealth health, EnemySearchTargetSystem searchTargetSystem)
-    {
-        _health = health;
-        _searchTargetSystem = searchTargetSystem;
-    }
 
     public float MoveSpeed => _enemyConfig.CharacteristicsEnemy.MoveSpeed;
     public EnemyType EnemyType => _enemyConfig.CharacteristicsEnemy.EnemyType;
@@ -43,7 +35,7 @@ public class EnemyCharacter : MonoBehaviour, IEnemy, IPoolable
     public Rigidbody Rigidbody => _rigidbody;
     public Collider Collider  => _collider;
 
-    public void SetEnemyComponents(EnemyConfig config, Attack attackEnemy)
+    public void SetEnemyComponents(EnemyConfig config, EnemyAttack attackEnemy)
     {
         _enemyConfig = config;
 
@@ -59,14 +51,15 @@ public class EnemyCharacter : MonoBehaviour, IEnemy, IPoolable
 
         _patternSwitcher = GetComponentInChildren<BehavioralPatternSwitcher>();
 
+        Debug.Log("patternSwitcher = " + _patternSwitcher);
+        Debug.Log("BehavioralPatternSwitcher = " + BehavioralPatternSwitcher);
+
         _patrolPointHolder = transform.Find(NamePatrolPointHolder);
         _holderAttackLogic = transform.Find(NameAttackHolder);
 
+        _health = new EnemyHealth(this, _enemyConfig);
+
         _attackEnemy.Initialization(this, _enemyConfig);
-
-        _searchTargetSystem.Start(this);
-
-        EnemyHealth.Initialize(this, _enemyConfig);
     }
 
     public void SetPool<T>(ObjectPool<T> pool) where T : MonoBehaviour

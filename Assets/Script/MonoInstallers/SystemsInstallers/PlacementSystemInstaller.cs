@@ -10,8 +10,6 @@ public class PlacementSystemInstaller : MonoInstaller
 
     public override void InstallBindings()
     {
-        BindFactories();
-
         BindPlacementSystemsConfigs();
 
         BindPlacementSystems();
@@ -34,12 +32,5 @@ public class PlacementSystemInstaller : MonoInstaller
     private void BindPlacementSystemsController()
     {
         Container.Bind<ObjectPlacementSystemsController>().FromInstance(_placementSystemsController).AsSingle();
-    }
-
-    private void BindFactories()
-    {
-        Container.Bind<IFactory<PlaceableObject, PlaceableObjectConfig, BarriersType>>().To<BarrierFactory>().AsSingle();
-
-        Container.Bind<IFactory<Turret, TurretConfig, TurretType>>().To<TurretFactory>().AsSingle();
     }
 }

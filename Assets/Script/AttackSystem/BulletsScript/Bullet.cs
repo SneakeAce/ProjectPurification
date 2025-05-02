@@ -1,3 +1,4 @@
+
 using UnityEngine;
 using Zenject;
 
@@ -9,15 +10,13 @@ public abstract class Bullet : MonoBehaviour, IPoolable
     private MoveBullet _moveBullet;
 
     private Rigidbody _rigidbody;
-
+    private CoroutinePerformer _coroutinePerformer;
     private ObjectPool<Bullet> _pool;
 
     [Inject]
-    private void Consturct(AttackBullet attackBullet, MoveBullet moveBullet)
+    private void Consturct(CoroutinePerformer coroutinePerformer)
     {
-        //Debug.Log("Bullet Construct");
-        _attackBullet = attackBullet;
-        _moveBullet = moveBullet;
+        _coroutinePerformer = coroutinePerformer;
 
         _rigidbody = GetComponent<Rigidbody>();
     }
@@ -40,7 +39,8 @@ public abstract class Bullet : MonoBehaviour, IPoolable
 
     public void InitializeBullet(Vector3 startPoint, Quaternion rotateDirection, float distanceFlying)
     {
-        _attackBullet.Initialize(this, _bulletConfig);
+        _attackBullet = new AttackBullet(this, _bulletConfig);
+        _moveBullet = new MoveBullet(_coroutinePerformer);
 
         StartMoveBullet(startPoint, rotateDirection, distanceFlying);
     }
@@ -60,8 +60,6 @@ public abstract class Bullet : MonoBehaviour, IPoolable
 
     private void OnTriggerEnter(Collider collider)
     {
-        //Debug.Log("Bullet / OnTriggerEnter");
-
         _attackBullet.OnTriggerEnter(collider);
     }
 

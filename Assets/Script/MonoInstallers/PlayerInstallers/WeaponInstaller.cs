@@ -8,25 +8,11 @@ public class WeaponInstaller : MonoInstaller
 
     public override void InstallBindings()
     {
-        BindWeaponFactory();
-
         BindFiringModeStrategies();
 
+        BindWeaponManager();
+
         BindInputForWeapon();
-    }
-
-    private void BindWeaponFactory()
-    {
-        Container.Bind<IWeaponFactory>().To<WeaponFactory>().AsSingle();
-
-        Container.Bind<WeaponSwitcher>().AsSingle(); // ”·‡Ú¸!!!!
-    }
-
-    private void BindInputForWeapon()
-    {
-        Container.Bind<InputWeaponHandler>().FromInstance(_inputForWeapon).AsSingle();
-
-        Container.Bind<WeaponManager>().FromInstance(_weaponManager).AsSingle(); // !!!”¡–¿“‹ œŒ“ŒÃ!!!
     }
 
     private void BindFiringModeStrategies()
@@ -35,4 +21,17 @@ public class WeaponInstaller : MonoInstaller
         Container.Bind<IFiringModeStrategy>().To<SingleFiringMode>().AsTransient();
         Container.Bind<IFiringModeStrategy>().To<BurstFiringMode>().AsTransient();
     }
+
+    private void BindWeaponManager()
+    {
+        Container.Bind<WeaponSwitcher>().AsSingle();
+
+        Container.Bind<WeaponManager>().FromInstance(_weaponManager).AsSingle();
+    }
+
+    private void BindInputForWeapon()
+    {
+        Container.Bind<InputWeaponHandler>().FromInstance(_inputForWeapon).AsSingle();
+    }
+
 }

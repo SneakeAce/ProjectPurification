@@ -54,7 +54,6 @@ public class EnemySearchTargetSystem : SearchTargetSystem
                 Collider target = _bufferTargets[i];
 
                 _target = target.gameObject.GetComponentInParent<ICharacter>();
-
             }
 
             yield return new WaitForSeconds(MinDelayToCheck);

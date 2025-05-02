@@ -3,5 +3,5 @@ using UnityEngine;
 
 public interface ISpawnPointFactory
 {
-    List<SpawnPoint> Create(Transform holder);
+    List<SpawnPointForSpawner> Create(Transform holder);
 }

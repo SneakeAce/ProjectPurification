@@ -12,7 +12,7 @@ public class PatrolPattern : IBehavioralPattern
 
     private Transform _currentPoint;
 
-    private SpawnPatrolPoints _spawnPatrolPoints;
+    private PatrolPointsSpawner _spawnPatrolPoints;
     private BehavioralPatternSwitcher _switchBehavioral;
 
     private List<Transform> _patrolPoints = new List<Transform>();
@@ -23,7 +23,7 @@ public class PatrolPattern : IBehavioralPattern
     private bool _isMoving;
     private bool _hasPointReached;
 
-    public PatrolPattern(IEnemy movable, SpawnPatrolPoints spawnPatrolPoints)
+    public PatrolPattern(IEnemy movable, PatrolPointsSpawner spawnPatrolPoints)
     {
         _switchBehavioral = movable.BehavioralPatternSwitcher;
 

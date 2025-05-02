@@ -1,6 +1,6 @@
 using System.Collections;
 
-public  interface IFiringModeStrategy
+public interface IFiringModeStrategy
 {
     FiringMode FiringMode { get; }
 
