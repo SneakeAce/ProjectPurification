@@ -2,11 +2,14 @@ using UnityEngine;
 
 public class AttackBullet
 {
+    private const int SingleLayerBit = 1;
+    private const int EmptyMask = 0;
+
     private float _currentDamage;
     private LayerMask _enemyLayer;
     private Bullet _bullet;
 
-    public void Initialize(Bullet bullet, BulletConfig config)
+    public AttackBullet(Bullet bullet, BulletConfig config)
     {
         _bullet = bullet;
         _currentDamage = config.BaseBulletDamage;
@@ -15,7 +18,7 @@ public class AttackBullet
 
     public void OnTriggerEnter(Collider collider)
     {
-        if (((1 << collider.gameObject.layer) & _enemyLayer.value) != 0)
+        if (((SingleLayerBit << collider.gameObject.layer) & _enemyLayer.value) != EmptyMask)
         {
             IEnemy target = collider.gameObject.GetComponent<IEnemy>();
 

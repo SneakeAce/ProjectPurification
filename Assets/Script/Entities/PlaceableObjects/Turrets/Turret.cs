@@ -22,10 +22,9 @@ public class Turret : MonoBehaviour, ITurret
     public GameObject BodyTurret => this.gameObject;
 
     [Inject]
-    private void Construct(TurretSearchTargetSystem turretSearchTargetSystem, IFactory<Bullet, BulletConfig, BulletType> bulletFactory, 
+    private void Construct(IFactory<Bullet, BulletConfig, BulletType> bulletFactory, 
         IDamageCalculator damageCalculator, CoroutinePerformer coroutinePerformer)
     {
-        _searchTargetSystem = turretSearchTargetSystem;
         _bulletFactory = bulletFactory;
 
         _damageCalculator = damageCalculator;   
@@ -43,7 +42,10 @@ public class Turret : MonoBehaviour, ITurret
 
     private void Initialize()
     {
-        _turretWeapon = new AutomaticTurretWeapon(this, _turretConfig, _searchTargetSystem, _bulletFactory, _coroutinePerformer, _bodyTurret);
+        _searchTargetSystem = new TurretSearchTargetSystem(_coroutinePerformer);
+
+        _turretWeapon = new AutomaticTurretWeapon(this, _turretConfig, _searchTargetSystem, 
+            _bulletFactory, _coroutinePerformer, _bodyTurret);
 
         _turretHealth = new TurretHealth(_damageCalculator);
         _turretHealth.Initialization(_turretConfig);

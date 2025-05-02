@@ -6,7 +6,7 @@ using Zenject;
 
 public class BehavioralPatternSwitcher : MonoBehaviour
 {
-    private SpawnPatrolPoints _spawnPatrolPoints;
+    private PatrolPointsSpawner _patrolPointsSpawner;
 
     private Character _target;
     private EnemyCharacter _enemyCharacter;
@@ -17,9 +17,9 @@ public class BehavioralPatternSwitcher : MonoBehaviour
     private List<MoveTypes> _moveTypes = new List<MoveTypes>();
 
     [Inject]
-    private void Construct(SpawnPatrolPoints spawnPatrolPoints)
+    private void Construct(PatrolPointsSpawner spawnPatrolPoints)
     {
-        _spawnPatrolPoints = spawnPatrolPoints;
+        _patrolPointsSpawner = spawnPatrolPoints;
     }
 
     public void SetBehavioralPattern(IEnemy enemy)
@@ -71,7 +71,7 @@ public class BehavioralPatternSwitcher : MonoBehaviour
                 return MoveTypes.NoMove;
 
             case MoveTypes.Patrol:
-                _movementFactory = new EnemyMovementStrategyFactory(_spawnPatrolPoints);
+                _movementFactory = new EnemyMovementStrategyFactory(_patrolPointsSpawner);
                 return moveType;
 
             case MoveTypes.NoMove:

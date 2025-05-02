@@ -21,7 +21,7 @@ public class EnemyFactory : IFactory<EnemyCharacter, EnemyConfig, EnemyType>
     public EnemyCharacter Create(Vector3 spawnPosition, EnemyType enemyTypeInSpawner, 
         Quaternion rotation)
     {
-        Attack enemyAttack;
+        EnemyAttack enemyAttack;
         BehavioralPatternSwitcher patternSwitcher;
 
         ObjectPool<EnemyCharacter> enemyPool = GetPool(enemyTypeInSpawner);
@@ -40,6 +40,7 @@ public class EnemyFactory : IFactory<EnemyCharacter, EnemyConfig, EnemyType>
 
         _container.Inject(enemy);
         _container.Inject(patternSwitcher);
+        _container.Inject(enemyAttack);
 
         enemy.SetEnemyComponents(config, enemyAttack);
 
@@ -55,6 +56,8 @@ public class EnemyFactory : IFactory<EnemyCharacter, EnemyConfig, EnemyType>
     public EnemyConfig GetObjectConfig(EnemyType type)
     {
         EnemyConfig config = _handlerEnemyConfigs.GetObjectConfig(type);
+
+        Debug.Log("config in EnemyFactory = " + config);
 
         if (config == null)
             return null;
@@ -72,9 +75,9 @@ public class EnemyFactory : IFactory<EnemyCharacter, EnemyConfig, EnemyType>
         return null;
     }
 
-    private void GetEnemyComponents(EnemyCharacter enemy, out Attack enemyAttack, out BehavioralPatternSwitcher patternSwitcher)
+    private void GetEnemyComponents(EnemyCharacter enemy, out EnemyAttack enemyAttack, out BehavioralPatternSwitcher patternSwitcher)
     {
-        enemyAttack = enemy.GetComponentInChildren<Attack>();
+        enemyAttack = enemy.GetComponentInChildren<EnemyAttack>();
         patternSwitcher = enemy.GetComponentInChildren<BehavioralPatternSwitcher>();
     }
 

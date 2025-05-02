@@ -6,31 +6,33 @@ public class EnemySpawnerInstaller : MonoInstaller
     [SerializeField] private GlobalEnemySpawnerConfig _globalSpawnerConfig;
     [SerializeField] private LocalEnemySpawnerConfig _localSpawnerConfig;
 
+    [SerializeField] private SpawnPointForSpawnerConfigs _spawnPointsForSpawnerConfig;
+
     public override void InstallBindings()
     {
-        BindConfigs();
+        BindSpawnPointConfig();
 
-        BindEnemyFactory();
+        BindSpawnerConfigs();
 
         CreateAndBindEnemySpawners();
     }
 
-    private void BindEnemyFactory()
+    private void BindSpawnPointConfig()
     {
-        Container.Bind<IFactory<EnemyCharacter, EnemyConfig, EnemyType>>().To<EnemyFactory>().AsSingle();
+        Container.Bind<SpawnPointForSpawnerConfigs>()
+            .FromInstance(_spawnPointsForSpawnerConfig)
+            .AsTransient();
     }
 
-    private void BindConfigs()
+    private void BindSpawnerConfigs()
     {
         Container.Bind<GlobalEnemySpawnerConfig>()
             .FromInstance(_globalSpawnerConfig)
-            .AsTransient()
-            .NonLazy();
+            .AsTransient();
 
         Container.Bind<LocalEnemySpawnerConfig>()
             .FromInstance(_localSpawnerConfig)
-            .AsTransient()
-            .NonLazy();
+            .AsTransient();
     }
 
     private void CreateAndBindEnemySpawners()
@@ -43,8 +45,7 @@ public class EnemySpawnerInstaller : MonoInstaller
             .InstantiatePrefabForComponent<LocalEnemySpawner>(_localSpawnerConfig.SpawnerPrefab,
             _localSpawnerConfig.PositionSpawner, Quaternion.identity, null);
 
-        Container.Bind<GlobalEnemySpawner>().FromInstance(globalSpawner).AsSingle().NonLazy();
-        Container.Bind<LocalEnemySpawner>().FromInstance(localSpawner).AsSingle().NonLazy();
+        Container.Bind<GlobalEnemySpawner>().FromInstance(globalSpawner).AsSingle();
+        Container.Bind<LocalEnemySpawner>().FromInstance(localSpawner).AsSingle();
     }
-
 }

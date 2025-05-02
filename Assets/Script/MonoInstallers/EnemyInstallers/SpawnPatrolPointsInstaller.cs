@@ -19,7 +19,6 @@ public class SpawnPatrolPointsInstaller : MonoInstaller
 
     private void BindSpawnPatrolPoints()
     {
-        Container.Bind<SpawnPatrolPoints>().AsTransient();
+        Container.Bind<PatrolPointsSpawner>().AsTransient();
     }
-
 }

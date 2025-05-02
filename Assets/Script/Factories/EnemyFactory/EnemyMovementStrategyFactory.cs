@@ -4,7 +4,7 @@ using System.Diagnostics;
 public class EnemyMovementStrategyFactory
 {
     private ICharacter _target;
-    private SpawnPatrolPoints _spawnPatrolPoints;
+    private PatrolPointsSpawner _spawnPatrolPoints;
 
     public EnemyMovementStrategyFactory()
     {
@@ -15,7 +15,7 @@ public class EnemyMovementStrategyFactory
         _target = target;
     }
 
-    public EnemyMovementStrategyFactory(SpawnPatrolPoints spawnPatrolPoints)
+    public EnemyMovementStrategyFactory(PatrolPointsSpawner spawnPatrolPoints)
     {
         _spawnPatrolPoints = spawnPatrolPoints;
     }
