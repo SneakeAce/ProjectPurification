@@ -41,6 +41,5 @@ public class ConfigsLibrariesHandler<TConfig, TEnum>
             _objectConfigsDictionary.Add(type, config);
         }
     }
-    
 
 }

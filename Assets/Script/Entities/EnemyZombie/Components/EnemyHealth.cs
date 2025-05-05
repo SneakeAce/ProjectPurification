@@ -1,53 +1,58 @@
 using System;
-using System.Diagnostics;
 
-public class EnemyHealth
+public class EnemyHealth : EntityHealth
 {
-    protected float _maxValue;
-    protected float _currentValue;
-
     private bool _isAlive;
     private EnemyCharacter _enemy;
-
-    public EnemyHealth(EnemyCharacter enemy, EnemyConfig enemyConfig)
-    {
-        Initialize(enemy, enemyConfig);
-    }
-
-    public float MaxValue { get => _maxValue; set => _maxValue = value; }
-    public float CurrentValue { get => _currentValue; set => _currentValue = value; }
-
-    public EnemyCharacter Enemy { get => _enemy; set => _enemy = value; }
-    public bool IsAlive => _isAlive;
-
+    private EnemyConfig _enemyConfig;
 
     public event Action<IEnemy> UnitDead;
+    public override event Action<float> CurrentValueChanged;
+    public override event Action<float> MaxValueChanged;
 
-    private void Initialize(EnemyCharacter enemy, EnemyConfig enemyConfig)
+    public EnemyHealth(IDamageCalculator damageCalculator) : base(damageCalculator)
     {
-        _maxValue = enemyConfig.HealthCharacteristicsEnemy.BaseHealth;
+    } 
+
+    public bool IsAlive => _isAlive;
+
+    public override void Initialization(IEntity entity, IEntityConfig config)
+    {
+        if (entity is EnemyCharacter)
+            _enemy = (EnemyCharacter)entity;
+
+        if (config is EnemyConfig)
+            _enemyConfig = (EnemyConfig)config;
+
+        _armorData = new ArmorData(_enemyConfig.HealthCharacteristics.ArmorType,
+            _enemyConfig.HealthCharacteristics.ArmorValue);
+
+        
+        _maxValue = _enemyConfig.HealthCharacteristics.BaseHealthValue;
         _currentValue = _maxValue;
-
-        _enemy = enemy;
-
-        _isAlive = true;
     }
 
-    public void DamageTaken(float damage)
+    public override void TakeDamage(DamageData damage)
     {
-        UnityEngine.Debug.Log("EnemyHealth / DamageTaken / damage = " + damage);
+        float finalDamage = _damageCalculator.CalculateDamage(damage, _armorData);
+
+        if (finalDamage <= MinPossibleValue)
+            return;
+
+        ApplyDamage(finalDamage);
+    }
+
+    protected override void ApplyDamage(float damage)
+    {
         _currentValue -= damage;
 
-        if (_currentValue <= 0)
-        {
-            _isAlive = false;
+        UnityEngine.Debug.Log("CurrentHealth Enemy == " + _currentValue);
 
+        if (_currentValue <= MinPossibleValue)
+        {
             UnitDead?.Invoke(_enemy);
+            UnityEngine.Debug.Log("Enemy is Dead");
         }
     }
 
-    public void AddHealth(float value)
-    {
-        
-    }
 }

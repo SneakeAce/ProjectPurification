@@ -7,12 +7,13 @@ public class EnemyCharacter : MonoBehaviour, IEnemy, IPoolable
     private const string NameAttackHolder = "AttackHolder";
     private const string NamePatrolPointHolder = "PatrolPointsHolder";
 
+    [Inject] private EnemyHealth _health;
+
     private Transform _patrolPointHolder;
     private Transform _holderAttackLogic;
 
     private IBehavioralPattern _behavioralPattern;
     private EnemyConfig _enemyConfig;
-    private EnemyHealth _health;
     private EnemyAttack _attackEnemy;
     private BehavioralPatternSwitcher _patternSwitcher;
 
@@ -51,13 +52,10 @@ public class EnemyCharacter : MonoBehaviour, IEnemy, IPoolable
 
         _patternSwitcher = GetComponentInChildren<BehavioralPatternSwitcher>();
 
-        Debug.Log("patternSwitcher = " + _patternSwitcher);
-        Debug.Log("BehavioralPatternSwitcher = " + BehavioralPatternSwitcher);
-
         _patrolPointHolder = transform.Find(NamePatrolPointHolder);
         _holderAttackLogic = transform.Find(NameAttackHolder);
 
-        _health = new EnemyHealth(this, _enemyConfig);
+        _health.Initialization(this, _enemyConfig);
 
         _attackEnemy.Initialization(this, _enemyConfig);
     }

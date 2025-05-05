@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class AutomaticTurretWeapon : TurretWeapon
 {
-    private const float MultiplierAttackSpeed = 0.6f; // Перенести в систему апгрейдов и DamageData.
-
     public AutomaticTurretWeapon(ITurret currentTurret, TurretConfig config, 
         TurretSearchTargetSystem turretSearchTargetSystem, IFactory<Bullet, BulletConfig, BulletType> bulletFactory, 
         CoroutinePerformer coroutinePerformer, GameObject bodyTurret) : base(currentTurret, 
@@ -74,6 +72,8 @@ public class AutomaticTurretWeapon : TurretWeapon
 
         if (spawnPoint == null)
             return;
+
+        Debug.Log("CurrentTarget = " + _currentTarget);
 
         Vector3 predictionTargetPosition = GetPredictionTargetPosition(_currentTarget);
         predictionTargetPosition.y = spawnPoint.transform.position.y;

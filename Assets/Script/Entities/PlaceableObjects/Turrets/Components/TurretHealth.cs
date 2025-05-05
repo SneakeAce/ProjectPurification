@@ -2,7 +2,10 @@ using System;
 
 public class TurretHealth : EntityHealth
 {
-    public override event Action UnitDead;
+    private TurretConfig _turretConfig;
+    private Turret _turret;
+
+    public event Action<ITurret> UnitDead;
     public override event Action<float> CurrentValueChanged;
     public override event Action<float> MaxValueChanged;
 
@@ -10,16 +13,42 @@ public class TurretHealth : EntityHealth
     {
     }
 
+    public override void Initialization(IEntity entity, IEntityConfig config)
+    {
+        if (entity is Turret)
+            _turret = (Turret)entity;
+
+        if (config is TurretConfig)
+            _turretConfig = (TurretConfig)config;
+
+        _armorData = new ArmorData(_turretConfig.HealthCharacteristics.ArmorType, 
+            _turretConfig.HealthCharacteristics.ArmorValue);
+
+        _maxValue = _turretConfig.HealthCharacteristics.BaseHealthValue;
+        _currentValue = _maxValue;
+    }
+
+    public override void TakeDamage(DamageData damage)
+    {
+        float finalDamage = _damageCalculator.CalculateDamage(damage, _armorData);
+
+        if (finalDamage <= MinPossibleValue)
+            return;
+
+        ApplyDamage(finalDamage);
+    }
+
     protected override void ApplyDamage(float damage)
     {
-        _currentHealth -= damage;
+        _currentValue -= damage;
 
-        UnityEngine.Debug.Log("CurrentHealth Turret == " + _currentHealth);
+        UnityEngine.Debug.Log("CurrentHealth Turret == " + _currentValue);
 
-        if (_currentHealth <= 0) 
+        if (_currentValue <= MinPossibleValue) 
         { 
-            UnitDead?.Invoke();
-            UnityEngine.Debug.Log("turret is Dead");
+            UnitDead?.Invoke(_turret);
+            UnityEngine.Debug.Log("Turret is Dead");
         }
     }
+
 }

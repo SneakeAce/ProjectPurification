@@ -1,5 +1,5 @@
 using UnityEngine;
-using Zenject;
+using Zenject; 
 
 public class Turret : MonoBehaviour, ITurret
 {
@@ -12,7 +12,6 @@ public class Turret : MonoBehaviour, ITurret
     protected GameObject _bodyTurret;
 
     protected IFactory<Bullet, BulletConfig, BulletType> _bulletFactory;
-    protected IDamageCalculator _damageCalculator;
 
     public Transform Transform => transform;
     public Animator Animator => throw new System.NotImplementedException();
@@ -22,13 +21,13 @@ public class Turret : MonoBehaviour, ITurret
     public GameObject BodyTurret => this.gameObject;
 
     [Inject]
-    private void Construct(IFactory<Bullet, BulletConfig, BulletType> bulletFactory, 
-        IDamageCalculator damageCalculator, CoroutinePerformer coroutinePerformer)
+    private void Construct(IFactory<Bullet, BulletConfig, BulletType> bulletFactory, CoroutinePerformer coroutinePerformer, TurretHealth health)
     {
         _bulletFactory = bulletFactory;
 
-        _damageCalculator = damageCalculator;   
         _coroutinePerformer = coroutinePerformer;
+
+        _turretHealth = health;
 
         _bodyTurret = GetComponentInChildren<BodyTurret>().transform.gameObject; 
     }
@@ -47,7 +46,6 @@ public class Turret : MonoBehaviour, ITurret
         _turretWeapon = new AutomaticTurretWeapon(this, _turretConfig, _searchTargetSystem, 
             _bulletFactory, _coroutinePerformer, _bodyTurret);
 
-        _turretHealth = new TurretHealth(_damageCalculator);
-        _turretHealth.Initialization(_turretConfig);
+        _turretHealth.Initialization(this, _turretConfig);
     }
 }

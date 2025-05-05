@@ -122,7 +122,7 @@ public class LocalEnemySpawner : EnemySpawner
 
         enemy.CharacterEnemy.ReturnToPool(enemy);
 
-        enemy.CharacterEnemy.EnemyHealth.UnitDead -= OnReturnEnemyToPool;
+        //enemy.CharacterEnemy.EnemyHealth.UnitDead -= OnReturnEnemyToPool;
     }
 
     private EnemyCharacter GetEnemy()
@@ -146,7 +146,7 @@ public class LocalEnemySpawner : EnemySpawner
 
         _currentEnemyOnScene += AdditionalValue;
 
-        enemy.EnemyHealth.UnitDead += OnReturnEnemyToPool;
+        //enemy.EnemyHealth.UnitDead += OnReturnEnemyToPool;
 
         return enemy;
     }

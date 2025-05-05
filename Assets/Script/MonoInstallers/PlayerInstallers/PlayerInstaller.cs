@@ -25,8 +25,8 @@ public class PlayerInstaller : MonoInstaller
             return;
         }
 
-        Character character = Container.InstantiatePrefabForComponent<Character>(_playerConfig.PlayerPrefab, 
-            _playerConfig.SpawnCoordinate, Quaternion.identity, null);
+        Character character = Container.InstantiatePrefabForComponent<Character>(_playerConfig.UniqueCharacterisitcs.PlayerPrefab, 
+            _playerConfig.UniqueCharacterisitcs.SpawnCoordinate, Quaternion.identity, null);
 
         Container.BindInterfacesAndSelfTo<Character>().FromInstance(character).AsSingle();
     }

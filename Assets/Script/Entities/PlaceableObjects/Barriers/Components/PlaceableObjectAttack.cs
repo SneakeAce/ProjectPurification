@@ -4,10 +4,12 @@ public class PlaceableObjectAttack
 {
     private PlaceableObjectConfig _config;
 
-    private float _currentDamage;    private float _startTimeBetweenAttack;
-    private LayerMask _enemyLayer;
-
+    private float _currentDamage;    
+    private float _startTimeBetweenAttack;
     private float _timeBetweenAttack;
+
+    private LayerMask _enemyLayer;
+    private AttackType _attackType;
 
     public PlaceableObjectAttack(PlaceableObjectConfig config)
     {
@@ -18,6 +20,7 @@ public class PlaceableObjectAttack
 
     private void Initialization()
     {
+        _attackType = _config.AttackCharacteristics.AttackType;
         _currentDamage = _config.AttackCharacteristics.BaseDamage;
         _startTimeBetweenAttack = _config.AttackCharacteristics.BaseStartTimeBetweenAttack;
         _enemyLayer = _config.AttackCharacteristics.EnemyLayer;
@@ -46,8 +49,9 @@ public class PlaceableObjectAttack
         if (enemyTarget == null)
             return;
 
-        // Поменять на DamageData.
-        enemyTarget.CharacterEnemy.EnemyHealth.DamageTaken(_currentDamage);
+        DamageData damage = new DamageData(_attackType, _currentDamage);
+
+        enemyTarget.CharacterEnemy.EnemyHealth.TakeDamage(damage);
     }
 
 }

@@ -1,48 +1,54 @@
 using System;
 
-public class CharacterHealth
+public class CharacterHealth : EntityHealth
 {
-    private const float MinCurrentHealth = 0f;
-
-    protected float _maxValue;
-    protected float _currentValue;
-
     private Character _character;
+    private PlayerConfig _playerConfig;
 
-    public CharacterHealth(Character character, PlayerConfig config)
+    public CharacterHealth(IDamageCalculator damageCalculator) : base(damageCalculator)
     {
-        _character = character;
+    } 
 
-        _maxValue = config.MaxHealth;
+    public event Action<ICharacter> UnitDead;
+    public override event Action<float> CurrentValueChanged;
+    public override event Action<float> MaxValueChanged;
+
+    public override void Initialization(IEntity entity, IEntityConfig config)
+    {
+        if (entity is Character)
+            _character = (Character)entity;
+
+        if (config is PlayerConfig)
+            _playerConfig = (PlayerConfig)config;
+
+        _armorData = new ArmorData(_playerConfig.HealthCharacteristics.ArmorType,
+            _playerConfig.HealthCharacteristics.ArmorValue);
+
+        _maxValue = _playerConfig.HealthCharacteristics.BaseHealthValue;
         _currentValue = _maxValue;
     }
 
-    public float MaxValue { get => _maxValue; set => _maxValue = value; }
-    public float CurrentValue { get => _currentValue; set => _currentValue = value; }
+    public override void TakeDamage(DamageData damage)
+    {
+        float finalDamage = _damageCalculator.CalculateDamage(damage, _armorData);
 
-    public event Action<float> MaxValueChanged;
-    public event Action<float> CurrentValueChanged;
-    public event Action<Character> OnDead;
+        if (finalDamage <= MinPossibleValue)
+            return;
 
+        ApplyDamage(finalDamage);
+    }
 
-    public void DamageTaken(float damage)
+    protected override void ApplyDamage(float damage)
     {
         _currentValue -= damage;
 
-        CurrentValueChanged?.Invoke(_currentValue);
+        UnityEngine.Debug.Log("CurrentHealth Character == " + _currentValue);
 
-        if (_currentValue <= MinCurrentHealth)
-            OnDead?.Invoke(_character);
-    }
-
-    public void AddHealth(float value)
-    {
-        _currentValue += value;
-
-        if (_currentValue > _maxValue)
-            _currentValue = _maxValue;
-
-        CurrentValueChanged?.Invoke(_currentValue);
+        if (_currentValue <= MinPossibleValue)
+        {
+            UnitDead?.Invoke(_character);
+            UnityEngine.Debug.Log("Character is Dead");
+        }
     }
 
 }

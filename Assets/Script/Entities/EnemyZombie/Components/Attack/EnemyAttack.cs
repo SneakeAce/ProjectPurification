@@ -7,6 +7,7 @@ public abstract class EnemyAttack : MonoBehaviour
     protected LayerMask _targetLayer;
     protected IEnemy _enemyCharacter;
     protected ICharacter _target;
+    protected AttackType _attackType;
 
     protected float _baseDamage;
     protected float _reloadingTime;
@@ -43,10 +44,11 @@ public abstract class EnemyAttack : MonoBehaviour
 
         _enemyCharacter = enemyCharacter;
 
-        _targetLayer = config.AttackCharacteristicsEnemy.TargetLayer;
-        _baseDamage = config.AttackCharacteristicsEnemy.BaseDamage;
-        _reloadingTime = config.AttackCharacteristicsEnemy.ReloadingTime;
-        _attackZoneRadius = config.AttackCharacteristicsEnemy.RadiusAttack;
+        _attackType = config.AttackCharacteristics.AttackType;
+        _targetLayer = config.AttackCharacteristics.TargetLayer;
+        _baseDamage = config.AttackCharacteristics.BaseDamage;
+        _reloadingTime = config.AttackCharacteristics.ReloadingTime;
+        _attackZoneRadius = config.AttackCharacteristics.RadiusAttack;
 
         _enemyAnimator = enemyCharacter.Animator;
     }

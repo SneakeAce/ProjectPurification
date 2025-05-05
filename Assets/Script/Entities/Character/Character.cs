@@ -15,12 +15,14 @@ public class Character : MonoBehaviour, ICharacter
     private WeaponHolder _weaponHolder;
 
     [Inject]
-    private void Construct(PlayerInput playerInput, PlayerConfig playerConfig)
+    private void Construct(PlayerInput playerInput, PlayerConfig playerConfig, CharacterHealth health)
     {
         _playerInput = playerInput;
         _playerInput.Enable();
 
         _playerConfig = playerConfig;
+
+        _health = health;
 
         GetWeaponHolder();
 
@@ -46,8 +48,8 @@ public class Character : MonoBehaviour, ICharacter
         _collider = GetComponent<Collider>();
         _animator = GetComponent<Animator>();
 
-        _health = new CharacterHealth(this, _playerConfig);
-        _health.OnDead += DestroyCharacter;
+        _health.Initialization(this, _playerConfig);
+        _health.UnitDead += DestroyCharacter;
 
         _moveComponent = new MoveComponent(this, _playerConfig);
     }
@@ -72,15 +74,15 @@ public class Character : MonoBehaviour, ICharacter
         _moveComponent.Update();
     }
 
-    private void DestroyCharacter(Character character)
+    private void DestroyCharacter(IEntity character)
     {
-        _health.OnDead -= DestroyCharacter;
+        _health.UnitDead -= DestroyCharacter;
 
-        Destroy(character.gameObject);
+        Destroy(character.Transform.gameObject);
     }
 
     private void OnDestroy()
     {
-        _health.OnDead -= DestroyCharacter;
+        _health.UnitDead -= DestroyCharacter;
     }
 }

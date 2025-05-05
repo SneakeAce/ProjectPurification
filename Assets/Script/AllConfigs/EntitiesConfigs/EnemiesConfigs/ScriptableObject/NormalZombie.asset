@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1641cde1488d74f489cb7ae854889a06, type: 3}
+  m_Name: NormalZombie
+  m_EditorClassIdentifier: 
+  <CharacteristicsEnemy>k__BackingField:
+    <EnemyType>k__BackingField: 2
+    <MoveSpeed>k__BackingField: 2
+  <AttackCharacteristics>k__BackingField:
+    <AttackType>k__BackingField: 0
+    <BaseDamage>k__BackingField: 5
+    <RadiusAttack>k__BackingField: 5
+    <ReloadingTime>k__BackingField: 2
+    <TargetLayer>k__BackingField:
+      serializedVersion: 2
+      m_Bits: 64
+  <HealthCharacteristics>k__BackingField:
+    <ArmorType>k__BackingField: 4
+    <ArmorValue>k__BackingField: 2
+    <BaseHealthValue>k__BackingField: 50

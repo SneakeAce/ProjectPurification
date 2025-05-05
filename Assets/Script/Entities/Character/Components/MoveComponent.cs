@@ -23,8 +23,8 @@ public class MoveComponent
         _character = character;
         _playerInput = _character.PlayerInput;
 
-        _speed = config.Speed;
-        _includeLayer = config.IncludeLayerForMovement;
+        _speed = config.UniqueCharacterisitcs.MoveSpeed;
+        _includeLayer = config.UniqueCharacterisitcs.IncludeLayerForMovement;
 
         _isCanWork = true;
     }

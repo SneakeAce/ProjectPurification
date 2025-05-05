@@ -187,7 +187,7 @@ public class PatrolPattern : IBehavioralPattern
             _patrolPoints.Clear();
         }
 
-        if (enemy.CharacterEnemy.EnemyHealth.IsAlive == false)
-            enemy.CharacterEnemy.EnemyHealth.UnitDead -= OnDeleteAllPoints;
+        //if (enemy.CharacterEnemy.EnemyHealth.IsAlive == false)
+        //    enemy.CharacterEnemy.EnemyHealth.UnitDead -= OnDeleteAllPoints;
     }
 }

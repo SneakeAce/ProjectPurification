@@ -3,6 +3,7 @@ using UnityEngine;
 
 public abstract class TurretWeapon
 {
+    protected const float DelayBeforeRotating = 0.6f;
     protected const float MinValueByXYZ = 0;
     protected const float MinAngleBetweenObjects = 0.1f;
 
@@ -104,6 +105,8 @@ public abstract class TurretWeapon
 
     protected IEnumerator ReturnTurretToDefaultRotation()
     {
+        yield return new WaitForSeconds(DelayBeforeRotating);
+
         float divider = 3f;
         float angleBetweenTargetAndTurret = Quaternion.Angle(_bodyTurret.transform.rotation, _defaultTurretRotation);
 

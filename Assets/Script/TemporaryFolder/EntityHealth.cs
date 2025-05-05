@@ -2,15 +2,19 @@ using System;
 
 public abstract class EntityHealth : IDamageable
 {
-    protected float _currentHealth;
-    protected float _maxHealth;
+    protected const float MinPossibleValue = 0f;
+
+    protected float _currentValue;
+    protected float _maxValue;
 
     protected IDamageCalculator _damageCalculator;
+    protected IEntityConfig _entityConfig;
+
     protected ArmorData _armorData;
 
-    protected TurretConfig _turretConfig;
+    public float MaxValue { get => _maxValue; set => _maxValue = value; }
+    public float CurrentValue { get => _currentValue; set => _currentValue = value; }
 
-    public abstract event Action UnitDead;
     public abstract event Action<float> CurrentValueChanged;
     public abstract event Action<float> MaxValueChanged;
 
@@ -21,27 +25,8 @@ public abstract class EntityHealth : IDamageable
 
     protected abstract void ApplyDamage(float damage);
 
-    public void Initialization(TurretConfig config)
-    {
-        _turretConfig = config;
-        _maxHealth = config.TurretDefenseAttributes.BaseEndurance;
-        _currentHealth = _maxHealth;
-        _armorData = new ArmorData(config.TurretDefenseAttributes.ArmorType, config.TurretDefenseAttributes.ArmorFactor);
+    public abstract void Initialization(IEntity entity, IEntityConfig config);
 
-        DamageData damage = new DamageData(config.AttackCharacteristics.AttackType, 16f);
-
-        TakeDamage(damage);
-    }
-
-    public void TakeDamage(DamageData damage)
-    {
-        float finalDamage = _damageCalculator.CalculateDamage(damage, _armorData);
-        UnityEngine.Debug.Log("Final Damage: " + finalDamage);  
-
-        if (finalDamage <= 0)
-            return;
-
-        ApplyDamage(finalDamage);
-    }
+    public abstract void TakeDamage(DamageData damage);
 
 }
