@@ -19,8 +19,6 @@ public class TurretPlacementSystem : ObjectPlacementSystem
     public TurretPlacementSystem(TurretPlacementSystemConfig config, Character character, 
         CreatedPoolTurretsSystem poolTurretsSystem, IFactory<Turret, TurretConfig, TurretType> factory) : base(config, character)
     {
-        //Debug.Log("TurretPlacementSystem Construct");
-
         _modeNameInPlayerInput = config.ModeNameInPlayerInput;
 
         _poolTurretsSystem = poolTurretsSystem;
@@ -133,6 +131,8 @@ public class TurretPlacementSystem : ObjectPlacementSystem
         Vector3 spawnPosition = _instancePhantomObject.transform.position;
         Quaternion rotation = _instancePhantomObject.transform.rotation;
 
+        Debug.Log($"Turret rotation = {rotation}");
+            
         Turret newObject = _factory.Create(spawnPosition, _currentTurretType, rotation);
 
         newObject.transform.SetParent(null);

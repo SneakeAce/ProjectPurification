@@ -70,12 +70,11 @@ public class AutomaticTurretWeapon : TurretWeapon
     {
         SpawnPointBullet spawnPoint = GetSpawnPointBullet();
 
-        if (spawnPoint == null)
+        if (spawnPoint == null || _currentTarget == null)
             return;
 
-        Debug.Log("CurrentTarget = " + _currentTarget);
-
         Vector3 predictionTargetPosition = GetPredictionTargetPosition(_currentTarget);
+
         predictionTargetPosition.y = spawnPoint.transform.position.y;
 
         Vector3 directionToTarget = (predictionTargetPosition - spawnPoint.transform.position).normalized;

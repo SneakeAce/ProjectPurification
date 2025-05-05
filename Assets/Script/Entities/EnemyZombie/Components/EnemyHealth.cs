@@ -46,12 +46,12 @@ public class EnemyHealth : EntityHealth
     {
         _currentValue -= damage;
 
-        UnityEngine.Debug.Log("CurrentHealth Enemy == " + _currentValue);
+        //UnityEngine.Debug.Log("CurrentHealth Enemy == " + _currentValue);
 
         if (_currentValue <= MinPossibleValue)
         {
             UnitDead?.Invoke(_enemy);
-            UnityEngine.Debug.Log("Enemy is Dead");
+            //UnityEngine.Debug.Log("Enemy is Dead");
         }
     }
 
