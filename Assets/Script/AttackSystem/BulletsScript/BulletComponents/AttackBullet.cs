@@ -7,11 +7,13 @@ public class AttackBullet
 
     private float _currentDamage;
     private LayerMask _enemyLayer;
+    private AttackType _attackType;
     private Bullet _bullet;
 
     public AttackBullet(Bullet bullet, BulletConfig config)
     {
         _bullet = bullet;
+        _attackType = config.AttackType;
         _currentDamage = config.BaseBulletDamage;
         _enemyLayer = config.EnemyLayer;
     }
@@ -32,7 +34,11 @@ public class AttackBullet
 
     private void DamageDeal(IEnemy target)
     {
-        target.CharacterEnemy.EnemyHealth.DamageTaken(_currentDamage);
+        DamageData damage = new DamageData(_attackType, _currentDamage);
+
+        UnityEngine.Debug.Log($"DamageData = {_attackType}, {_currentDamage}");
+
+        target.CharacterEnemy.EnemyHealth.TakeDamage(damage);
     }
 
     private void DestroyBullet()

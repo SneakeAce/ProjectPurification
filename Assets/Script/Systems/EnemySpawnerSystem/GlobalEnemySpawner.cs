@@ -102,13 +102,14 @@ public class GlobalEnemySpawner : EnemySpawner
             if ((point.EnemyTypeInSpawnPoint & enemy.EnemyType) != 0)
             {
                 point.DecreaseCurrentEnemy(ReducingValue);
+
+                enemy.CharacterEnemy.ReturnToPool(enemy);
+
+                enemy.CharacterEnemy.EnemyHealth.UnitDead -= OnReturnEnemyToPool;
+
                 break;
             }
         }
-
-        enemy.CharacterEnemy.ReturnToPool(enemy);
-
-        enemy.CharacterEnemy.EnemyHealth.UnitDead -= OnReturnEnemyToPool;
     }
 
     private void CreateSpawnPoint(ISpawnPointFactory factory)

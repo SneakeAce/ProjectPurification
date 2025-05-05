@@ -33,7 +33,7 @@ public class ConfigsLibrariesHandler<TConfig, TEnum>
 
         foreach (TConfig config in _objectConfigs)
         {
-            TEnum type = config.EntityType;
+            TEnum type = config.ConfigType;
 
             if (_objectConfigsDictionary.ContainsKey(type))
                 continue;

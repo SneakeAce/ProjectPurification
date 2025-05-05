@@ -1,24 +1,41 @@
 using System;
 
-public class PlaceableObjectHealth
+public class PlaceableObjectHealth : EntityHealth
 {
-    private PlaceableObjectConfig _config;
+    private PlaceableObject _placeableObject;
+    private PlaceableObjectConfig _placeableObjectconfig;
 
-    private float _currentEndurance;
-
-    public event Action<float> CurrentEnduranceChanged;
-    public event Action<float> MaxEnduranceChanged;
-
-    public PlaceableObjectHealth(PlaceableObjectConfig config)
+    public PlaceableObjectHealth(PlaceableObjectConfig config, IDamageCalculator damageCalculator) : base(damageCalculator)
     {
-        _config = config;
-
-        _currentEndurance = _config.Health—haracteristics.BaseEndurance;
+        _placeableObjectconfig = config;
     }
 
-    public void TakeDamage(DamageData damageData)
+    public event Action<IEntity> UnitDead;
+    public override event Action<float> CurrentValueChanged;
+    public override event Action<float> MaxValueChanged;
+
+    public override void Initialization(IEntity entity, IEntityConfig config)
     {
-        
+        if (entity is PlaceableObject)
+            _placeableObject = (PlaceableObject)entity;
+
+        if (config is PlaceableObjectConfig)
+            _placeableObjectconfig = (PlaceableObjectConfig)config;
+
+        _armorData = new ArmorData(_placeableObjectconfig.HealthCharacteristics.ArmorType,
+            _placeableObjectconfig.HealthCharacteristics.ArmorValue);
+
+        _maxValue = _placeableObjectconfig.HealthCharacteristics.BaseHealthValue;
+        _currentValue = _maxValue;
     }
 
+    public override void TakeDamage(DamageData damage)
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override void ApplyDamage(float damage)
+    {
+        throw new NotImplementedException();
+    }
 }
