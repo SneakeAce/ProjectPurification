@@ -1,16 +1,16 @@
 using UnityEngine;
 using Zenject;
 
-public class BarrierFactory : IFactory<PlaceableObject, PlaceableObjectConfig, BarriersType>
+public class BarrierFactory : IFactory<Barrier, BarrierConfig, BarriersType>
 {
     private DiContainer _container;
 
     private CreatedPoolBarriersSystem _barrierPools;
 
-    private ConfigsLibrariesHandler<PlaceableObjectConfig, BarriersType> _handlerBarrrierConfigs;
+    private ConfigsLibrariesHandler<BarrierConfig, BarriersType> _handlerBarrrierConfigs;
 
     public BarrierFactory(DiContainer container, CreatedPoolBarriersSystem barrierPools, 
-        ConfigsLibrariesHandler<PlaceableObjectConfig, BarriersType> handlerBarrierConfigs)
+        ConfigsLibrariesHandler<BarrierConfig, BarriersType> handlerBarrierConfigs)
     {
         _container = container;
 
@@ -19,34 +19,34 @@ public class BarrierFactory : IFactory<PlaceableObject, PlaceableObjectConfig, B
         _handlerBarrrierConfigs = handlerBarrierConfigs;
     }
 
-    public PlaceableObject Create(Vector3 spawnPosition, BarriersType barrierType,
+    public Barrier Create(Vector3 spawnPosition, BarriersType barrierType,
         Quaternion rotation)
     {
-        ObjectPool<PlaceableObject> placeableObejctPool = GetPool(barrierType);
+        ObjectPool<Barrier> barrierPool = GetPool(barrierType);
 
-        if (placeableObejctPool == null)
+        if (barrierPool == null)
             return null;
 
-        PlaceableObject placeableObject = placeableObejctPool.GetPoolObject();
+        Barrier barrier = barrierPool.GetPoolObject();
 
-        if (placeableObject == null)
+        if (barrier == null)
             return null;
 
-        PlaceableObjectConfig config = GetObjectConfig(barrierType);
+        BarrierConfig config = GetObjectConfig(barrierType);
 
-        _container.Inject(placeableObject);
+        _container.Inject(barrier);
 
-        placeableObject.SetComponents(config);
+        barrier.SetComponents(config);
 
-        placeableObject.transform.position = spawnPosition;
-        placeableObject.transform.rotation = rotation;
+        barrier.transform.position = spawnPosition;
+        barrier.transform.rotation = rotation;
 
-        return placeableObject;
+        return barrier;
     }
 
-    public PlaceableObjectConfig GetObjectConfig(BarriersType type)
+    public BarrierConfig GetObjectConfig(BarriersType type)
     {
-        PlaceableObjectConfig config = _handlerBarrrierConfigs.GetObjectConfig(type);
+        BarrierConfig config = _handlerBarrrierConfigs.GetObjectConfig(type);
 
         if (config == null)
             return null;
@@ -54,11 +54,11 @@ public class BarrierFactory : IFactory<PlaceableObject, PlaceableObjectConfig, B
         return config;
     }
 
-    private ObjectPool<PlaceableObject> GetPool(BarriersType barrierType)
+    private ObjectPool<Barrier> GetPool(BarriersType barrierType)
     {
         BarriersType barrierTypeSelected = barrierType;
 
-        if (_barrierPools.PoolDictionary.TryGetValue(barrierTypeSelected, out ObjectPool<PlaceableObject> poolSelected))
+        if (_barrierPools.PoolDictionary.TryGetValue(barrierTypeSelected, out ObjectPool<Barrier> poolSelected))
             return poolSelected;
 
         return null;

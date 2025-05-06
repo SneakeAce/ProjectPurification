@@ -11,7 +11,6 @@ public class DamageCoefficientProvider : IDamageCoefficientProvider
 
     public DamageCoefficientProvider(TextAsset csvFile)
     {
-        Debug.Log("DamageCoefficientProvider constructor called / csvFile = " + csvFile);
         _coefficients = Load(csvFile);
     }
 

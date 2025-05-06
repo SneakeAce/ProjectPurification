@@ -50,7 +50,7 @@ public class BehavioralPatternSwitcher : MonoBehaviour
     {
         _currentMoveTypes = moveType;
 
-        Debug.Log("BehavioralPatternSwitcher / SetMoveType / moveType = " + moveType);
+        //Debug.Log("BehavioralPatternSwitcher / SetMoveType / moveType = " + moveType);
 
         _enemyCharacter.SetBehavioralPattern(_movementFactory.Get(_currentMoveTypes, _enemyCharacter));
     }

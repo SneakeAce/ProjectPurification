@@ -23,14 +23,12 @@ public abstract class EnemyAttack : MonoBehaviour
 
     protected Coroutine _reloadingCoroutine;
 
-    private EnemySearchTargetConfig _searchTargetConfig;
     private CoroutinePerformer _coroutinePerformer;
 
     [Inject]
-    private void Construct(EnemySearchTargetConfig searchTargetConfig, CoroutinePerformer coroutinePerformer)
+    private void Construct(CoroutinePerformer coroutinePerformer)
     {
-        Debug.Log("EnemyAttack / COnstruct");
-        _searchTargetConfig = searchTargetConfig;
+        //Debug.Log("EnemyAttack / Construct");
         _coroutinePerformer = coroutinePerformer;
     }
 
@@ -39,16 +37,16 @@ public abstract class EnemyAttack : MonoBehaviour
 
     public void Initialization(IEnemy enemyCharacter, EnemyConfig config)
     {
-        _enemySearchTargetSystem = new EnemySearchTargetSystem(_searchTargetConfig, _coroutinePerformer);
-        _enemySearchTargetSystem.Start(enemyCharacter);
+        _enemySearchTargetSystem = new EnemySearchTargetSystem(_coroutinePerformer);
+        _enemySearchTargetSystem.Start(enemyCharacter, config);
 
         _enemyCharacter = enemyCharacter;
 
         _attackType = config.AttackCharacteristics.AttackType;
         _targetLayer = config.AttackCharacteristics.TargetLayer;
         _baseDamage = config.AttackCharacteristics.BaseDamage;
-        _reloadingTime = config.AttackCharacteristics.ReloadingTime;
-        _attackZoneRadius = config.AttackCharacteristics.RadiusAttack;
+        _reloadingTime = config.AttackCharacteristics.BaseReloadingTime;
+        _attackZoneRadius = config.AttackCharacteristics.BaseRadiusAttack;
 
         _enemyAnimator = enemyCharacter.Animator;
     }

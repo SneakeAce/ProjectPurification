@@ -18,8 +18,9 @@ MonoBehaviour:
   <AttackCharacteristics>k__BackingField:
     <AttackType>k__BackingField: 0
     <BaseDamage>k__BackingField: 5
-    <RadiusAttack>k__BackingField: 5
-    <ReloadingTime>k__BackingField: 2
+    <BaseRadiusAttack>k__BackingField: 2
+    <BaseReloadingTime>k__BackingField: 2
+    <BaseSearchTargetRadius>k__BackingField: 8
     <TargetLayer>k__BackingField:
       serializedVersion: 2
       m_Bits: 64

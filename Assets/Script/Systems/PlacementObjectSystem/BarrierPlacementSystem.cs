@@ -6,19 +6,18 @@ using Zenject;
 public class BarrierPlacementSystem : ObjectPlacementSystem
 {
     // ядекюрэ яхярелс нрякефхбюмхъ рейсыецн йнкхвеярбю пюяонкнфеммшу назейрнб ндмнцн рхою мю яжеме.
-    //private LazyInject<<IFactory<PlaceableObject, BarriersType>> _lazyFactory;
 
     private BarriersType _currentBarrierType;
-    private IFactory<PlaceableObject, PlaceableObjectConfig, BarriersType> _factory;
+    private IFactory<Barrier, BarrierConfig, BarriersType> _factory;
 
     private CreatedPoolBarriersSystem _poolBarriersSystem;
 
-    private ObjectPool<PlaceableObject> _poolObject;
+    private ObjectPool<Barrier> _poolObject;
 
     private Material _phantomObjectMaterial;
 
     public BarrierPlacementSystem(BarrierPlacementSystemConfig config, Character character, 
-        CreatedPoolBarriersSystem poolBarriersSystem, IFactory<PlaceableObject, PlaceableObjectConfig, BarriersType> factory) : base(config, character)
+        CreatedPoolBarriersSystem poolBarriersSystem, IFactory<Barrier, BarrierConfig, BarriersType> factory) : base(config, character)
     {
         _factory = factory;
 
@@ -42,7 +41,7 @@ public class BarrierPlacementSystem : ObjectPlacementSystem
                     {
                         BarriersType selectedType = (BarriersType)selectedBarrierIndex;
 
-                        if (_poolBarriersSystem.PoolDictionary.TryGetValue(selectedType, out ObjectPool<PlaceableObject> poolSelected))
+                        if (_poolBarriersSystem.PoolDictionary.TryGetValue(selectedType, out ObjectPool<Barrier> poolSelected))
                         {
                             _currentBarrierType = selectedType;
 
@@ -120,14 +119,10 @@ public class BarrierPlacementSystem : ObjectPlacementSystem
 
     public override void PlaceObject()
     {
-        //_factory = _lazyFactory.Value;
-
         Vector3 spawnPosition = _instancePhantomObject.transform.position;
         Quaternion rotation = _instancePhantomObject.transform.rotation;
 
-        PlaceableObject newObject = _factory.Create(spawnPosition, _currentBarrierType, rotation);
-
-        newObject.transform.SetParent(null);
+        Barrier newObject = _factory.Create(spawnPosition, _currentBarrierType, rotation);
 
         _phantomObjectMaterial = null;
 
