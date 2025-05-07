@@ -5,11 +5,9 @@ using Zenject;
 public class EnemyCharacter : MonoBehaviour, IEnemy, IPoolable
 {
     private const string NameAttackHolder = "AttackHolder";
-    private const string NamePatrolPointHolder = "PatrolPointsHolder";
 
     [Inject] private EnemyHealth _health;
 
-    private Transform _patrolPointHolder;
     private Transform _holderAttackLogic;
 
     private IBehavioralPattern _behavioralPattern;
@@ -27,7 +25,6 @@ public class EnemyCharacter : MonoBehaviour, IEnemy, IPoolable
     public float MoveSpeed => _enemyConfig.CharacteristicsEnemy.MoveSpeed;
     public EnemyType EnemyType => _enemyConfig.CharacteristicsEnemy.EnemyType;
     public BehavioralPatternSwitcher BehavioralPatternSwitcher => _patternSwitcher;
-    public Transform PatrolPointsHolder => _patrolPointHolder;
     public Transform Transform => transform;
     public NavMeshAgent NavMeshAgent => _agent;
     public Animator Animator => _animator;
@@ -52,7 +49,6 @@ public class EnemyCharacter : MonoBehaviour, IEnemy, IPoolable
 
         _patternSwitcher = GetComponentInChildren<BehavioralPatternSwitcher>();
 
-        _patrolPointHolder = transform.Find(NamePatrolPointHolder);
         _holderAttackLogic = transform.Find(NameAttackHolder);
 
         _health.Initialization(this, _enemyConfig);

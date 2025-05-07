@@ -6,10 +6,13 @@ using Object = UnityEngine.Object;
 public class ObjectPool<T> 
     where T : MonoBehaviour
 {
+    private const int CountPerSpawn = 1;
+
     private Queue<T> _pool;
     private T _prefab;
     private Transform _container;
     private bool _isExpandPool;
+    private int _countPoolObject;
 
     public ObjectPool(T prefab, int initialSize, Transform container = null, bool isExpandPool = false) 
     { 
@@ -48,6 +51,10 @@ public class ObjectPool<T>
     private T CreatePoolObject(bool isActiveByDefault = false)
     {
         T poolObject = Object.Instantiate(_prefab, _container);
+
+        _countPoolObject += CountPerSpawn;
+        poolObject.name = _prefab.name + _countPoolObject.ToString();
+
         poolObject.gameObject.SetActive(isActiveByDefault);
         _pool.Enqueue(poolObject);
         return poolObject;

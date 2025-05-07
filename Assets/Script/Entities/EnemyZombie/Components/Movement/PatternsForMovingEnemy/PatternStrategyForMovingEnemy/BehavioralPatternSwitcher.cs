@@ -30,6 +30,16 @@ public class BehavioralPatternSwitcher : MonoBehaviour
         MoveTypes moveType = GetRandomMoveType();
 
         SetMoveType(moveType);
+    }    
+    
+    public void SetBehavioralPattern(IEnemy enemy, MoveTypes type)
+    {
+        if (_enemyCharacter == null)
+            _enemyCharacter = enemy.CharacterEnemy;
+
+        MoveTypes moveType = type;
+
+        SetMoveType(moveType);
     }
 
     public void SetBehavioralPattern(MoveTypes moveType, ICharacter target = null)

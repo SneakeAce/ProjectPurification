@@ -2,17 +2,19 @@ using UnityEngine;
 
 public class MoveToTargetPattern : IBehavioralPattern
 {
+    private const float MinDistanceToTarget = 0.12f;
+    private const float StoppingDistance = 1.5f;
+
     private ICharacter _target;
     private IEnemy _movable;
 
-    private const float MinDistanceToTarget = 0.12f; 
 
     public MoveToTargetPattern(IEnemy movable, ICharacter target)
     {
         _movable = movable;
         _target = target;
 
-        _movable.NavMeshAgent.stoppingDistance = 1.5f;
+        _movable.NavMeshAgent.stoppingDistance = StoppingDistance;
     }
 
     public void StartMove()

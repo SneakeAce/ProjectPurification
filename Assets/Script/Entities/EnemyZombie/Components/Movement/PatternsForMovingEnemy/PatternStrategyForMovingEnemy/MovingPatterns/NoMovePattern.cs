@@ -5,8 +5,8 @@ public class NoMovePattern : IBehavioralPattern
     private const float RandomTimeBetweenRotating = 30f;
     private const float MinTimeBetweenRotating = 1f;
 
-    private const float RandomTimeBetweenSwitchBehavioral = 60f;
-    private const float MinTimeBetweenSwitchBehavioral = 30f;
+    private const float RandomTimeBetweenSwitchBehavioral = 2f;
+    private const float MinTimeBetweenSwitchBehavioral = 1f;
 
     private IEnemy _movable;
 

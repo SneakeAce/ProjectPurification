@@ -5,7 +5,6 @@ public interface IEnemy : IEntity
 {
     public EnemyType EnemyType { get; }
     float MoveSpeed { get; }
-    Transform PatrolPointsHolder { get; }
     NavMeshAgent NavMeshAgent { get; }
 
     BehavioralPatternSwitcher BehavioralPatternSwitcher { get; }
