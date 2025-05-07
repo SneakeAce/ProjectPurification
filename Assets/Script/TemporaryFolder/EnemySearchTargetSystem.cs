@@ -18,18 +18,18 @@ public class EnemySearchTargetSystem : SearchTargetSystem
 
     private ICharacter _target;
 
-    public EnemySearchTargetSystem(EnemySearchTargetConfig config, 
-        CoroutinePerformer coroutinePerformer) : base(coroutinePerformer)
+    public EnemySearchTargetSystem(CoroutinePerformer coroutinePerformer) : base(coroutinePerformer)
     {
-        _radiusSearching = config.RadiusSearching;
-        _targetLayerMask = config.TargetLayerMask;
     }
 
-    public void Start(IEnemy enemy)
+    public void Start(IEnemy enemy, EnemyConfig config)
     {
         _enemy = enemy;
         _patternSwitcher = enemy.BehavioralPatternSwitcher;
         _bufferTargets = new Collider[MaxTargetsInBuffer];
+
+        _radiusSearching = config.AttackCharacteristics.BaseSearchTargetRadius;
+        _targetLayerMask = config.AttackCharacteristics.TargetLayer;
 
         _searchTargetCoroutine = _coroutinePerformer.StartCoroutine(SearchingTargetJob());
     }

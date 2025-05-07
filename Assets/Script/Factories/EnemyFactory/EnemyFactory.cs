@@ -57,7 +57,7 @@ public class EnemyFactory : IFactory<EnemyCharacter, EnemyConfig, EnemyType>
     {
         EnemyConfig config = _handlerEnemyConfigs.GetObjectConfig(type);
 
-        Debug.Log("config in EnemyFactory = " + config);
+        //Debug.Log("config in EnemyFactory = " + config);
 
         if (config == null)
             return null;

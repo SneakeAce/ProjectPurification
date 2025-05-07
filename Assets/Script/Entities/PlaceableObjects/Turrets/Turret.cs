@@ -14,11 +14,11 @@ public class Turret : MonoBehaviour, ITurret
     protected IFactory<Bullet, BulletConfig, BulletType> _bulletFactory;
 
     public Transform Transform => transform;
+    public AutomaticTurretWeapon TurretWeapon => _turretWeapon;
+    public GameObject BodyTurret => this.gameObject;
     public Animator Animator => throw new System.NotImplementedException();
     public Rigidbody Rigidbody => throw new System.NotImplementedException();
     public Collider Collider => throw new System.NotImplementedException();
-    public AutomaticTurretWeapon TurretWeapon => _turretWeapon;
-    public GameObject BodyTurret => this.gameObject;
 
     [Inject]
     private void Construct(IFactory<Bullet, BulletConfig, BulletType> bulletFactory, CoroutinePerformer coroutinePerformer, TurretHealth health)

@@ -6,10 +6,16 @@ public class PatrolPointsSpawner
 {
     private const int MaxBufferSize = 16;
     private const int MaxAttemptForCheckSpawnPoint = 10;
-    private const float TimeBeforeDestroyPoint = 0.8f;
+    private const float TimeBeforeDestroyPoint = 0.2f;
+
+    private const string PatrolPointsHolderName = "PatrolPointsHolder";
 
     private InstantiateAndDestroyGameObjectPerformer _gameObjectPerformer;
-    
+    private CoroutinePerformer _coroutinePerformer;
+    private ParentForPatrolPointsHolder _parentForHolders;
+
+    private GameObject _holderPatrolPoints;
+
     private List<Transform> _patrolPoints;
     private GameObject _pointPrefab;
 
@@ -25,15 +31,14 @@ public class PatrolPointsSpawner
     private float _radiusCheckingAnotherNearestPoint;
     private float _radiusCheckingObstacle;
 
-    private CoroutinePerformer _coroutinePerformer;
-
     private Coroutine _destroyPointCoroutine;
 
     public PatrolPointsSpawner(SpawnPatrolPointsConfig config, CoroutinePerformer coroutinePerformer, 
-        InstantiateAndDestroyGameObjectPerformer gameObjectPermformer)
+        InstantiateAndDestroyGameObjectPerformer gameObjectPermformer, ParentForPatrolPointsHolder parentForHolders)
     {
         _coroutinePerformer = coroutinePerformer;
         _gameObjectPerformer = gameObjectPermformer;
+        _parentForHolders = parentForHolders;
 
         _pointPrefab = config.PointPrefab;
 
@@ -63,6 +68,9 @@ public class PatrolPointsSpawner
 
     public List<Transform> GetPatrolPoints(IEnemy enemy)
     {
+        _holderPatrolPoints = SpawnPatrolPointsHolder(enemy);
+        _holderPatrolPoints.transform.SetParent(_parentForHolders.transform);
+
         _patrolPoints = new List<Transform>();
 
         for (int currentPatrolPoints = 0; currentPatrolPoints < _maxPatrolPoints;)
@@ -72,17 +80,17 @@ public class PatrolPointsSpawner
             if (point != Vector3.zero)
             {
                 GameObject instancePatrolPoint = _gameObjectPerformer.CreateObject(_pointPrefab, point, Quaternion.identity);
-
-                //Debug.Log("instancePatrolPoint = " + instancePatrolPoint);
                 currentPatrolPoints++;
+
+                instancePatrolPoint.name = instancePatrolPoint.name + currentPatrolPoints.ToString();
 
                 _patrolPoints.Add(instancePatrolPoint.transform);
 
-                instancePatrolPoint.transform.SetParent(enemy.PatrolPointsHolder);
+                instancePatrolPoint.transform.SetParent(_holderPatrolPoints.transform);
             }
             else
             {
-               // Debug.Log("Не удалось создать точку. Вернулось Vector3.zero");
+                Debug.Log("Не удалось создать точку. Вернулось Vector3.zero");
                 break;
             }
         }
@@ -90,12 +98,32 @@ public class PatrolPointsSpawner
         return _patrolPoints;
     }
 
+    private GameObject SpawnPatrolPointsHolder(IEnemy enemy)
+    {
+        string nameHolder = enemy.ToString() + PatrolPointsHolderName;
+        GameObject holder = new GameObject(nameHolder.ToString());
+
+        if (holder == null)
+            return null;
+
+        return holder;
+    }
+
     private IEnumerator DestroyPointJob(GameObject item)
     {
-        yield return new WaitForSeconds(TimeBeforeDestroyPoint);
-
         if (item != null)
+        {
             _gameObjectPerformer.DestroyObject(item);
+            _patrolPoints.Remove(item.transform);
+        }
+
+        if (_patrolPoints.Count == 0)
+        {
+            _gameObjectPerformer.DestroyObject(_holderPatrolPoints);
+            _holderPatrolPoints = null;
+        }
+
+        yield return new WaitForSeconds(TimeBeforeDestroyPoint);
     }
 
     private Vector3 RandomPosition()

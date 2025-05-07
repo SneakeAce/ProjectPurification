@@ -24,7 +24,7 @@ public class EntityFactoriesInstaller : MonoInstaller
 
     private void BindBarrierFactory()
     {
-        Container.Bind<IFactory<PlaceableObject, PlaceableObjectConfig, BarriersType>>().To<BarrierFactory>().AsSingle();
+        Container.Bind<IFactory<Barrier, BarrierConfig, BarriersType>>().To<BarrierFactory>().AsSingle();
     }
 
     private void BindTurretFactory()

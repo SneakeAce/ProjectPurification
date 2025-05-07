@@ -101,6 +101,7 @@ public class GlobalEnemySpawner : EnemySpawner
         {
             if ((point.EnemyTypeInSpawnPoint & enemy.EnemyType) != 0)
             {
+                Debug.Log($"ReturnEnemyToPool / enemy = {enemy}");
                 point.DecreaseCurrentEnemy(ReducingValue);
 
                 enemy.CharacterEnemy.ReturnToPool(enemy);

@@ -47,8 +47,6 @@ public class ConfigsLibrariesHandlerInstaller : MonoInstaller
             Type libraryBindType = typeof(LibraryConfigs<>).MakeGenericType(configType);
             Type handlerType = typeof(ConfigsLibrariesHandler<,>).MakeGenericType(configType, enumType);
 
-            Debug.Log($"[UniversalLibraryInstaller] Ѕиндим {config.name} как {libraryBindType.Name} и {handlerType.Name}");
-
             Container.Bind(libraryBindType)
                 .FromInstance(config)
                 .AsSingle();

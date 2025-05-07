@@ -135,8 +135,6 @@ public class TurretPlacementSystem : ObjectPlacementSystem
             
         Turret newObject = _factory.Create(spawnPosition, _currentTurretType, rotation);
 
-        newObject.transform.SetParent(null);
-
         _phantomObjectMaterial.Clear();
         Array.Clear(_phantomObjectMesh, 0, _phantomObjectMesh.Length);
 

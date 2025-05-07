@@ -1,12 +1,20 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class PatrolPattern : IBehavioralPattern
 {
-    private const float MinDistanceToPoint = 0.11f;
-    private const float MaxDistanceToPoint = 1.5f;
+    private const int RandomBooleanMin = 0;
+    private const int RandomBooleanMaxExclusive = 2;
+    private const int RandomBooleanTrueValue = 1;
+
+    private const int NonEmptyListThreshold = 0;
+    private const int RandomRangeStart = 0;
+    private const int MinStoppingDistance = 0;
+
+    private const float MinTimeBetweenGetNewPoint = 0f;
+    private const float MinDistanceToPoint = 0.09f;
+    private const float MaxDistanceToPoint = 2f;
 
     private IEnemy _movable;
 
@@ -28,7 +36,7 @@ public class PatrolPattern : IBehavioralPattern
         _switchBehavioral = movable.BehavioralPatternSwitcher;
 
         _movable = movable;
-        _movable.NavMeshAgent.stoppingDistance = 0;
+        _movable.NavMeshAgent.stoppingDistance = MinStoppingDistance;
 
         _spawnPatrolPoints = spawnPatrolPoints;
 
@@ -36,8 +44,8 @@ public class PatrolPattern : IBehavioralPattern
 
         _patrolPoints = _spawnPatrolPoints.GetPatrolPoints(_movable);
 
-        if (_patrolPoints.Count > 0)
-            _currentPoint = _patrolPoints[Random.Range(0, _patrolPoints.Count)];
+        if (_patrolPoints.Count > NonEmptyListThreshold) 
+            _currentPoint = _patrolPoints[Random.Range(RandomRangeStart, _patrolPoints.Count)];
 
         //_movable.EnemyHealth.UnitDead += OnDeleteAllPoints;
     }
@@ -46,12 +54,16 @@ public class PatrolPattern : IBehavioralPattern
     {
         _timeBetweenGetNewPoint = _startTimeBetweenGetNewPoint;
 
-        if (_patrolPoints.Count > 0)
+        if (_patrolPoints.Count > NonEmptyListThreshold)
         {
             _isMoving = true;
             _hasPointReached = false;
 
             _movable.NavMeshAgent.isStopped = false;
+
+            _movable.NavMeshAgent.SetDestination(_currentPoint.transform.position);
+
+            _movable.Animator.SetBool("IsRunning", _isMoving);
         }
     }
 
@@ -63,7 +75,7 @@ public class PatrolPattern : IBehavioralPattern
         _movable.NavMeshAgent.isStopped = true;
         //OnDeleteAllPoints(_movable.EnemyHealth);
 
-        if (_patrolPoints.Count > 0)
+        if (_patrolPoints.Count > NonEmptyListThreshold)
             _patrolPoints.Clear();
     }
 
@@ -80,18 +92,13 @@ public class PatrolPattern : IBehavioralPattern
         }
 
         if (_hasPointReached)
-        {
             StoppingMove();
-        }
+        
 
         if (_movable.NavMeshAgent.isStopped && _hasPointReached == false) 
             RepeatCheckDistance();
         else if (_movable.NavMeshAgent.isStopped && _hasPointReached)
             return;
-
-        _movable.NavMeshAgent.SetDestination(_currentPoint.transform.position);
-
-        _movable.Animator.SetBool("IsRunning", _isMoving);
     }
 
     private void StoppingMove()
@@ -106,52 +113,63 @@ public class PatrolPattern : IBehavioralPattern
 
     private void GetNewPoint()
     {
-        if (_timeBetweenGetNewPoint > 0)
+        if (_timeBetweenGetNewPoint > MinTimeBetweenGetNewPoint)
         { 
             _timeBetweenGetNewPoint -= Time.deltaTime;
             return;
         }
 
-        if (_patrolPoints.Count > 0)
+        if (_patrolPoints.Count > NonEmptyListThreshold && _patrolPoints.Contains(_currentPoint))
         {
-            if (_patrolPoints.Contains(_currentPoint))
+            _patrolPoints.Remove(_currentPoint);
+            _spawnPatrolPoints.DestroyPoint(_currentPoint.gameObject);
+
+            if (_patrolPoints.Count == NonEmptyListThreshold)
             {
-                _patrolPoints.Remove(_currentPoint);
-                _spawnPatrolPoints.DestroyPoint(_currentPoint.gameObject);
+                Debug.Log("GetNewPoint");
 
-                if (_patrolPoints.Count == 0)
-                {
-                    int willBehaviorChange = Random.Range(Convert.ToInt32(true), Convert.ToInt32(false));
-
-                    bool behaviorChanged = Convert.ToBoolean(willBehaviorChange);
-
-                    if (behaviorChanged)
-                    {
-                        _switchBehavioral.SetBehavioralPattern(_movable);
-
-                        StopMove();
-
-                        return;
-                    }
-                    else
-                    {
-                        GetNewPatrolPoints();
-
-                        if (_patrolPoints.Count == 0)
-                        {
-                            Debug.LogWarning("Не удалось создать новые точки патрулирования!");
-                            StopMove();
-                            return;
-                        }
-                    }
-                }
+                TryChangeBehaviorOrRefreshPatrol();
             }
 
-            _currentPoint = _patrolPoints[Random.Range(0, _patrolPoints.Count)];
+            if (_patrolPoints.Count == NonEmptyListThreshold)
+                return;
+
+            _currentPoint = _patrolPoints[Random.Range(RandomRangeStart, _patrolPoints.Count)];
 
             StartMove();
         }
 
+    }
+
+    private void TryChangeBehaviorOrRefreshPatrol()
+    {
+        bool hasBehaviorChanged = Random.Range(RandomBooleanMin, RandomBooleanMaxExclusive) == RandomBooleanTrueValue;
+
+        if (hasBehaviorChanged)
+        {
+            SetNoMovePattern();
+
+            return;
+        }
+        else
+        {
+            GetNewListPatrolPoints();
+
+            if (_patrolPoints.Count == NonEmptyListThreshold)
+            {
+                SetNoMovePattern();
+
+                return;
+            }
+        }
+
+    }
+
+    private void SetNoMovePattern()
+    {
+        _switchBehavioral.SetBehavioralPattern(_movable, MoveTypes.NoMove);
+
+        StopMove();
     }
 
     private void RepeatCheckDistance()
@@ -164,7 +182,7 @@ public class PatrolPattern : IBehavioralPattern
         }
     }
 
-    private void GetNewPatrolPoints()
+    private void GetNewListPatrolPoints()
     {
         _patrolPoints.Clear();
 
@@ -173,8 +191,9 @@ public class PatrolPattern : IBehavioralPattern
 
     private void OnDeleteAllPoints(IEnemy enemy)
     {
-        if (_patrolPoints.Count > 0)
+        if (_patrolPoints.Count > NonEmptyListThreshold)
         {
+            // Переделать в for цикл!
             foreach (Transform patrolPoint in _patrolPoints)
             {
                 if (_patrolPoints.Contains(patrolPoint))

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Configs/EnemyConfig", fileName = "EnemyConfig")]
+[CreateAssetMenu(menuName = "Configs/EntitiesConfigs/EnemyConfig", fileName = "EnemyConfig")]
 public class EnemyConfig : ScriptableObject, IEntityConfig, IConfigWithType<EnemyType>
 {
     [field: SerializeField] public CharacteristicsEnemy CharacteristicsEnemy { get; private set; }

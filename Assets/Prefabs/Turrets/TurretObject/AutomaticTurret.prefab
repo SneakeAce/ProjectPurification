@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4400580286528261969}
   - component: {fileID: 6810960184554847928}
   - component: {fileID: 5209757237005162019}
+  - component: {fileID: 5488808644042451850}
   m_Layer: 0
   m_Name: AutomaticTurret
   m_TagString: Untagged
@@ -66,8 +67,24 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.6902263, y: 3.1319897, z: 2.2009904}
+  m_Size: {x: 2.4748435, y: 3.1319897, z: 2.559939}
   m_Center: {x: 0, y: 1.0659949, z: 0}
+--- !u!208 &5488808644042451850
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 108775336713090396}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 1.2, y: 1, z: 1.2}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &188659768961623445
 GameObject:
   m_ObjectHideFlags: 0
@@ -79,7 +96,6 @@ GameObject:
   - component: {fileID: 6764928129229498016}
   - component: {fileID: 7611957133877816258}
   - component: {fileID: 2425483393093164664}
-  - component: {fileID: 4354873874414904370}
   m_Layer: 0
   m_Name: Turret_7.001
   m_TagString: Untagged
@@ -152,28 +168,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &4354873874414904370
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 188659768961623445}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 598214537803890962, guid: d0bc9dce29c0ddc42ad570024250af5e, type: 3}
 --- !u!1 &3974882225854136909
 GameObject:
   m_ObjectHideFlags: 0
@@ -230,7 +224,6 @@ GameObject:
   - component: {fileID: 6346416145615843561}
   - component: {fileID: 7663410627181169386}
   - component: {fileID: 7257122445989572486}
-  - component: {fileID: 5512041400718957575}
   m_Layer: 0
   m_Name: Turret_7.003
   m_TagString: Untagged
@@ -316,28 +309,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &5512041400718957575
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5869744318539424913}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -7922126022539558321, guid: d0bc9dce29c0ddc42ad570024250af5e, type: 3}
 --- !u!1 &6984449152292424415
 GameObject:
   m_ObjectHideFlags: 0
@@ -393,7 +364,6 @@ GameObject:
   - component: {fileID: 3666058270533087784}
   - component: {fileID: 8925529529126247303}
   - component: {fileID: 477941262468767557}
-  - component: {fileID: 3092420218568268081}
   m_Layer: 0
   m_Name: Turret_7.002
   m_TagString: Untagged
@@ -468,25 +438,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &3092420218568268081
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7271712515099386085}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -6166629103375710242, guid: d0bc9dce29c0ddc42ad570024250af5e, type: 3}
