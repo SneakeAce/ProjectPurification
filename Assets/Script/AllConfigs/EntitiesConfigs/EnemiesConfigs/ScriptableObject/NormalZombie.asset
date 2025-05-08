@@ -23,7 +23,7 @@ MonoBehaviour:
     <BaseSearchTargetRadius>k__BackingField: 8
     <TargetLayer>k__BackingField:
       serializedVersion: 2
-      m_Bits: 64
+      m_Bits: 32832
   <HealthCharacteristics>k__BackingField:
     <ArmorType>k__BackingField: 4
     <ArmorValue>k__BackingField: 2

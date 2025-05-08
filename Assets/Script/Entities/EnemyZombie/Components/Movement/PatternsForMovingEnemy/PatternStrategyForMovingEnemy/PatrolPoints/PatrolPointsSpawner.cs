@@ -75,7 +75,7 @@ public class PatrolPointsSpawner
 
         for (int currentPatrolPoints = 0; currentPatrolPoints < _maxPatrolPoints;)
         {
-            Vector3 point = RandomPosition();
+            Vector3 point = RandomPosition(enemy);
             
             if (point != Vector3.zero)
             {
@@ -126,11 +126,11 @@ public class PatrolPointsSpawner
         yield return new WaitForSeconds(TimeBeforeDestroyPoint);
     }
 
-    private Vector3 RandomPosition()
+    private Vector3 RandomPosition(IEnemy enemy)
     {
         for (int attempt = 0; attempt < MaxAttemptForCheckSpawnPoint; attempt++)
         {
-            Vector3 spawnPosition = Random.insideUnitSphere * _maxRadiusSpawnPoint;
+            Vector3 spawnPosition = enemy.Transform.position + Random.insideUnitSphere * _maxRadiusSpawnPoint;
             spawnPosition.y = 0;
 
             if (CheckOtherPointAround(spawnPosition) && CheckObstacleAroundPoint(spawnPosition))
