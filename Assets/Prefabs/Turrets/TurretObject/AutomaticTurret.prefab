@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4400580286528261969}
   - component: {fileID: 6810960184554847928}
-  - component: {fileID: 5209757237005162019}
   - component: {fileID: 5488808644042451850}
+  - component: {fileID: 7984388968123340866}
   m_Layer: 15
   m_Name: AutomaticTurret
   m_TagString: Untagged
@@ -48,7 +48,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25b70e446c2258649a04f2fa63ddf44d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!65 &5209757237005162019
+--- !u!208 &5488808644042451850
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 108775336713090396}
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.8, y: 1, z: 0.8}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
+--- !u!65 &7984388968123340866
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -67,24 +83,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.4748435, y: 3.1319897, z: 2.559939}
-  m_Center: {x: 0, y: 1.0659949, z: 0}
---- !u!208 &5488808644042451850
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 108775336713090396}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 0
-  m_Extents: {x: 1.2, y: 1, z: 1.2}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0, z: 0}
-  m_TimeToStationary: 0.5
+  m_Size: {x: 1.7451637, y: 3.1464214, z: 1.7924993}
+  m_Center: {x: 0, y: 1.073211, z: -0.106076956}
 --- !u!1 &188659768961623445
 GameObject:
   m_ObjectHideFlags: 0

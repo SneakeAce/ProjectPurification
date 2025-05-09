@@ -6,4 +6,5 @@ public interface IEntity
     Animator Animator { get; }
     Rigidbody Rigidbody { get; }
     Collider Collider { get; }
+    IEntityHealth EntityHealth { get; }
 }

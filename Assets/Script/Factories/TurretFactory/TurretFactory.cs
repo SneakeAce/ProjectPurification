@@ -39,6 +39,7 @@ public class TurretFactory : IFactory<Turret, TurretConfig, TurretType>
 
         _container.Inject(turret);
 
+        turret.SetPool(turretPool);
         turret.SetComponents(config);
 
         return turret;

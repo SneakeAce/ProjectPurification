@@ -3,11 +3,23 @@ using UnityEngine;
 
 public class AutomaticTurretWeapon : TurretWeapon
 {
-    public AutomaticTurretWeapon(ITurret currentTurret, TurretConfig config, 
-        TurretSearchTargetSystem turretSearchTargetSystem, IFactory<Bullet, BulletConfig, BulletType> bulletFactory, 
-        CoroutinePerformer coroutinePerformer, GameObject bodyTurret) : base(currentTurret, 
-            config, turretSearchTargetSystem, bulletFactory, coroutinePerformer, bodyTurret)
+    public AutomaticTurretWeapon(TurretSearchTargetSystem turretSearchTargetSystem,
+        IFactory<Bullet, BulletConfig, BulletType> bulletFactory, 
+        CoroutinePerformer coroutinePerformer) : base(turretSearchTargetSystem, bulletFactory, coroutinePerformer)
     {
+    }
+
+    public void Initialization(ITurret currentTurret, TurretConfig config, GameObject bodyTurret)
+    {
+        _currentTurret = currentTurret;
+        _bodyTurret = bodyTurret;
+
+        _spawnPointsBullet = bodyTurret.GetComponentsInChildren<SpawnPointBullet>();
+        _defaultTurretRotation = currentTurret.Transform.rotation;
+
+        _searchTargetSystem.Start(_currentTurret, config);
+
+        SetAttackProperties(config);
     }
 
     protected override IEnumerator RotateToTargetJob()

@@ -6,7 +6,7 @@ public class EnemyHealth : EntityHealth
     private EnemyCharacter _enemy;
     private EnemyConfig _enemyConfig;
 
-    public event Action<IEnemy> UnitDead;
+    public override event Action<IEntity> EntityDied;
     public override event Action<float> CurrentValueChanged;
     public override event Action<float> MaxValueChanged;
 
@@ -50,7 +50,7 @@ public class EnemyHealth : EntityHealth
 
         if (_currentValue <= MinPossibleValue)
         {
-            UnitDead?.Invoke(_enemy);
+            EntityDied?.Invoke(_enemy);
             UnityEngine.Debug.Log("Enemy is Dead");
         }
     }

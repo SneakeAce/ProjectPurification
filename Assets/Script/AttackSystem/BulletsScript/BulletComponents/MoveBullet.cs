@@ -4,7 +4,6 @@ using UnityEngine;
 public class MoveBullet
 {
     private CoroutinePerformer _coroutinePerformer;
-    //private BulletConfig _config;
 
     private Rigidbody _bulletRigidbody;
     private Transform _bulletTransform;
@@ -29,7 +28,6 @@ public class MoveBullet
 
         _bullet = bullet;
         _bulletRigidbody = bullet.GetRigidbodyBullet();
-        Debug.Log("BulletRigidbody = " + _bulletRigidbody);
 
         _bulletTransform = bullet.GetTransformBullet();
         

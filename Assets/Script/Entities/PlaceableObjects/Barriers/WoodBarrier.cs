@@ -10,6 +10,8 @@ public class WoodBarrier : Barrier
         CoroutinePerformer coroutinePerformer)
     {
         _barrierHealth = barrierHealth;
+        _barrierHealth.EntityDied += ReturnToPool;
+
         _barrierAttack = barrierAttack;
 
         _coroutinePerformer = coroutinePerformer;

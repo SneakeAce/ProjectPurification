@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class EnemySearchTargetSystem : SearchTargetSystem
 {
@@ -14,22 +16,23 @@ public class EnemySearchTargetSystem : SearchTargetSystem
 
     private Collider[] _bufferTargets;
 
-    private BehavioralPatternSwitcher _patternSwitcher;
-
-    private ICharacter _target;
+    private IEntity _target;
+    private IEntity _subscribedEntity;
 
     public EnemySearchTargetSystem(CoroutinePerformer coroutinePerformer) : base(coroutinePerformer)
     {
     }
 
+    public event Action<IEntity> TargetFound;
+    public event Action TargetDisapperead;
+
     public void Start(IEnemy enemy, EnemyConfig config)
     {
         _enemy = enemy;
-        _patternSwitcher = enemy.BehavioralPatternSwitcher;
         _bufferTargets = new Collider[MaxTargetsInBuffer];
 
         _radiusSearching = config.AttackCharacteristics.BaseSearchTargetRadius;
-        _targetLayerMask = config.AttackCharacteristics.TargetLayer;
+        _targetLayerMask = config.AttackCharacteristics.TargetsLayer;
 
         _searchTargetCoroutine = _coroutinePerformer.StartCoroutine(SearchingTargetJob());
     }
@@ -53,13 +56,14 @@ public class EnemySearchTargetSystem : SearchTargetSystem
             {
                 Collider target = _bufferTargets[i];
 
-                _target = target.gameObject.GetComponentInParent<ICharacter>();
+                if (target.gameObject.TryGetComponent<IEntity>(out IEntity tar))
+                    _target = tar;
             }
 
             yield return new WaitForSeconds(MinDelayToCheck);
         }
 
-        TargetFound();
+        OnTargetAcquired();
     }
 
     protected override IEnumerator CheckDistanceToTargetJob()
@@ -78,12 +82,17 @@ public class EnemySearchTargetSystem : SearchTargetSystem
             yield return new WaitForSeconds(MinDelayToCheck);
         }
 
-        TargetDisapperead();
+        OnTargetLost();
     }
 
-    private void TargetFound()
+    private void OnTargetAcquired()
     {
-        _patternSwitcher.SetBehavioralPattern(MoveTypes.MoveToTarget, _target);
+        _subscribedEntity = _target;
+        _subscribedEntity.EntityHealth.EntityDied += OnTargetDead;
+
+        _enemy.BehavioralPatternSwitcher.SetBehavioralPattern(MoveTypes.MoveToTarget, _target);
+
+        TargetFound?.Invoke(_target);
 
         if (_checkDistanceToTargetCoroutine != null)
         {
@@ -94,10 +103,17 @@ public class EnemySearchTargetSystem : SearchTargetSystem
         _checkDistanceToTargetCoroutine = _coroutinePerformer.StartCoroutine(CheckDistanceToTargetJob());
     }
 
-    private void TargetDisapperead()
+    private void OnTargetLost()
     {
-        //Debug.Log("TargetDisapperead");
-        _patternSwitcher.SetBehavioralPattern(MoveTypes.NoMove);
+        _enemy.BehavioralPatternSwitcher.SetBehavioralPattern(MoveTypes.NoMove);
+        
+        TargetDisapperead?.Invoke();
+
+        if (_subscribedEntity != null)
+        {
+            _subscribedEntity.EntityHealth.EntityDied -= OnTargetDead;
+            _subscribedEntity = null;
+        }
 
         if (_searchTargetCoroutine != null)
         {
@@ -106,5 +122,11 @@ public class EnemySearchTargetSystem : SearchTargetSystem
         }
 
         _searchTargetCoroutine = _coroutinePerformer.StartCoroutine(SearchingTargetJob());
+    }
+
+    private void OnTargetDead(IEntity entity)
+    {
+        if (_target == entity)
+            _target = null;
     }
 }

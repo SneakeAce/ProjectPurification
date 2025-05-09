@@ -9,7 +9,7 @@ public class CharacterHealth : EntityHealth
     {
     } 
 
-    public event Action<ICharacter> UnitDead;
+    public override event Action<IEntity> EntityDied;
     public override event Action<float> CurrentValueChanged;
     public override event Action<float> MaxValueChanged;
 
@@ -46,7 +46,7 @@ public class CharacterHealth : EntityHealth
 
         if (_currentValue <= MinPossibleValue)
         {
-            UnitDead?.Invoke(_character);
+            EntityDied?.Invoke(_character);
             UnityEngine.Debug.Log("Character is Dead");
         }
     }

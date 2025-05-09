@@ -42,30 +42,20 @@ public abstract class TurretWeapon
 
     protected Quaternion _defaultTurretRotation;
 
-    protected abstract void SpawnBullet();
-
-    protected abstract IEnumerator AttackJob();
-    protected abstract IEnumerator RotateToTargetJob();
-
-    public TurretWeapon(ITurret currentTurret, TurretConfig config,
-        TurretSearchTargetSystem turretSearchTargetSystem, IFactory<Bullet, BulletConfig, BulletType> bulletFactory, 
-        CoroutinePerformer coroutinePerformer, GameObject bodyTurret)
+    public TurretWeapon(TurretSearchTargetSystem turretSearchTargetSystem, 
+        IFactory<Bullet, BulletConfig, BulletType> bulletFactory, 
+        CoroutinePerformer coroutinePerformer)
     {
-        _currentTurret = currentTurret;
         _coroutinePerformer = coroutinePerformer;
 
-        _bodyTurret = bodyTurret;
-
-        _spawnPointsBullet = bodyTurret.GetComponentsInChildren<SpawnPointBullet>();
-        _defaultTurretRotation = currentTurret.Transform.rotation;
-
         _searchTargetSystem = turretSearchTargetSystem;
-        _searchTargetSystem.Start(_currentTurret, config);
 
         _bulletFactory = bulletFactory;
-
-        SetAttackProperties(config);
     }
+
+    protected abstract void SpawnBullet();
+    protected abstract IEnumerator AttackJob();
+    protected abstract IEnumerator RotateToTargetJob();
 
     public void SetTarget(IEnemy target)
     {
@@ -154,7 +144,7 @@ public abstract class TurretWeapon
         return targetPos + targetVelocity * timeToTarget;
     }
 
-    private void SetAttackProperties(TurretConfig config)
+    protected void SetAttackProperties(TurretConfig config)
     {
         _attackType = config.AttackCharacteristics.AttackType;
         _bulletType = config.AttackCharacteristics.BulletType;

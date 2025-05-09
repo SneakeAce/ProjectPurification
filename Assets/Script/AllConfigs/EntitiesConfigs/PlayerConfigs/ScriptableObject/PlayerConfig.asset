@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerConfig
   m_EditorClassIdentifier: 
   <UniqueCharacterisitcs>k__BackingField:
-    <MoveSpeed>k__BackingField: 5.47
+    <MoveSpeed>k__BackingField: 5.25
     <PlayerPrefab>k__BackingField: {fileID: 8108048037754924167, guid: de9b2d8eb6631524e81cb6aae60a0e6e, type: 3}
     <IncludeLayerForMovement>k__BackingField:
       serializedVersion: 2

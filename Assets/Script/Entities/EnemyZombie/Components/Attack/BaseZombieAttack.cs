@@ -1,19 +1,17 @@
-using System.Diagnostics;
-
 public class BaseZombieAttack : EnemyMeleeAttack
 {
-    public override void Attack(ICharacter character)
+    public override void MeleeAttack(IEntity entity)
     {
-        if (character == null) 
+        if (entity == null) 
             return;
 
-        IDamageable characterHealth = character.CharacterHealth;
+        IDamageable entityHealth = entity.EntityHealth;
 
         DamageData damage = new DamageData(_attackType, _baseDamage);
 
         UnityEngine.Debug.Log($"DamageData = {_attackType}, {_baseDamage}");
 
-        characterHealth.TakeDamage(damage);
+        entityHealth.TakeDamage(damage);
 
         if (_reloadingCoroutine != null)
         {
