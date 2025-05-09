@@ -36,6 +36,7 @@ public class BarrierFactory : IFactory<Barrier, BarrierConfig, BarriersType>
 
         _container.Inject(barrier);
 
+        barrier.SetPool(barrierPool);
         barrier.SetComponents(config);
 
         barrier.transform.position = spawnPosition;

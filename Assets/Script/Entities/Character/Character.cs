@@ -35,7 +35,7 @@ public class Character : MonoBehaviour, ICharacter
     public Collider Collider => _collider;
     public Animator Animator => _animator;
     public WeaponHolder WeaponHolder => _weaponHolder;
-    public CharacterHealth CharacterHealth => _health;
+    public IEntityHealth EntityHealth => _health;
 
     private void GetWeaponHolder()
     {
@@ -49,7 +49,7 @@ public class Character : MonoBehaviour, ICharacter
         _animator = GetComponent<Animator>();
 
         _health.Initialization(this, _playerConfig);
-        _health.UnitDead += DestroyCharacter;
+        _health.EntityDied += DestroyCharacter;
 
         _moveComponent = new MoveComponent(this, _playerConfig);
     }
@@ -76,13 +76,13 @@ public class Character : MonoBehaviour, ICharacter
 
     private void DestroyCharacter(IEntity character)
     {
-        _health.UnitDead -= DestroyCharacter;
+        _health.EntityDied -= DestroyCharacter;
 
         Destroy(character.Transform.gameObject);
     }
 
     private void OnDestroy()
     {
-        _health.UnitDead -= DestroyCharacter;
+        _health.EntityDied -= DestroyCharacter;
     }
 }

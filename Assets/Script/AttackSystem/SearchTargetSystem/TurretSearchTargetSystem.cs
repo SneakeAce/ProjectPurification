@@ -110,7 +110,7 @@ public class TurretSearchTargetSystem : SearchTargetSystem
     private void TargetFound()
     {
         _subscribedEnemy = _nearestTarget;
-        _subscribedEnemy.CharacterEnemy.EnemyHealth.UnitDead += OnTargetDead;
+        _subscribedEnemy.CharacterEnemy.EntityHealth.EntityDied += OnTargetDead;
 
         _turret.TurretWeapon.SetTarget(_nearestTarget);
 
@@ -129,7 +129,7 @@ public class TurretSearchTargetSystem : SearchTargetSystem
 
         if (_subscribedEnemy != null)
         {
-            _subscribedEnemy.CharacterEnemy.EnemyHealth.UnitDead -= OnTargetDead;
+            _subscribedEnemy.CharacterEnemy.EntityHealth.EntityDied -= OnTargetDead;
             _subscribedEnemy = null;
         }
 
@@ -142,7 +142,7 @@ public class TurretSearchTargetSystem : SearchTargetSystem
         _searchTargetCoroutine = _coroutinePerformer.StartCoroutine(SearchingTargetJob());
     }
 
-    private void OnTargetDead(IEnemy enemy)
+    private void OnTargetDead(IEntity enemy)
     {
         if (_nearestTarget == enemy)
             _nearestTarget = null;

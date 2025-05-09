@@ -42,7 +42,7 @@ public class BehavioralPatternSwitcher : MonoBehaviour
         SetMoveType(moveType);
     }
 
-    public void SetBehavioralPattern(MoveTypes moveType, ICharacter target = null)
+    public void SetBehavioralPattern(MoveTypes moveType, IEntity target = null)
     {
         if (target == null)
         {

@@ -75,22 +75,26 @@ public class BarrierAttack
                 if (targetCol == null)
                     continue;
 
-                DamageDeal(targetCol);
+                IEntity target = targetCol.GetComponent<IEntity>();
+
+                DamageDeal(target);
 
                 yield return new WaitForSeconds(_delayBetweenAttack);
             }
         }
     }
 
-    private void DamageDeal(Collider target)
+    private void DamageDeal(IEntity target)
     {
-        IEnemy enemyTarget = target.GetComponent<IEnemy>();
+        IDamageable targetHealth = target.EntityHealth;
 
-        if (enemyTarget == null)
+        Debug.Log($"Barrier DamageDeal to target = {targetHealth}");
+
+        if (targetHealth == null)
             return;
 
         DamageData damage = new DamageData(_attackType, _currentDamage);
 
-        enemyTarget.CharacterEnemy.EnemyHealth.TakeDamage(damage);
+        targetHealth.TakeDamage(damage);
     }
 }

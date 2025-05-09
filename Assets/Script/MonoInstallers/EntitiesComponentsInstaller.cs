@@ -18,11 +18,15 @@ public class EntitiesComponentsInstaller : MonoInstaller
     private void BindEnemyComponents()
     {
         Container.Bind<EnemyHealth>().AsTransient();
+        Container.Bind<EnemySearchTargetSystem>().AsTransient();
     }
 
     private void BindTurretComponents()
     {
         Container.Bind<TurretHealth>().AsTransient();
+        Container.Bind<TurretSearchTargetSystem>().AsTransient();
+
+        Container.Bind<AutomaticTurretWeapon>().AsTransient();
     }
 
     private void BindBarrierComponents()

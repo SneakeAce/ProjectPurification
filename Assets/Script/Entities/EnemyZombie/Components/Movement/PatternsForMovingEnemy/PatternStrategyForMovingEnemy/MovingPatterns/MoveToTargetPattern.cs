@@ -5,11 +5,10 @@ public class MoveToTargetPattern : IBehavioralPattern
     private const float MinDistanceToTarget = 0.12f;
     private const float StoppingDistance = 1.5f;
 
-    private ICharacter _target;
+    private IEntity _target;
     private IEnemy _movable;
 
-
-    public MoveToTargetPattern(IEnemy movable, ICharacter target)
+    public MoveToTargetPattern(IEnemy movable, IEntity target)
     {
         _movable = movable;
         _target = target;
@@ -33,6 +32,8 @@ public class MoveToTargetPattern : IBehavioralPattern
 
     public void Update()
     {
+        Vector3 targetPos = _target.Collider.bounds.ClosestPoint(_target.Transform.position);
+
         if (_target == null)
             return;
 
@@ -42,7 +43,7 @@ public class MoveToTargetPattern : IBehavioralPattern
             StopMove();
             return;
         }
-        else if (Vector3.Distance(_movable.Transform.position, _target.Transform.position) > _movable.NavMeshAgent.stoppingDistance && _movable.NavMeshAgent.isStopped)
+        else if (Vector3.Distance(_movable.Transform.position, targetPos) > _movable.NavMeshAgent.stoppingDistance && _movable.NavMeshAgent.isStopped)
         {
             StartMove();
         }
@@ -50,7 +51,7 @@ public class MoveToTargetPattern : IBehavioralPattern
         if (_movable.NavMeshAgent.isStopped)
             return;
 
-        _movable.NavMeshAgent.SetDestination(_target.Transform.position);
+        _movable.NavMeshAgent.SetDestination(targetPos);
 
         _movable.Animator.SetBool("IsRunning", true);
     }

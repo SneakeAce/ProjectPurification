@@ -95,8 +95,15 @@ public class GlobalEnemySpawner : EnemySpawner
         return true;
     }
 
-    public override void OnReturnEnemyToPool(IEnemy enemy)
+    public override void OnReturnEnemyToPool(IEntity entity)
     {
+        if (entity is IEnemy enemy)
+            enemy = (IEnemy)entity;
+        else
+            return;
+
+        Debug.Log($"entity is IEnemy = {enemy}");
+
         foreach (SpawnPointForSpawner point in _spawnPoints)
         {
             if ((point.EnemyTypeInSpawnPoint & enemy.EnemyType) != 0)
@@ -106,7 +113,7 @@ public class GlobalEnemySpawner : EnemySpawner
 
                 enemy.CharacterEnemy.ReturnToPool(enemy);
 
-                enemy.CharacterEnemy.EnemyHealth.UnitDead -= OnReturnEnemyToPool;
+                enemy.CharacterEnemy.EntityHealth.EntityDied -= OnReturnEnemyToPool;
 
                 break;
             }
@@ -147,7 +154,7 @@ public class GlobalEnemySpawner : EnemySpawner
 
         newSpawnPoint.IncreaseCurrentEnemy(AdditionalValue);
 
-        enemy.EnemyHealth.UnitDead += OnReturnEnemyToPool;
+        enemy.EntityHealth.EntityDied += OnReturnEnemyToPool;
 
         return enemy;
     }

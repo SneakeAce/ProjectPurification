@@ -3,14 +3,14 @@ using System.Diagnostics;
 
 public class EnemyMovementStrategyFactory
 {
-    private ICharacter _target;
+    private IEntity _target;
     private PatrolPointsSpawner _spawnPatrolPoints;
 
     public EnemyMovementStrategyFactory()
     {
     }
 
-    public EnemyMovementStrategyFactory(ICharacter target)
+    public EnemyMovementStrategyFactory(IEntity target)
     {
         _target = target;
     }

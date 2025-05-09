@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
+using static UnityEngine.EventSystems.EventTrigger;
 using Random = UnityEngine.Random;
 
 public class LocalEnemySpawner : EnemySpawner
@@ -116,13 +117,20 @@ public class LocalEnemySpawner : EnemySpawner
         return true;
     }
 
-    public override void OnReturnEnemyToPool(IEnemy enemy)
+    public override void OnReturnEnemyToPool(IEntity entity)
     {
+        if (entity is IEnemy enemy)
+            enemy = (IEnemy)entity;
+        else
+            return;
+
+        Debug.Log($"entity is IEnemy = {enemy}");
+
         _currentEnemyOnScene = _currentEnemyOnScene - ReducingValue;
 
         enemy.CharacterEnemy.ReturnToPool(enemy);
 
-        //enemy.CharacterEnemy.EnemyHealth.UnitDead -= OnReturnEnemyToPool;
+        enemy.CharacterEnemy.EntityHealth.EntityDied -= OnReturnEnemyToPool;
     }
 
     private EnemyCharacter GetEnemy()
@@ -146,7 +154,7 @@ public class LocalEnemySpawner : EnemySpawner
 
         _currentEnemyOnScene += AdditionalValue;
 
-        //enemy.EnemyHealth.UnitDead += OnReturnEnemyToPool;
+        enemy.EntityHealth.EntityDied += OnReturnEnemyToPool;
 
         return enemy;
     }

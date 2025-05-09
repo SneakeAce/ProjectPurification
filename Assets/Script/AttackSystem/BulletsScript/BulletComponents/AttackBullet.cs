@@ -22,23 +22,25 @@ public class AttackBullet
     {
         if (((SingleLayerBit << collider.gameObject.layer) & _enemyLayer.value) != EmptyMask)
         {
-            IEnemy target = collider.gameObject.GetComponent<IEnemy>();
+            IEntity target = collider.gameObject.GetComponent<IEntity>();
 
             Debug.Log("Bullet enter collider / target = " + target);
 
-            DamageDeal(target);
+            DamageDeal(target); 
 
             DestroyBullet();
         }
     }
 
-    private void DamageDeal(IEnemy target)
+    private void DamageDeal(IEntity target)
     {
+        IDamageable targetHealth = target.EntityHealth;
+
         DamageData damage = new DamageData(_attackType, _currentDamage);
 
         UnityEngine.Debug.Log($"DamageData = {_attackType}, {_currentDamage}");
 
-        target.CharacterEnemy.EnemyHealth.TakeDamage(damage);
+        targetHealth.TakeDamage(damage);
     }
 
     private void DestroyBullet()

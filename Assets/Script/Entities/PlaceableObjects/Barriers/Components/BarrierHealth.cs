@@ -9,7 +9,7 @@ public class BarrierHealth : EntityHealth
     {
     }
 
-    public event Action<IBarrier> UnitDead;
+    public override event Action<IEntity> EntityDied;
     public override event Action<float> CurrentValueChanged;
     public override event Action<float> MaxValueChanged;
 
@@ -46,7 +46,7 @@ public class BarrierHealth : EntityHealth
 
         if (_currentValue <= MinPossibleValue)
         {
-            UnitDead?.Invoke(_barrier);
+            EntityDied?.Invoke(_barrier);
             UnityEngine.Debug.Log("Barrier is Dead");
         }
     }

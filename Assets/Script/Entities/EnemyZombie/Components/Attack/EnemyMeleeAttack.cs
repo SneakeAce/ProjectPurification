@@ -3,7 +3,9 @@ using UnityEngine;
 
 public abstract class EnemyMeleeAttack : EnemyAttack
 {
-    public abstract void Attack(ICharacter character);
+    private const float DelayBetweenCheckDistance = 0.5f;
+
+    public abstract void MeleeAttack(IEntity character);
 
     public override IEnumerator ReloadingJob(float time)
     {
@@ -14,51 +16,59 @@ public abstract class EnemyMeleeAttack : EnemyAttack
 
     public override void ResetAttack()
     {
-        _isCanAttack = true;
         _isAttacking = false;
         _isCanceled = false;
     }
 
-    public void AnimationAttack()
+    public override IEnumerator AttackJob()
     {
-        Attack(_target);
-    }
-
-    private void OnTriggerStay(Collider collider)
-    {
-        // Переделать проверку по слою.
-        if (collider.gameObject.layer == 6 && _isCanAttack)
+        while (_target != null)
         {
-            if (collider.gameObject.TryGetComponent(out Character character))
+            if (_isCanceled)
+                yield break;
+
+            yield return new WaitForSeconds(DelayBetweenCheckDistance);
+
+            _isCanAttack = TargetInRadiusAttack();
+
+            if (_isCanAttack && _isAttacking == false)
             {
-                _target = character;
+                _isAttacking = true;
 
-                if (_isAttacking == false)
-                {
-                    _isCanAttack = false;
-                    _isAttacking = true;
-
-                    _enemyAnimator.SetTrigger("Attacking");
-                }
+                _enemyAnimator.SetTrigger("Attacking");
             }
         }
     }
 
-    private void OnTriggerExit(Collider collider)
+    public override void CancelAttack()
     {
-        if (collider.gameObject.layer == 6)
-        {
-            CancelAttack();
-        }
-    }
+        _isCanceled = true;
 
-    private void CancelAttack()
-    {
         if (_reloadingCoroutine == null)
             _reloadingCoroutine = StartCoroutine(ReloadingJob(_reloadingTime));
 
         // ПЕРЕДЕЛАТЬ!!!
         _enemyAnimator.CrossFade("ZombieIdle", 0.1f);
-        //_animator.StopPlayback();
+
+        // Закэшировать название анимации с помощь StringToHash.
+    }
+
+    public void AnimationAttack()
+    {
+        MeleeAttack(_target);
+    }
+
+    private bool TargetInRadiusAttack()
+    {
+        if (_target == null)
+            return false;
+
+        float sqrDistanceToTarget = (_target.Transform.position - _enemyCharacter.Transform.position).sqrMagnitude;
+        float sqrRadiusAttack = _attackZoneRadius * _attackZoneRadius;
+
+        if (sqrDistanceToTarget > sqrRadiusAttack)
+            return false;
+
+         return true;
     }
 }

@@ -24,12 +24,12 @@ public class EnemyCharacter : MonoBehaviour, IEnemy, IPoolable
 
     public float MoveSpeed => _enemyConfig.CharacteristicsEnemy.MoveSpeed;
     public EnemyType EnemyType => _enemyConfig.CharacteristicsEnemy.EnemyType;
+    public IEntityHealth EntityHealth => _health;
     public BehavioralPatternSwitcher BehavioralPatternSwitcher => _patternSwitcher;
     public Transform Transform => transform;
     public NavMeshAgent NavMeshAgent => _agent;
     public Animator Animator => _animator;
     public EnemyCharacter CharacterEnemy => this;
-    public EnemyHealth EnemyHealth => _health;
     public Rigidbody Rigidbody => _rigidbody;
     public Collider Collider  => _collider;
 
@@ -61,11 +61,10 @@ public class EnemyCharacter : MonoBehaviour, IEnemy, IPoolable
         _pool = pool as ObjectPool<EnemyCharacter>;
     }
 
-    public void ReturnToPool(IEnemy enemy)
+    public void ReturnToPool(IEntity enemy)
     {
         _pool?.ReturnPoolObject(this);
 
-        enemy.CharacterEnemy.EnemyHealth.CurrentValue = 0;
         _pool = null;
     }
 

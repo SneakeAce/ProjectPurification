@@ -5,7 +5,7 @@ public class TurretHealth : EntityHealth
     private TurretConfig _turretConfig;
     private Turret _turret;
 
-    public event Action<ITurret> UnitDead;
+    public override event Action<IEntity> EntityDied;
     public override event Action<float> CurrentValueChanged;
     public override event Action<float> MaxValueChanged;
 
@@ -46,7 +46,7 @@ public class TurretHealth : EntityHealth
 
         if (_currentValue <= MinPossibleValue) 
         { 
-            UnitDead?.Invoke(_turret);
+            EntityDied?.Invoke(_turret);
             UnityEngine.Debug.Log("Turret is Dead");
         }
     }

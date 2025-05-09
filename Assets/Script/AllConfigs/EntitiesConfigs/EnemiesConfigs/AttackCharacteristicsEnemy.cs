@@ -9,5 +9,5 @@ public class AttackCharacteristicsEnemy
     [field: SerializeField] public float BaseRadiusAttack { get; private set; }
     [field: SerializeField] public float BaseReloadingTime { get; private set; }
     [field: SerializeField] public float BaseSearchTargetRadius { get; private set; }
-    [field: SerializeField] public LayerMask TargetLayer { get; private set; }
+    [field: SerializeField] public LayerMask TargetsLayer { get; private set; }
 }
