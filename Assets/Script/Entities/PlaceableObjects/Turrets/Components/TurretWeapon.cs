@@ -162,4 +162,14 @@ public abstract class TurretWeapon
         _currentAttackSpeed = _baseReloadingTime;
     }
 
+    protected void StopCoroutine(Coroutine routine)
+    {
+        if (routine != null)
+        {
+            _coroutinePerformer.StopCoroutine(routine);
+            routine = null;
+        }
+    }
+
+
 }

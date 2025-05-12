@@ -12,6 +12,7 @@ public class AutomaticTurretWeapon : TurretWeapon
     public void Initialization(ITurret currentTurret, TurretConfig config, GameObject bodyTurret)
     {
         _currentTurret = currentTurret;
+        _currentTurret.EntityHealth.EntityDied += OnDisable;
         _bodyTurret = bodyTurret;
 
         _spawnPointsBullet = bodyTurret.GetComponentsInChildren<SpawnPointBullet>();
@@ -101,18 +102,11 @@ public class AutomaticTurretWeapon : TurretWeapon
         bullet.InitializeBullet(spawnPoint.transform.position, rotationBullet, _baseDistanceFlyingBullet);
     }
 
-    private void OnDestroy()
+    private void OnDisable(IEntity entity)
     {
-        if (_rotateToTargetCoroutine != null)
-        {
-            _coroutinePerformer.StopCoroutine(_rotateToTargetCoroutine);
-            _rotateToTargetCoroutine = null;
-        }
+        StopCoroutine(_attackCoroutine);
+        StopCoroutine(_rotateToTargetCoroutine);
 
-        if (_attackCoroutine != null)
-        {
-            _coroutinePerformer.StopCoroutine(_attackCoroutine);
-            _attackCoroutine = null;
-        }
+        ResetTarget(null);
     }
 }

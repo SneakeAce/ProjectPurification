@@ -29,7 +29,7 @@ public class Character : MonoBehaviour, ICharacter
         Initialization();
     }
 
-    public Transform Transform => this.transform;
+    public Transform Transform => transform;
     public PlayerInput PlayerInput => _playerInput;
     public Rigidbody Rigidbody => _rigidbody;
     public Collider Collider => _collider;

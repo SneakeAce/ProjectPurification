@@ -54,10 +54,10 @@ public class EnemySearchTargetSystem : SearchTargetSystem
 
             for (int i = 0; i < targets; i++)
             {
-                Collider target = _bufferTargets[i];
+                Collider targetCollider = _bufferTargets[i];
 
-                if (target.gameObject.TryGetComponent<IEntity>(out IEntity tar))
-                    _target = tar;
+                if (targetCollider.gameObject.TryGetComponent<IEntity>(out IEntity target))
+                    _target = target;
             }
 
             yield return new WaitForSeconds(MinDelayToCheck);

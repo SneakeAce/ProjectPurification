@@ -17,9 +17,9 @@ MonoBehaviour:
     <MoveSpeed>k__BackingField: 2
   <AttackCharacteristics>k__BackingField:
     <AttackType>k__BackingField: 0
-    <BaseDamage>k__BackingField: 5
+    <BaseDamage>k__BackingField: 15
     <BaseRadiusAttack>k__BackingField: 2.5
-    <BaseReloadingTime>k__BackingField: 2
+    <BaseReloadingTime>k__BackingField: 1.2
     <BaseSearchTargetRadius>k__BackingField: 12
     <TargetsLayer>k__BackingField:
       serializedVersion: 2

@@ -25,6 +25,7 @@ public class TurretSearchTargetSystem : SearchTargetSystem
     public void Start(ITurret turret, TurretConfig currentTurretConfig)
     {
         _turret = turret;
+        _turret.EntityHealth.EntityDied += OntDisable;
 
         _radiusSearching = currentTurretConfig.AttackCharacteristics.BaseRadiusSearching;
         _targetLayerMask = currentTurretConfig.AttackCharacteristics.TargetLayer;
@@ -146,5 +147,20 @@ public class TurretSearchTargetSystem : SearchTargetSystem
     {
         if (_nearestTarget == enemy)
             _nearestTarget = null;
+    }
+
+    private void OntDisable(IEntity entity)
+    {
+        StopCoroutine(_searchTargetCoroutine);
+        StopCoroutine(_checkDistanceToTargetCoroutine);
+    }
+
+    private void StopCoroutine(Coroutine routine)
+    {
+        if (routine != null)
+        {
+            _coroutinePerformer.StopCoroutine(routine);
+            routine = null;
+        }
     }
 }
